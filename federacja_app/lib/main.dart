@@ -1,4 +1,4 @@
-import 'package:federacja_app/homepageutil.dart';
+import 'package:federacja_app/tileutils.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -12,11 +12,12 @@ class FedeApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Federacja',
+      title: 'FederacjaApp',
       theme: ThemeData(
+          scaffoldBackgroundColor: const Color.fromRGBO(255, 242, 235, 0.95),
           colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.red)
               .copyWith(secondary: Colors.blueGrey)),
-      home: const TiledHomePage(title: 'Federacja'),
+      home: const TiledHomePage(title: 'FederacjaApp'),
     );
   }
 }
@@ -35,17 +36,21 @@ class _MyHomePageState extends State<TiledHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.title),
+          centerTitle: true,
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(50),
+                  bottomRight: Radius.circular(50))),
+          title: const Image(
+            image: AssetImage('lib/assets/img/logo.png'),
+            height: 85,
+          ),
+          toolbarHeight: 75,
         ),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const Text(
-                'Below is the space for tiles',
-              ),
-              HomePageUtil().build(context)
-            ],
+            children: <Widget>[TileUtils().build(context)],
           ),
         ));
   }
