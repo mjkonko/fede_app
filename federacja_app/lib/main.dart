@@ -34,24 +34,27 @@ class TiledHomePage extends StatefulWidget {
 class _MyHomePageState extends State<TiledHomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(50),
-                  bottomRight: Radius.circular(50))),
-          title: const Image(
-            image: AssetImage('lib/assets/img/logo.png'),
-            height: 85,
-          ),
-          toolbarHeight: 75,
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[const TileUtils().build(context)],
-          ),
-        ));
+    return SafeArea(
+        bottom: false,
+        top: false,
+        child: Scaffold(
+            appBar: AppBar(
+              centerTitle: true,
+              shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(50),
+                      bottomRight: Radius.circular(50))),
+              title: const Image(
+                image: AssetImage('lib/assets/img/logo.png'),
+                height: 85,
+              ),
+              toolbarHeight: 75,
+            ),
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[const TileUtils().build(context)],
+              ),
+            )));
   }
 }
