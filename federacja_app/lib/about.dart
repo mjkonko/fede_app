@@ -47,7 +47,7 @@ class _AboutPageState extends State<AboutPage> with TickerProviderStateMixin {
       body: TabBarView(
         controller: _tabController,
         physics: const NeverScrollableScrollPhysics(),
-        children: <Widget>[
+        children: const <Widget>[
           Center(child: AboutFederation(title: 'Federation')),
           Center(child: AboutCommittee(title: 'Committee'))
         ],
@@ -57,15 +57,15 @@ class _AboutPageState extends State<AboutPage> with TickerProviderStateMixin {
 }
 
 class AboutFederation extends StatefulWidget {
-  AboutFederation({Key? key, required this.title}) : super(key: key);
+  const AboutFederation({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _AboutFederationState createState() => _AboutFederationState();
+  AboutFederationState createState() => AboutFederationState();
 }
 
-class _AboutFederationState extends State<AboutFederation>
+class AboutFederationState extends State<AboutFederation>
     with TickerProviderStateMixin {
   @override
   void initState() {
@@ -82,15 +82,15 @@ class _AboutFederationState extends State<AboutFederation>
 }
 
 class AboutCommittee extends StatefulWidget {
-  AboutCommittee({Key? key, required this.title}) : super(key: key);
+  const AboutCommittee({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _AboutCommitteeState createState() => _AboutCommitteeState();
+  AboutCommitteeState createState() => AboutCommitteeState();
 }
 
-class _AboutCommitteeState extends State<AboutCommittee>
+class AboutCommitteeState extends State<AboutCommittee>
     with TickerProviderStateMixin {
   @override
   void initState() {

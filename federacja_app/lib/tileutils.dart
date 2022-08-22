@@ -60,14 +60,6 @@ class TileUtils extends StatelessWidget {
               Theme.of(context).colorScheme.primary),
         ]));
   }
-
-  test() {
-    print("Click event on Container");
-  }
-
-  test2() {
-    print("Click event on 2");
-  }
 }
 
 class Tile extends StatelessWidget {

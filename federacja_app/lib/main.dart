@@ -50,7 +50,7 @@ class _MyHomePageState extends State<TiledHomePage> {
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[TileUtils().build(context)],
+            children: <Widget>[const TileUtils().build(context)],
           ),
         ));
   }
