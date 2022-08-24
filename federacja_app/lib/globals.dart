@@ -1,5 +1,5 @@
 class Globals {
-  static const String _API_URL_DEV = "https://fede-app-prod.herokuapp.com/";
+  static const String _API_URL_DEV = "https://fede-app-dev.herokuapp.com/";
   static const String _API_URL_PROD = "https://fede-app-prod.herokuapp.com/";
 
   static const String _API_URL_AGENDA = "agenda/";
@@ -8,7 +8,7 @@ class Globals {
   static const String _API_URL_SPEAKER = "speaker/";
   static const String _API_URL_VENUE = "venue/";
 
-  bool isProd = true;
+  bool isProd = false;
 
   String getApiUrl() {
     if (isProd) {
