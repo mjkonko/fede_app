@@ -210,9 +210,8 @@ class AboutCommitteeState extends State<AboutCommittee>
                                   ));
                             }))
                   ])
-            : Container(
-                child: const Center(
-                    child: Text(
-                        'Problem loading section, please contact the dev team.'))));
+            : const Center(
+                child: Text(
+                    'Problem loading section, please contact the dev team.')));
   }
 }
