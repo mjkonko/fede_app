@@ -1,0 +1,58 @@
+{"list":
+  [
+    {
+      "name" : "Natan Chromik",
+      "position" : "President",
+      "email": "email",
+      "linkedin": "https://www.linkedin.com"
+    },
+    {
+      "name" : "Julia Jędrzejczak",
+      "position" : "Vice President",
+      "email": "email",
+      "linkedin": "https://www.linkedin.com"
+    },
+    {
+      "name" : "Michał Stankiewicz",
+      "position" : "Treasurer",
+      "email": "email",
+      "linkedin": "https://www.linkedin.com"
+    },
+    {
+      "name" : "Aleksandra Czyżak",
+      "position" : "Save EU Students Coordinator",
+      "email": "email",
+      "linkedin": "https://www.linkedin.com"
+    },
+    {
+      "name" : "Zach Smerin",
+      "position" : "External Affairs Officer",
+      "email": "email",
+      "linkedin": "https://www.linkedin.com"
+    },
+    {
+      "name" : "Oliwia Stecko",
+      "position" : "Media Officer",
+      "email": "email",
+      "linkedin": "https://www.linkedin.com"
+    },
+    {
+      "name" : "Antoni Prus",
+      "position" : "Relations Officer",
+      "email": "email",
+      "linkedin": "https://www.linkedin.com"
+    },
+    {
+      "name" : "Julia Chwalińska",
+      "position" : "Graphic Designer",
+      "email": "email",
+      "linkedin": "https://www.linkedin.com"
+    },
+    {
+      "name" : "Mikołaj Końko",
+      "position" : "System Architect",
+      "email": "email",
+      "linkedin": "https://www.linkedin.com"
+    }
+  ]
+}
