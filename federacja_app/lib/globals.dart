@@ -8,7 +8,7 @@ class Globals {
   static const String _API_URL_SPEAKER = "speaker/";
   static const String _API_URL_VENUE = "venue/";
 
-  bool isProd = false;
+  bool isProd = true;
 
   String getApiUrl() {
     if (isProd) {

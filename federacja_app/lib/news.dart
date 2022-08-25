@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
+import 'entity/NewsItem.dart';
 import 'globals.dart';
 
 class NewsPage extends StatefulWidget {
@@ -128,7 +129,6 @@ class NewsList extends StatelessWidget {
 Future<List<NewsItem>> fetchNews(http.Client client) async {
   final response = await client.get(Uri.parse(Globals().getNewsUrl()),
       headers: {'Accept': 'application/json; charset=UTF-8'});
-  print(response.body.toString());
   if (response.statusCode == 200) {
     return compute(parseNews, response.bodyBytes.toList());
   } else {
@@ -144,26 +144,4 @@ List<NewsItem> parseNews(List<int> responseBytes) {
       parsed.map<NewsItem>((json) => NewsItem.fromJson(json)).toList();
   list.sort((item1, item2) => item1.id.compareTo(item2.id));
   return list;
-}
-
-class NewsItem {
-  final int id;
-  final String date;
-  final String title;
-  final String text;
-
-  NewsItem({
-    required this.id,
-    required this.date,
-    required this.title,
-    required this.text,
-  });
-
-  factory NewsItem.fromJson(Map<String, dynamic> json) {
-    return NewsItem(
-        id: json['id'],
-        date: json['date'],
-        title: json['title'],
-        text: json['text']);
-  }
 }

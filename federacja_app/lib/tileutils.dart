@@ -1,3 +1,4 @@
+import 'package:federacja_app/entity/EventInstance.dart';
 import 'package:federacja_app/events.dart';
 import 'package:federacja_app/news.dart';
 import 'package:federacja_app/socials.dart';
@@ -53,7 +54,17 @@ class TileUtils extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const EventsPage()),
+                          builder: (context) => EventsPage(
+                                event: EventInstance(
+                                    1,
+                                    "infoTitle",
+                                    "infoSubtitle",
+                                    "infoText",
+                                    "contactEmail",
+                                    "facebookPage",
+                                    "instaPage",
+                                    "linkedInPage", []),
+                              )),
                     )
                   },
               'Events',
