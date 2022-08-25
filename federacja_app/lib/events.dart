@@ -31,8 +31,8 @@ class _EventsPageState extends State<EventsPage> with TickerProviderStateMixin {
         centerTitle: true,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(50),
-                bottomRight: Radius.circular(50))),
+                bottomLeft: Radius.circular(25),
+                bottomRight: Radius.circular(25))),
         bottom: TabBar(
           controller: _tabController,
           indicatorWeight: 1.5,

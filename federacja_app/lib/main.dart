@@ -12,13 +12,12 @@ class FedeApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'FederacjaApp',
-      theme: ThemeData(
-          scaffoldBackgroundColor: const Color.fromRGBO(255, 242, 235, 0.95),
-          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.red)
-              .copyWith(secondary: Colors.blueGrey)),
-      home: const TiledHomePage(title: 'FederacjaApp'),
-    );
+        title: 'FederacjaApp',
+        theme: ThemeData(
+            scaffoldBackgroundColor: const Color.fromRGBO(245, 245, 245, 0.95),
+            colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.red)
+                .copyWith(secondary: const Color.fromRGBO(0, 0, 0, 0.85))),
+        home: const TiledHomePage(title: 'FederacjaApp'));
   }
 }
 
@@ -42,8 +41,8 @@ class _MyHomePageState extends State<TiledHomePage> {
               centerTitle: true,
               shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(50),
-                      bottomRight: Radius.circular(50))),
+                      bottomLeft: Radius.circular(25),
+                      bottomRight: Radius.circular(25))),
               title: const Image(
                 image: AssetImage('lib/assets/img/logo.png'),
                 height: 85,
