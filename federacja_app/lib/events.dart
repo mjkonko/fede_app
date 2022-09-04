@@ -5,9 +5,10 @@ import 'entity/EventInstance.dart';
 
 /// Event operations page
 class EventsPage extends StatefulWidget {
-  const EventsPage({Key? key, required this.event}) : super(key: key);
+  const EventsPage({Key? key, required this.title, required this.event})
+      : super(key: key);
 
-  final String title = "Event";
+  final String title;
   final EventInstance event;
 
   @override
@@ -59,19 +60,19 @@ class _EventsPageState extends State<EventsPage> with TickerProviderStateMixin {
           Center(
               child: EventsAgenda(
             title: 'Agenda',
-            agenda: widget.event.agenda,
+            agenda: [],
           )),
           Center(
               child: EventsInfo(
             title: 'Info',
-            infoTitle: widget.event.infoTitle,
-            infoSubtitle: widget.event.infoSubtitle,
-            infoText: widget.event.infoText,
+            infoTitle: widget.event.title,
+            infoSubtitle: widget.event.subtitle,
+            infoText: widget.event.description,
           )),
           Center(
               child: EventsContact(
             title: 'Contact',
-            email: widget.event.contactEmail,
+            email: widget.event.date,
             fb: widget.event.facebookPage,
             insta: widget.event.instaPage,
             linkedin: widget.event.linkedInPage,

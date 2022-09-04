@@ -52,7 +52,7 @@ class _MyHomePageState extends State<TiledHomePage> {
               toolbarHeight: 75,
             ),
             body: Column(children: [
-              Flexible(child: const EventUtils().build(context)),
+              const Flexible(child: EventUtils()),
               Flexible(child: const TileUtils().build(context))
             ])));
   }
