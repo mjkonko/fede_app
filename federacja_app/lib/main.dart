@@ -1,6 +1,8 @@
 import 'package:federacja_app/tileutils.dart';
 import 'package:flutter/material.dart';
 
+import 'eventsutils.dart';
+
 void main() {
   runApp(const FedeApp());
 }
@@ -49,11 +51,9 @@ class _MyHomePageState extends State<TiledHomePage> {
               ),
               toolbarHeight: 75,
             ),
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[const TileUtils().build(context)],
-              ),
-            )));
+            body: Column(children: [
+              Flexible(child: const EventUtils().build(context)),
+              Flexible(child: const TileUtils().build(context))
+            ])));
   }
 }

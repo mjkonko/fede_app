@@ -1,7 +1,4 @@
-import 'package:federacja_app/entity/EventInstance.dart';
-import 'package:federacja_app/events.dart';
 import 'package:federacja_app/news.dart';
-import 'package:federacja_app/socials.dart';
 import 'package:flutter/material.dart';
 
 import 'about.dart';
@@ -12,14 +9,15 @@ class TileUtils extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //Build Home Page list of Tiles
-    return Expanded(
-        child: GridView.count(
-            crossAxisCount: 2,
-            childAspectRatio: 1,
-            padding: const EdgeInsets.all(0.5),
-            mainAxisSpacing: 0.5,
-            crossAxisSpacing: 0.5,
-            children: [
+    return GridView.count(
+        crossAxisCount: 2,
+        childAspectRatio: 1,
+        padding: const EdgeInsets.all(0.5),
+        physics: const NeverScrollableScrollPhysics(),
+        mainAxisSpacing: 0.5,
+        crossAxisSpacing: 0.5,
+        shrinkWrap: true,
+        children: [
           Tile(
               () => {
                     Navigator.push(
@@ -34,42 +32,12 @@ class TileUtils extends StatelessWidget {
               () => {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) => const SocialPage()),
-                    )
-                  },
-              'SocialFeed',
-              Theme.of(context).colorScheme.secondary),
-          Tile(
-              () => {
-                    Navigator.push(
-                      context,
                       MaterialPageRoute(builder: (context) => const NewsPage()),
                     )
                   },
               'News',
-              Theme.of(context).colorScheme.secondary),
-          Tile(
-              () => {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => EventsPage(
-                                event: EventInstance(
-                                    1,
-                                    "infoTitle",
-                                    "infoSubtitle",
-                                    "infoText",
-                                    "contactEmail",
-                                    "facebookPage",
-                                    "instaPage",
-                                    "linkedInPage", []),
-                              )),
-                    )
-                  },
-              'Events',
-              Theme.of(context).colorScheme.primary),
-        ]));
+              Theme.of(context).colorScheme.secondary)
+        ]);
   }
 }
 
