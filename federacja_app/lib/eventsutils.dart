@@ -68,7 +68,9 @@ class EventList extends StatelessWidget {
                               facebookPage: item.facebookPage,
                               instaPage: item.instaPage,
                               linkedInPage: item.linkedInPage,
-                              agenda: ""),
+                              agenda: item.agenda
+                              //'[{"id": 1, "name": "Test", "venue": "Venue", "time": "2022-09-25T12:15:23.701Z", "description": "desc"},{"id": 2, "name": "Test", "venue": "Venue", "time": "2022-09-25T12:15:23.701Z", "description": "desc"}]',
+                              ),
                         )),
               )
             },

@@ -1,8 +1,7 @@
 class AgendaItem {
   final int id;
   final String name;
-  final int venue;
-  final int speaker;
+  final String venue;
   final String time;
   final String description;
 
@@ -10,7 +9,6 @@ class AgendaItem {
       {required this.id,
       required this.name,
       required this.venue,
-      required this.speaker,
       required this.time,
       required this.description});
 
@@ -19,7 +17,6 @@ class AgendaItem {
         id: json['id'],
         name: json['name'],
         venue: json['venue'],
-        speaker: json['speaker'],
         time: json['time'],
         description: json['description']);
   }

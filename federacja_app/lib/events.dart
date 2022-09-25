@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'entity/AgendaItem.dart';
 import 'entity/EventInstance.dart';
@@ -58,10 +61,8 @@ class _EventsPageState extends State<EventsPage> with TickerProviderStateMixin {
         physics: const NeverScrollableScrollPhysics(),
         children: <Widget>[
           Center(
-              child: EventsAgenda(
-            title: 'Agenda',
-            agenda: [],
-          )),
+              child:
+                  EventsAgenda(title: 'Agenda', agenda: widget.event.agenda)),
           Center(
               child: EventsInfo(
             title: 'Info',
@@ -89,7 +90,7 @@ class EventsAgenda extends StatefulWidget {
       : super(key: key);
 
   final String title;
-  final List<AgendaItem> agenda;
+  final String agenda;
 
   @override
   EventsAgendaState createState() => EventsAgendaState();
@@ -97,32 +98,104 @@ class EventsAgenda extends StatefulWidget {
 
 class EventsAgendaState extends State<EventsAgenda>
     with TickerProviderStateMixin {
+  late final List<AgendaItem> agenda;
+
   @override
   void initState() {
     super.initState();
+    agenda = parseAgenda(widget.agenda);
+  }
+
+  List<AgendaItem> parseAgenda(String agenda) {
+    final parsed = json.decode(agenda).cast<Map<String, dynamic>>();
+
+    List<AgendaItem> list =
+        parsed.map<AgendaItem>((json) => AgendaItem.fromJson(json)).toList();
+    list.sort((item1, item2) => item1.id.compareTo(item2.id));
+
+    return list;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.only(top: 10),
-            child: Text(widget.agenda.toString(),
-                style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                      color: Colors.black87,
-                      wordSpacing: 1,
-                      overflow: TextOverflow.fade,
-                      height: 1.5,
-                    )),
-          )
-        ],
-      ),
-    ));
+      body: Container(
+          padding: const EdgeInsets.all(20),
+          child: ListView.builder(
+            itemCount: agenda.length,
+            cacheExtent: 50.0,
+            itemBuilder: (context, index) {
+              return ExpansionTile(
+                leading: Container(
+                  padding: const EdgeInsets.only(right: 12.0),
+                  decoration: const BoxDecoration(
+                      border: Border(
+                          right:
+                              BorderSide(width: 1.0, color: Colors.black26))),
+                  child: const Icon(Icons.event, color: Colors.black),
+                ),
+                title: Text(
+                  agenda[index].name,
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline5!
+                      .copyWith(color: Colors.black),
+                ),
+                children: [makeListTile(agenda[index])],
+              );
+            },
+          )),
+    );
   }
+
+  Text parseDT(DateTime dt) => Text(
+      "${DateFormat('dd/MM/yyyy').format(dt)} ${DateFormat('HH:mm').format(dt)}",
+      style: TextStyle(
+          color: Theme.of(context).colorScheme.primary,
+          fontWeight: FontWeight.bold,
+          letterSpacing: 3));
+
+  ListTile makeListTile(AgendaItem item) => ListTile(
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5.0),
+        subtitle: Column(
+          children: <Widget>[
+            const Divider(
+              color: Colors.black45,
+              height: 20,
+              thickness: 0.5,
+              indent: 10,
+              endIndent: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 0.0, top: 1.0, right: 0.0),
+              child: parseDT(DateTime.parse(item.time)),
+            ),
+            Row(children: [
+              Flexible(
+                fit: FlexFit.loose,
+                child: Padding(
+                  padding:
+                      const EdgeInsets.only(left: 8.0, top: 20.0, right: 8.0),
+                  child: Text(item.description,
+                      softWrap: true,
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline5!
+                          .copyWith(color: Colors.black)),
+                ),
+              ),
+            ]),
+            const Divider(
+              color: Colors.black45,
+              height: 40,
+              thickness: 0.5,
+              indent: 10,
+              endIndent: 10,
+            ),
+          ],
+        ),
+      );
 }
 
 /// Event operations page - information section
