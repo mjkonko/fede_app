@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:federacja_app/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -120,10 +121,11 @@ class EventsAgendaState extends State<EventsAgenda>
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(7.5),
           child: ListView.builder(
             itemCount: agenda.length,
-            cacheExtent: 50.0,
+            shrinkWrap: true,
+            cacheExtent: 75.0,
             itemBuilder: (context, index) {
               return ExpansionTile(
                 leading: Container(
@@ -138,7 +140,7 @@ class EventsAgendaState extends State<EventsAgenda>
                   agenda[index].name,
                   style: Theme.of(context)
                       .textTheme
-                      .headline5!
+                      .subtitle2!
                       .copyWith(color: Colors.black),
                 ),
                 children: [makeListTile(agenda[index])],
@@ -152,36 +154,25 @@ class EventsAgendaState extends State<EventsAgenda>
       "${DateFormat('dd/MM/yyyy').format(dt)} ${DateFormat('HH:mm').format(dt)}",
       style: TextStyle(
           color: Theme.of(context).colorScheme.primary,
-          fontWeight: FontWeight.bold,
-          letterSpacing: 3));
+          fontWeight: FontWeight.w400,
+          letterSpacing: 2));
 
   ListTile makeListTile(AgendaItem item) => ListTile(
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5.0),
         subtitle: Column(
           children: <Widget>[
-            const Divider(
-              color: Colors.black45,
-              height: 20,
-              thickness: 0.5,
-              indent: 10,
-              endIndent: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 0.0, top: 1.0, right: 0.0),
-              child: parseDT(DateTime.parse(item.time)),
-            ),
             Row(children: [
               Flexible(
                 fit: FlexFit.loose,
                 child: Padding(
                   padding:
-                      const EdgeInsets.only(left: 8.0, top: 20.0, right: 8.0),
+                      const EdgeInsets.only(left: 14.0, top: 20.0, right: 14.0),
                   child: Text(item.description,
                       softWrap: true,
                       style: Theme.of(context)
                           .textTheme
-                          .headline5!
+                          .bodyText1!
                           .copyWith(color: Colors.black)),
                 ),
               ),
@@ -192,6 +183,11 @@ class EventsAgendaState extends State<EventsAgenda>
               thickness: 0.5,
               indent: 10,
               endIndent: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: 0.0, top: 0.0, right: 0.0, bottom: 5.0),
+              child: parseDT(DateTime.parse(item.time)),
             ),
           ],
         ),
@@ -227,36 +223,55 @@ class EventsInfoState extends State<EventsInfo> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        children: [
-          Text(widget.infoTitle,
-              style: Theme.of(context).textTheme.headline2!.copyWith(
-                    color: Colors.black87,
-                    wordSpacing: 1,
-                    overflow: TextOverflow.fade,
-                    height: 1.2,
-                  )),
-          Text(widget.infoSubtitle,
-              style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                    color: Colors.black87,
-                    wordSpacing: 1,
-                    overflow: TextOverflow.fade,
-                    height: 1.5,
-                  )),
-          Container(
-            padding: const EdgeInsets.only(top: 10),
-            child: Text(widget.infoText,
-                style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                      color: Colors.black87,
-                      wordSpacing: 1,
-                      overflow: TextOverflow.fade,
-                      height: 1.5,
-                    )),
-          )
-        ],
-      ),
-    ));
+            padding: const EdgeInsets.all(20),
+            child: Flex(
+              direction: Axis.vertical,
+              children: [
+                Expanded(
+                    flex: 1,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: Column(
+                        children: [
+                          Center(
+                              child: Text(widget.infoTitle,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline4!
+                                      .copyWith(
+                                        color: Colors.black87,
+                                        wordSpacing: 1,
+                                        overflow: TextOverflow.fade,
+                                        height: 1.2,
+                                      ))),
+                          Text(widget.infoSubtitle,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .subtitle2!
+                                  .copyWith(
+                                    color: Colors.black87,
+                                    wordSpacing: 1,
+                                    overflow: TextOverflow.fade,
+                                    height: 1.5,
+                                  )),
+                          Container(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: Text(widget.infoText,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText2!
+                                    .copyWith(
+                                      color: Colors.black87,
+                                      wordSpacing: 1,
+                                      overflow: TextOverflow.fade,
+                                      height: 1.5,
+                                    )),
+                          )
+                        ],
+                      ),
+                    ))
+              ],
+            )));
   }
 }
 
@@ -283,6 +298,8 @@ class EventsContact extends StatefulWidget {
 
 class EventsContactState extends State<EventsContact>
     with TickerProviderStateMixin {
+  var utils = Utils();
+
   @override
   void initState() {
     super.initState();
@@ -294,7 +311,48 @@ class EventsContactState extends State<EventsContact>
         body: Container(
       padding: const EdgeInsets.all(20),
       child: Column(
-        children: [Text(widget.title)],
+        children: [
+          Center(
+            child: Text("Contact the organisers",
+                style: Theme.of(context).textTheme.headline5!.copyWith(
+                      color: Colors.black87,
+                      wordSpacing: 1,
+                      overflow: TextOverflow.fade,
+                      height: 1.2,
+                    )),
+          ),
+          Center(
+              child: ButtonBar(
+            mainAxisSize: MainAxisSize.min,
+            alignment: MainAxisAlignment.center,
+            children: <Widget>[
+              TextButton(
+                child: const Text('Email'),
+                onPressed: () {
+                  utils.sendEmail(email: widget.email);
+                },
+              ),
+              TextButton(
+                child: const Text('Facebook'),
+                onPressed: () {
+                  utils.launchInBrowser(widget.fb);
+                },
+              ),
+              TextButton(
+                child: const Text('Instagram'),
+                onPressed: () {
+                  utils.launchInBrowser(widget.insta);
+                },
+              ),
+              TextButton(
+                child: const Text('LinkedIn'),
+                onPressed: () {
+                  utils.launchInBrowser(widget.linkedin);
+                },
+              ),
+            ],
+          )),
+        ],
       ),
     ));
   }

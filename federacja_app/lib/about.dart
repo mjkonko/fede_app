@@ -98,36 +98,47 @@ class AboutFederationState extends State<AboutFederation>
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        children: [
-          Text(textTitle,
-              style: Theme.of(context).textTheme.headline2!.copyWith(
-                    color: Colors.black87,
-                    wordSpacing: 1,
-                    overflow: TextOverflow.fade,
-                    height: 1.2,
-                  )),
-          Text(textParagraph1,
-              style: Theme.of(context).textTheme.subtitle1!.copyWith(
-                    color: Colors.black87,
-                    wordSpacing: 1,
-                    overflow: TextOverflow.fade,
-                    height: 1.5,
-                  )),
-          Container(
-            padding: const EdgeInsets.only(top: 10),
-            child: Text(textParagraph2,
-                style: Theme.of(context).textTheme.bodyText2!.copyWith(
-                      color: Colors.black87,
-                      wordSpacing: 1,
-                      overflow: TextOverflow.fade,
-                      height: 1.5,
-                    )),
-          )
-        ],
-      ),
-    ));
+            padding: const EdgeInsets.all(20),
+            child: Flex(direction: Axis.vertical, children: [
+              Expanded(
+                  flex: 1,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Column(
+                      children: [
+                        Text(textTitle,
+                            style:
+                                Theme.of(context).textTheme.headline3!.copyWith(
+                                      color: Colors.black87,
+                                      wordSpacing: 1,
+                                      overflow: TextOverflow.fade,
+                                      height: 1.2,
+                                    )),
+                        Text(textParagraph1,
+                            style:
+                                Theme.of(context).textTheme.subtitle2!.copyWith(
+                                      color: Colors.black87,
+                                      wordSpacing: 1,
+                                      overflow: TextOverflow.fade,
+                                      height: 1.5,
+                                    )),
+                        Container(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: Text(textParagraph2,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText2!
+                                  .copyWith(
+                                    color: Colors.black87,
+                                    wordSpacing: 1,
+                                    overflow: TextOverflow.fade,
+                                    height: 1.5,
+                                  )),
+                        )
+                      ],
+                    ),
+                  ))
+            ])));
   }
 }
 

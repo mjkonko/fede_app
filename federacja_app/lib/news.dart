@@ -64,8 +64,8 @@ class NewsList extends StatelessWidget {
       Text("${dt.day}/${dt.month} ${DateFormat('hh:mm').format(dt)}",
           style: const TextStyle(
               color: Colors.black87,
-              fontWeight: FontWeight.w200,
-              fontSize: 8,
+              fontWeight: FontWeight.w300,
+              fontSize: 9,
               letterSpacing: 1.5));
 
   Card makeCard(NewsItem item) => Card(
@@ -77,10 +77,12 @@ class NewsList extends StatelessWidget {
       );
 
   ListTile makeListTile(NewsItem item) => ListTile(
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(50))),
       contentPadding:
           const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5.0),
       leading: Container(
-        padding: const EdgeInsets.only(right: 12.0),
+        padding: const EdgeInsets.only(right: 6.0),
         decoration: const BoxDecoration(
             border:
                 Border(right: BorderSide(width: 1.0, color: Colors.white24))),
@@ -89,7 +91,7 @@ class NewsList extends StatelessWidget {
       title: Text(
         item.title,
         style:
-            const TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),
+            const TextStyle(color: Colors.black87, fontWeight: FontWeight.w500),
       ),
       subtitle: Column(children: <Widget>[
         Row(
@@ -97,9 +99,10 @@ class NewsList extends StatelessWidget {
             Expanded(
               flex: 4,
               child: Padding(
-                  padding: const EdgeInsets.only(left: 0.0, top: 9.0),
+                  padding: const EdgeInsets.only(left: 0.0, top: 6.0),
                   child: Text(item.text,
-                      style: const TextStyle(color: Colors.black87))),
+                      style: const TextStyle(
+                          color: Colors.black87, fontWeight: FontWeight.w400))),
             )
           ],
         ),
@@ -118,7 +121,7 @@ class NewsList extends StatelessWidget {
       itemCount: list.length,
       shrinkWrap: true,
       reverse: true,
-      cacheExtent: 30.0,
+      cacheExtent: 75.0,
       itemBuilder: (context, index) {
         return makeCard(list[index]);
       },
