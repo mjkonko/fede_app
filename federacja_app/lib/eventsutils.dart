@@ -80,17 +80,29 @@ class EventList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: list.length,
-      shrinkWrap: true,
-      reverse: true,
-      cacheExtent: 30.0,
-      padding: const EdgeInsets.all(0.5),
-      physics: const NeverScrollableScrollPhysics(),
-      itemBuilder: (context, index) {
-        return makeTile(context, list[index]);
-      },
-    );
+    return GridView.count(
+        crossAxisCount: 2,
+        childAspectRatio: 1,
+        padding: const EdgeInsets.all(0.5),
+        physics: const NeverScrollableScrollPhysics(),
+        mainAxisSpacing: 0.5,
+        crossAxisSpacing: 0.5,
+        shrinkWrap: true,
+        children: generateTiles(context));
+  }
+
+  List<Widget> generateTiles(BuildContext context) {
+    List<EventTile> tiles = [];
+    for (int i = 0; i < list.length; i++) {
+      tiles.add(makeTile(context, list[i]));
+    }
+
+    if (tiles.length.isOdd) {
+      tiles.add(EventTile(
+          () => {}, 'Placeholder', Theme.of(context).colorScheme.background));
+    }
+
+    return tiles;
   }
 }
 

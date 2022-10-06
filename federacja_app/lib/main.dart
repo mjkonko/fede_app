@@ -51,9 +51,16 @@ class _MyHomePageState extends State<TiledHomePage> {
               ),
               toolbarHeight: 75,
             ),
-            body: Column(children: [
-              const Flexible(child: EventUtils()),
-              Flexible(child: const TileUtils().build(context))
+            body: Flex(direction: Axis.vertical, children: [
+              Expanded(
+                  flex: 1,
+                  child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      physics: const BouncingScrollPhysics(),
+                      child: Column(children: [
+                        const EventUtils(),
+                        const TileUtils().build(context)
+                      ])))
             ])));
   }
 }
