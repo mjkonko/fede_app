@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:federacja_app/entity/EventInstance.dart';
 import 'package:federacja_app/events.dart';
+import 'package:federacja_app/tileutils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -51,8 +52,8 @@ class EventList extends StatelessWidget {
       : super(key: key);
   final List<EventInstance> list;
 
-  EventTile makeTile(BuildContext context, EventInstance item) {
-    return EventTile(
+  Tile makeTile(BuildContext context, EventInstance item) {
+    return Tile(
         () => {
               Navigator.push(
                 context,
@@ -75,7 +76,7 @@ class EventList extends StatelessWidget {
               )
             },
         item.title,
-        Theme.of(context).colorScheme.secondary);
+        Theme.of(context).colorScheme.background);
   }
 
   @override
@@ -92,14 +93,14 @@ class EventList extends StatelessWidget {
   }
 
   List<Widget> generateTiles(BuildContext context) {
-    List<EventTile> tiles = [];
+    List<Tile> tiles = [];
     for (int i = 0; i < list.length; i++) {
       tiles.add(makeTile(context, list[i]));
     }
 
     if (tiles.length.isOdd) {
-      tiles.add(EventTile(
-          () => {}, 'Placeholder', Theme.of(context).colorScheme.background));
+      tiles.add(ImageLogoTile(
+          () => {}, 'Placeholder', Theme.of(context).colorScheme.secondary));
     }
 
     return tiles;
@@ -124,33 +125,4 @@ List<EventInstance> parseEvent(List<int> responseBytes) {
       .toList();
   list.sort((item1, item2) => item1.id.compareTo(item2.id));
   return list;
-}
-
-class EventTile extends StatelessWidget {
-  final Function action;
-  final String title;
-  final Color color;
-
-  const EventTile(this.action, this.title, this.color, {Key? key})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(
-        onPressed: () {
-          action();
-        },
-        child: Container(
-          padding: const EdgeInsets.all(1.0),
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-              color: color,
-              borderRadius: const BorderRadius.all(Radius.circular(10.0))),
-          child: Text(title,
-              style: Theme.of(context)
-                  .textTheme
-                  .headline5!
-                  .copyWith(color: Colors.white)),
-        ));
-  }
 }
