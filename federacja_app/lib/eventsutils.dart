@@ -1,11 +1,9 @@
-import 'dart:convert';
-
 import 'package:federacja_app/entity/EventInstance.dart';
 import 'package:federacja_app/events.dart';
 import 'package:federacja_app/tileutils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:pocketbase/pocketbase.dart';
 
 import 'globals.dart';
 
@@ -25,13 +23,19 @@ class EventState extends State<EventUtils> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<EventInstance>>(
-      future: fetchEvents(http.Client()),
+      future: fetchEvents(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           if (kDebugMode) {
             snapshot.error.toString();
           }
-          return const Center(child: Text('There are no events available'));
+          return Center(
+              child: Text('There are no events currently available',
+                  softWrap: true,
+                  style: Theme.of(context)
+                      .textTheme
+                      .subtitle2!
+                      .copyWith(color: Colors.black)));
         } else if (snapshot.hasData) {
           return EventList(
             list: snapshot.data!,
@@ -69,9 +73,10 @@ class EventList extends StatelessWidget {
                               facebookPage: item.facebookPage,
                               instaPage: item.instaPage,
                               linkedInPage: item.linkedInPage,
-                              agenda: item.agenda
+                              agenda: item.agenda,
                               //'[{"id": 1, "name": "Test", "venue": "Venue", "time": "2022-09-25T12:15:23.701Z", "description": "desc"},{"id": 2, "name": "Test", "venue": "Venue", "time": "2022-09-25T12:15:23.701Z", "description": "desc"}]',
-                              ),
+                              created: item.created,
+                              updated: item.updated),
                         )),
               )
             },
@@ -107,22 +112,22 @@ class EventList extends StatelessWidget {
   }
 }
 
-Future<List<EventInstance>> fetchEvents(http.Client client) async {
-  final response = await client.get(Uri.parse(Globals().getEventsUrl()),
-      headers: {'Accept': 'application/json; charset=UTF-8'});
-  if (response.statusCode == 200) {
-    return compute(parseEvent, response.bodyBytes.toList());
+Future<List<EventInstance>> fetchEvents() async {
+  final records = await Globals()
+      .getPBClient()
+      .records
+      .getFullList('event', batch: 200, sort: '-created');
+
+  if (records.isNotEmpty) {
+    return parseEvent(records);
   } else {
-    throw Exception('Failed to load news items');
+    throw Exception('Failed to load event items');
   }
 }
 
-List<EventInstance> parseEvent(List<int> responseBytes) {
-  final parsed =
-      jsonDecode(utf8.decode(responseBytes)).cast<Map<String, dynamic>>();
-  List<EventInstance> list = parsed
-      .map<EventInstance>((json) => EventInstance.fromJson(json))
+List<EventInstance> parseEvent(List<RecordModel> records) {
+  List<EventInstance> list = records
+      .map<EventInstance>((json) => EventInstance.fromRecordModel(json))
       .toList();
-  list.sort((item1, item2) => item1.id.compareTo(item2.id));
   return list;
 }
