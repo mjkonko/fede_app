@@ -1,10 +1,9 @@
-import 'dart:convert';
-
 import 'package:federacja_app/entity/EventInstance.dart';
 import 'package:federacja_app/events.dart';
+import 'package:federacja_app/tileutils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:pocketbase/pocketbase.dart';
 
 import 'globals.dart';
 
@@ -24,13 +23,19 @@ class EventState extends State<EventUtils> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<EventInstance>>(
-      future: fetchEvents(http.Client()),
+      future: fetchEvents(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           if (kDebugMode) {
             snapshot.error.toString();
           }
-          return const Center(child: Text('There are no events available'));
+          return Center(
+              child: Text('There are no events currently available',
+                  softWrap: true,
+                  style: Theme.of(context)
+                      .textTheme
+                      .subtitle2!
+                      .copyWith(color: Colors.black)));
         } else if (snapshot.hasData) {
           return EventList(
             list: snapshot.data!,
@@ -51,8 +56,8 @@ class EventList extends StatelessWidget {
       : super(key: key);
   final List<EventInstance> list;
 
-  EventTile makeTile(BuildContext context, EventInstance item) {
-    return EventTile(
+  Tile makeTile(BuildContext context, EventInstance item) {
+    return Tile(
         () => {
               Navigator.push(
                 context,
@@ -68,77 +73,61 @@ class EventList extends StatelessWidget {
                               facebookPage: item.facebookPage,
                               instaPage: item.instaPage,
                               linkedInPage: item.linkedInPage,
-                              agenda: item.agenda
+                              agenda: item.agenda,
                               //'[{"id": 1, "name": "Test", "venue": "Venue", "time": "2022-09-25T12:15:23.701Z", "description": "desc"},{"id": 2, "name": "Test", "venue": "Venue", "time": "2022-09-25T12:15:23.701Z", "description": "desc"}]',
-                              ),
+                              created: item.created,
+                              updated: item.updated),
                         )),
               )
             },
         item.title,
-        Theme.of(context).colorScheme.secondary);
+        Theme.of(context).colorScheme.background);
   }
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: list.length,
-      shrinkWrap: true,
-      reverse: true,
-      cacheExtent: 30.0,
-      padding: const EdgeInsets.all(0.5),
-      physics: const NeverScrollableScrollPhysics(),
-      itemBuilder: (context, index) {
-        return makeTile(context, list[index]);
-      },
-    );
+    return GridView.count(
+        crossAxisCount: 2,
+        childAspectRatio: 1,
+        padding: const EdgeInsets.all(0.5),
+        physics: const NeverScrollableScrollPhysics(),
+        mainAxisSpacing: 0.5,
+        crossAxisSpacing: 0.5,
+        shrinkWrap: true,
+        children: generateTiles(context));
+  }
+
+  List<Widget> generateTiles(BuildContext context) {
+    List<Tile> tiles = [];
+    for (int i = 0; i < list.length; i++) {
+      tiles.add(makeTile(context, list[i]));
+    }
+
+    if (tiles.length.isOdd) {
+      tiles.add(ImageLogoTile(
+          () => {}, 'Placeholder', Theme.of(context).colorScheme.secondary));
+    }
+
+    return tiles;
   }
 }
 
-Future<List<EventInstance>> fetchEvents(http.Client client) async {
-  final response = await client.get(Uri.parse(Globals().getEventsUrl()),
-      headers: {'Accept': 'application/json; charset=UTF-8'});
-  if (response.statusCode == 200) {
-    return compute(parseEvent, response.bodyBytes.toList());
+Future<List<EventInstance>> fetchEvents() async {
+  final records = await Globals()
+      .getPBClient()
+      .records
+      .getFullList('event', batch: 200, sort: '-created');
+
+  if (records.isNotEmpty) {
+    return parseEvent(records);
   } else {
-    throw Exception('Failed to load news items');
+    throw Exception('Failed to load event items');
   }
 }
 
-List<EventInstance> parseEvent(List<int> responseBytes) {
-  final parsed =
-      jsonDecode(utf8.decode(responseBytes)).cast<Map<String, dynamic>>();
-  List<EventInstance> list = parsed
-      .map<EventInstance>((json) => EventInstance.fromJson(json))
+List<EventInstance> parseEvent(List<RecordModel> records) {
+  List<EventInstance> list = records
+      .map<EventInstance>((json) => EventInstance.fromRecordModel(json))
       .toList();
-  list.sort((item1, item2) => item1.id.compareTo(item2.id));
   return list;
-}
-
-class EventTile extends StatelessWidget {
-  final Function action;
-  final String title;
-  final Color color;
-
-  const EventTile(this.action, this.title, this.color, {Key? key})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(
-        onPressed: () {
-          action();
-        },
-        child: Container(
-          padding: const EdgeInsets.all(1.0),
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-              color: color,
-              borderRadius: const BorderRadius.all(Radius.circular(10.0))),
-          child: Text(title,
-              style: Theme.of(context)
-                  .textTheme
-                  .headline5!
-                  .copyWith(color: Colors.white)),
-        ));
-  }
 }

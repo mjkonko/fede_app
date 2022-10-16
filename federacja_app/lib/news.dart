@@ -1,9 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:pocketbase/src/dtos/record_model.dart';
 
 import 'entity/NewsItem.dart';
 import 'globals.dart';
@@ -36,7 +34,7 @@ class NewsState extends State<NewsPage> with TickerProviderStateMixin {
         ),
         body: Scaffold(
             body: FutureBuilder<List<NewsItem>>(
-          future: fetchNews(http.Client()),
+          future: fetchNews(),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               if (kDebugMode) {
@@ -64,8 +62,8 @@ class NewsList extends StatelessWidget {
       Text("${dt.day}/${dt.month} ${DateFormat('hh:mm').format(dt)}",
           style: const TextStyle(
               color: Colors.black87,
-              fontWeight: FontWeight.w200,
-              fontSize: 8,
+              fontWeight: FontWeight.w300,
+              fontSize: 9,
               letterSpacing: 1.5));
 
   Card makeCard(NewsItem item) => Card(
@@ -77,10 +75,12 @@ class NewsList extends StatelessWidget {
       );
 
   ListTile makeListTile(NewsItem item) => ListTile(
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(50))),
       contentPadding:
           const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5.0),
       leading: Container(
-        padding: const EdgeInsets.only(right: 12.0),
+        padding: const EdgeInsets.only(right: 6.0),
         decoration: const BoxDecoration(
             border:
                 Border(right: BorderSide(width: 1.0, color: Colors.white24))),
@@ -89,7 +89,7 @@ class NewsList extends StatelessWidget {
       title: Text(
         item.title,
         style:
-            const TextStyle(color: Colors.black87, fontWeight: FontWeight.bold),
+            const TextStyle(color: Colors.black87, fontWeight: FontWeight.w500),
       ),
       subtitle: Column(children: <Widget>[
         Row(
@@ -97,9 +97,10 @@ class NewsList extends StatelessWidget {
             Expanded(
               flex: 4,
               child: Padding(
-                  padding: const EdgeInsets.only(left: 0.0, top: 9.0),
+                  padding: const EdgeInsets.only(left: 0.0, top: 6.0),
                   child: Text(item.text,
-                      style: const TextStyle(color: Colors.black87))),
+                      style: const TextStyle(
+                          color: Colors.black87, fontWeight: FontWeight.w400))),
             )
           ],
         ),
@@ -118,7 +119,7 @@ class NewsList extends StatelessWidget {
       itemCount: list.length,
       shrinkWrap: true,
       reverse: true,
-      cacheExtent: 30.0,
+      cacheExtent: 75.0,
       itemBuilder: (context, index) {
         return makeCard(list[index]);
       },
@@ -126,22 +127,21 @@ class NewsList extends StatelessWidget {
   }
 }
 
-Future<List<NewsItem>> fetchNews(http.Client client) async {
-  final response = await client.get(Uri.parse(Globals().getNewsUrl()),
-      headers: {'Accept': 'application/json; charset=UTF-8'});
-  if (response.statusCode == 200) {
-    return compute(parseNews, response.bodyBytes.toList());
+Future<List<NewsItem>> fetchNews() async {
+  // alternatively you can also fetch all records at once via getFullList:
+  final records = await Globals()
+      .getPBClient()
+      .records
+      .getFullList('news', batch: 200, sort: '-created');
+  if (records.isNotEmpty) {
+    return parseNews(records);
   } else {
     throw Exception('Failed to load news items');
   }
 }
 
-List<NewsItem> parseNews(List<int> responseBytes) {
-  final parsed =
-      jsonDecode(utf8.decode(responseBytes)).cast<Map<String, dynamic>>();
-
+List<NewsItem> parseNews(List<RecordModel> records) {
   List<NewsItem> list =
-      parsed.map<NewsItem>((json) => NewsItem.fromJson(json)).toList();
-  list.sort((item1, item2) => item1.id.compareTo(item2.id));
+      records.map<NewsItem>((json) => NewsItem.fromRecordModel(json)).toList();
   return list;
 }
