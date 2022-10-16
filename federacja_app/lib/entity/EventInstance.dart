@@ -1,5 +1,7 @@
+import 'package:pocketbase/pocketbase.dart';
+
 class EventInstance {
-  final int id;
+  final String id;
   final String title;
   final String subtitle;
   final String description;
@@ -8,6 +10,8 @@ class EventInstance {
   final String instaPage;
   final String linkedInPage;
   final String agenda;
+  final String created;
+  final String updated;
 
   EventInstance(
       {required this.id,
@@ -18,7 +22,9 @@ class EventInstance {
       required this.facebookPage,
       required this.instaPage,
       required this.linkedInPage,
-      required this.agenda});
+      required this.agenda,
+      required this.created,
+      required this.updated});
 
   factory EventInstance.fromJson(Map<String, dynamic> json) {
     return EventInstance(
@@ -30,6 +36,12 @@ class EventInstance {
         facebookPage: json['facebookpage'],
         instaPage: json['instapage'],
         linkedInPage: json['linkedinpage'],
-        agenda: json['agenda']);
+        agenda: json['agenda'],
+        created: json['created'],
+        updated: json['updated']);
+  }
+
+  factory EventInstance.fromRecordModel(RecordModel model) {
+    return EventInstance.fromJson(model.toJson());
   }
 }

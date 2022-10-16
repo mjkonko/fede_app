@@ -1,9 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:pocketbase/src/dtos/record_model.dart';
 
 import 'entity/NewsItem.dart';
 import 'globals.dart';
@@ -36,7 +34,7 @@ class NewsState extends State<NewsPage> with TickerProviderStateMixin {
         ),
         body: Scaffold(
             body: FutureBuilder<List<NewsItem>>(
-          future: fetchNews(http.Client()),
+          future: fetchNews(),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               if (kDebugMode) {
@@ -129,22 +127,21 @@ class NewsList extends StatelessWidget {
   }
 }
 
-Future<List<NewsItem>> fetchNews(http.Client client) async {
-  final response = await client.get(Uri.parse(Globals().getNewsUrl()),
-      headers: {'Accept': 'application/json; charset=UTF-8'});
-  if (response.statusCode == 200) {
-    return compute(parseNews, response.bodyBytes.toList());
+Future<List<NewsItem>> fetchNews() async {
+  // alternatively you can also fetch all records at once via getFullList:
+  final records = await Globals()
+      .getPBClient()
+      .records
+      .getFullList('news', batch: 200, sort: '-created');
+  if (records.isNotEmpty) {
+    return parseNews(records);
   } else {
     throw Exception('Failed to load news items');
   }
 }
 
-List<NewsItem> parseNews(List<int> responseBytes) {
-  final parsed =
-      jsonDecode(utf8.decode(responseBytes)).cast<Map<String, dynamic>>();
-
+List<NewsItem> parseNews(List<RecordModel> records) {
   List<NewsItem> list =
-      parsed.map<NewsItem>((json) => NewsItem.fromJson(json)).toList();
-  list.sort((item1, item2) => item1.id.compareTo(item2.id));
+      records.map<NewsItem>((json) => NewsItem.fromRecordModel(json)).toList();
   return list;
 }
