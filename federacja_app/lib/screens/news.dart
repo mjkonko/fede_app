@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pocketbase/src/dtos/record_model.dart';
 
-import 'entity/NewsItem.dart';
-import 'globals.dart';
+import '../entity/NewsItem.dart';
+import '../globals.dart';
 
 class NewsPage extends StatefulWidget {
   const NewsPage({Key? key}) : super(key: key);

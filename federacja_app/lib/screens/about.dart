@@ -1,10 +1,10 @@
-import 'package:federacja_app/utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
 
-import 'entity/ComitteeMember.dart';
-import 'globals.dart';
+import '../entity/ComitteeMember.dart';
+import '../globals.dart';
+import '../utils/utils.dart';
 
 class AboutPage extends StatefulWidget {
   const AboutPage({Key? key}) : super(key: key);
