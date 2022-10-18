@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pocketbase/src/dtos/record_model.dart';
 
-import 'entity/NewsItem.dart';
-import 'globals.dart';
+import '../entity/NewsItem.dart';
+import '../globals.dart';
 
 class NewsPage extends StatefulWidget {
   const NewsPage({Key? key}) : super(key: key);
@@ -80,11 +80,10 @@ class NewsList extends StatelessWidget {
       contentPadding:
           const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5.0),
       leading: Container(
-        padding: const EdgeInsets.only(right: 6.0),
+        padding: const EdgeInsets.only(right: 8.0),
         decoration: const BoxDecoration(
-            border:
-                Border(right: BorderSide(width: 1.0, color: Colors.white24))),
-        child: const Icon(Icons.cloud, color: Colors.black),
+            border: Border(right: BorderSide(width: 0.75, color: Colors.red))),
+        child: const Icon(Icons.newspaper_sharp, color: Colors.black),
       ),
       title: Text(
         item.title,
@@ -118,7 +117,7 @@ class NewsList extends StatelessWidget {
     return ListView.builder(
       itemCount: list.length,
       shrinkWrap: true,
-      reverse: true,
+      reverse: false,
       cacheExtent: 75.0,
       itemBuilder: (context, index) {
         return makeCard(list[index]);

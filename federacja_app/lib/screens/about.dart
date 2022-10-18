@@ -1,8 +1,10 @@
-import 'dart:convert';
-
-import 'package:federacja_app/utils.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:pocketbase/pocketbase.dart';
+
+import '../entity/ComitteeMember.dart';
+import '../globals.dart';
+import '../utils/utils.dart';
 
 class AboutPage extends StatefulWidget {
   const AboutPage({Key? key}) : super(key: key);
@@ -153,17 +155,26 @@ class AboutCommittee extends StatefulWidget {
 
 class AboutCommitteeState extends State<AboutCommittee>
     with TickerProviderStateMixin {
-  var _items = [];
-  var utils = Utils();
+  Future<List<CommitteeMember>> fetchCommittee() async {
+    final records = await Globals()
+        .getPBClient()
+        .records
+        .getFullList('committee', batch: 200, sort: '-created');
 
-  Future<void> readJson() async {
-    final String response =
-        await rootBundle.loadString('lib/assets/committee.json');
-    final data = await json.decode(response);
+    print(records);
+    if (records.isNotEmpty) {
+      print('here');
+      return parseCommittee(records);
+    } else {
+      throw Exception('Failed to load committee data');
+    }
+  }
 
-    setState(() {
-      _items = data["list"];
-    });
+  List<CommitteeMember> parseCommittee(List<RecordModel> records) {
+    List<CommitteeMember> list = records
+        .map<CommitteeMember>((json) => CommitteeMember.fromRecordModel(json))
+        .toList();
+    return list;
   }
 
   @override
@@ -173,56 +184,72 @@ class AboutCommitteeState extends State<AboutCommittee>
 
   @override
   Widget build(BuildContext context) {
-    readJson();
-
     return Scaffold(
-        body: _items.isNotEmpty
-            ? Column(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                    Expanded(
-                        child: ListView.builder(
-                            //scrollDirection: Axis.horizontal,
-                            itemCount: _items.length,
-                            itemBuilder: (context, index) {
-                              return Card(
-                                  margin: const EdgeInsets.all(10),
-                                  child: Column(
-                                    children: [
-                                      ListTile(
-                                        isThreeLine: false,
-                                        style: ListTileStyle.list,
-                                        contentPadding: const EdgeInsets.only(
-                                            left: 16.0, right: 10.0),
-                                        subtitle: Text(_items[index]["name"]),
-                                        title: Text(_items[index]["position"]),
-                                      ),
-                                      ButtonBar(
-                                        children: <Widget>[
-                                          TextButton(
-                                            child: const Text('Email'),
-                                            onPressed: () {
-                                              utils.sendEmail(
-                                                  email: _items[index]
-                                                      ["email"]);
-                                            },
-                                          ),
-                                          TextButton(
-                                            child: const Text('LinkedIn'),
-                                            onPressed: () {
-                                              utils.launchInBrowser(
-                                                  _items[index]["linkedin"]);
-                                            },
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ));
-                            }))
-                  ])
-            : const Center(
-                child: Text(
-                    'Problem loading section, please contact the dev team.')));
+        body: FutureBuilder<List<CommitteeMember>>(
+      future: fetchCommittee(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          if (kDebugMode) {
+            snapshot.error.toString();
+          }
+          return const Center(child: Text('An error has occurred!'));
+        } else if (snapshot.hasData) {
+          return CommitteeList(list: snapshot.data!);
+        } else {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
+    ));
+  }
+}
+
+class CommitteeList extends StatelessWidget {
+  const CommitteeList({Key? key, required this.list}) : super(key: key);
+
+  final List<CommitteeMember> list;
+
+  @override
+  Widget build(BuildContext context) {
+    var utils = Utils();
+
+    return ListView.builder(
+        itemCount: list.length,
+        shrinkWrap: true,
+        reverse: true,
+        cacheExtent: 75.0,
+        itemBuilder: (context, index) {
+          return Card(
+              margin: const EdgeInsets.all(10),
+              child: Column(
+                children: [
+                  ListTile(
+                    isThreeLine: false,
+                    style: ListTileStyle.list,
+                    contentPadding:
+                        const EdgeInsets.only(left: 16.0, right: 10.0),
+                    subtitle: Text(list[index].name),
+                    title: Text(list[index].position),
+                  ),
+                  ButtonBar(
+                    children: <Widget>[
+                      TextButton(
+                        child: const Text('Email'),
+                        onPressed: () {
+                          utils.sendEmail(email: list[index].email);
+                        },
+                      ),
+                      TextButton(
+                        child: const Text('LinkedIn'),
+                        onPressed: () {
+                          utils.launchInBrowser(list[index].linkedin);
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ));
+        });
   }
 }

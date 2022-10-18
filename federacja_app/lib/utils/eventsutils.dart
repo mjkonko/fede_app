@@ -1,11 +1,11 @@
 import 'package:federacja_app/entity/EventInstance.dart';
-import 'package:federacja_app/events.dart';
-import 'package:federacja_app/tileutils.dart';
+import 'package:federacja_app/screens/events.dart';
+import 'package:federacja_app/utils/tileutils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
 
-import 'globals.dart';
+import '../globals.dart';
 
 class EventUtils extends StatefulWidget {
   const EventUtils({Key? key}) : super(key: key);

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'about.dart';
-import 'news.dart';
+import '../screens/about.dart';
+import '../screens/news.dart';
 
 class TileUtils extends StatelessWidget {
   const TileUtils({Key? key}) : super(key: key);

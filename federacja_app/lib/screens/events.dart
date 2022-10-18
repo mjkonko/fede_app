@@ -4,8 +4,9 @@ import 'package:federacja_app/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import 'entity/AgendaItem.dart';
-import 'entity/EventInstance.dart';
+import '../entity/AgendaItem.dart';
+import '../entity/EventInstance.dart';
+import '../utils/utils.dart';
 
 /// Event operations page
 class EventsPage extends StatefulWidget {

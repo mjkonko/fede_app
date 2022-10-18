@@ -1,7 +1,7 @@
-import 'package:federacja_app/tileutils.dart';
+import 'package:federacja_app/utils/tileutils.dart';
 import 'package:flutter/material.dart';
 
-import 'eventsutils.dart';
+import 'utils/eventsutils.dart';
 
 void main() {
   runApp(const FedeApp());
