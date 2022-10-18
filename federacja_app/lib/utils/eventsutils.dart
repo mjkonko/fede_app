@@ -81,7 +81,7 @@ class EventList extends StatelessWidget {
               )
             },
         item.title,
-        Theme.of(context).colorScheme.background);
+        Theme.of(context).colorScheme.surfaceTint);
   }
 
   @override

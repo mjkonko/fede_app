@@ -1,3 +1,4 @@
+import 'package:federacja_app/screens/polsocs.dart';
 import 'package:flutter/material.dart';
 
 import '../screens/about.dart';
@@ -31,7 +32,7 @@ class TileUtils extends StatelessWidget {
                 )
               },
           'About',
-          Theme.of(context).colorScheme.primary),
+          Theme.of(context).colorScheme.surfaceTint),
       Tile(
           () => {
                 Navigator.push(
@@ -40,31 +41,17 @@ class TileUtils extends StatelessWidget {
                 )
               },
           'News',
-          Theme.of(context).colorScheme.secondary),
+          Theme.of(context).colorScheme.surfaceTint),
       Tile(
           () => {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const NewsPage()),
+                  MaterialPageRoute(builder: (context) => const PolSocsPage()),
                 )
               },
           'PolSocs',
-          Theme.of(context).colorScheme.secondary),
-      Tile(
-          () => {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const NewsPage()),
-                )
-              },
-          'BCG Test',
-          Colors.green)
+          Theme.of(context).colorScheme.surfaceTint)
     ];
-
-    if (tiles.length.isOdd) {
-      tiles.add(ImageLogoTile(
-          () => {}, 'Placeholder', Theme.of(context).colorScheme.background));
-    }
 
     return tiles;
   }

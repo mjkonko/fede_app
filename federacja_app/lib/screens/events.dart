@@ -1,11 +1,11 @@
 import 'dart:convert';
 
-import 'package:federacja_app/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../entity/AgendaItem.dart';
 import '../entity/EventInstance.dart';
+import '../globals.dart';
 import '../utils/utils.dart';
 
 /// Event operations page
@@ -32,32 +32,26 @@ class _EventsPageState extends State<EventsPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-        centerTitle: true,
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(25),
-                bottomRight: Radius.circular(25))),
-        bottom: TabBar(
-          controller: _tabController,
-          indicatorWeight: 1.5,
-          indicatorSize: TabBarIndicatorSize.label,
-          automaticIndicatorColorAdjustment: true,
-          indicatorColor: const Color.fromRGBO(255, 255, 255, 1.0),
-          tabs: const <Widget>[
-            Tab(
-              text: "Agenda",
-            ),
-            Tab(
-              text: "Info",
-            ),
-            Tab(
-              text: "Contact us",
-            )
-          ],
-        ),
-      ),
+      appBar: Globals().getAppBar(
+          context,
+          TabBar(
+              controller: _tabController,
+              indicatorWeight: 1.5,
+              indicatorSize: TabBarIndicatorSize.label,
+              automaticIndicatorColorAdjustment: true,
+              indicatorColor: const Color.fromRGBO(255, 255, 255, 1.0),
+              tabs: const <Widget>[
+                Tab(
+                  text: "Agenda",
+                ),
+                Tab(
+                  text: "Info",
+                ),
+                Tab(
+                  text: "Contact us",
+                )
+              ]),
+          widget.title),
       body: TabBarView(
         controller: _tabController,
         physics: const NeverScrollableScrollPhysics(),

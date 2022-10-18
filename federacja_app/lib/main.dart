@@ -10,15 +10,18 @@ void main() {
 class FedeApp extends StatelessWidget {
   const FedeApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'FederacjaApp',
         theme: ThemeData(
-            scaffoldBackgroundColor: const Color.fromRGBO(245, 245, 245, 0.95),
-            colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.red)
-                .copyWith(secondary: const Color.fromRGBO(0, 0, 0, 0.85))),
+          colorSchemeSeed:
+              const Color.fromRGBO(236, 27, 36, 1), //const Color(0xFFC62818),
+          useMaterial3: true,
+          scaffoldBackgroundColor: Theme.of(context).colorScheme.onBackground,
+          appBarTheme:
+              const AppBarTheme(iconTheme: IconThemeData(color: Colors.white)),
+        ),
         home: const TiledHomePage(title: 'FederacjaApp'));
   }
 }
@@ -40,6 +43,7 @@ class _MyHomePageState extends State<TiledHomePage> {
         top: false,
         child: Scaffold(
             appBar: AppBar(
+              backgroundColor: Theme.of(context).colorScheme.primary,
               centerTitle: true,
               shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(

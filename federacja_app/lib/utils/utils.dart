@@ -3,12 +3,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class Utils {
   Future<void> sendEmail({required String email}) async {
-    final Uri params = Uri(
-      scheme: 'mailto',
-      path: email,
-      query:
-          'subject=App Feedback&body=App Version 3.23', //add subject and body here
-    );
+    final Uri params = Uri(scheme: 'mailto', path: email);
 
     if (await UL.canLaunchUrl(params)) {
       await UL.launchUrl(params, mode: UL.LaunchMode.externalApplication);

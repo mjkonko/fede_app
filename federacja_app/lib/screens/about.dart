@@ -27,29 +27,24 @@ class _AboutPageState extends State<AboutPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-        centerTitle: true,
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(25),
-                bottomRight: Radius.circular(25))),
-        bottom: TabBar(
-          controller: _tabController,
-          indicatorWeight: 1.5,
-          indicatorSize: TabBarIndicatorSize.label,
-          automaticIndicatorColorAdjustment: true,
-          indicatorColor: const Color.fromRGBO(255, 255, 255, 1.0),
-          tabs: const <Widget>[
-            Tab(
-              text: "Federation",
-            ),
-            Tab(
-              text: "Committee",
-            )
-          ],
-        ),
-      ),
+      appBar: Globals().getAppBar(
+          context,
+          TabBar(
+            controller: _tabController,
+            indicatorWeight: 1.5,
+            indicatorSize: TabBarIndicatorSize.label,
+            automaticIndicatorColorAdjustment: true,
+            indicatorColor: const Color.fromRGBO(255, 255, 255, 1.0),
+            tabs: const <Widget>[
+              Tab(
+                text: "Federation",
+              ),
+              Tab(
+                text: "Committee",
+              )
+            ],
+          ),
+          widget.title),
       body: TabBarView(
         controller: _tabController,
         physics: const NeverScrollableScrollPhysics(),
@@ -161,9 +156,7 @@ class AboutCommitteeState extends State<AboutCommittee>
         .records
         .getFullList('committee', batch: 200, sort: '-created');
 
-    print(records);
     if (records.isNotEmpty) {
-      print('here');
       return parseCommittee(records);
     } else {
       throw Exception('Failed to load committee data');
