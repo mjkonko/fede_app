@@ -11,34 +11,29 @@ class Globals {
 
   AppBar getAppBar(
       BuildContext context, PreferredSizeWidget? child, String title) {
+    const toolbarHeight = 75.0;
+    const shape = RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(25), bottomRight: Radius.circular(25)));
+    var textTheme = Theme.of(context)
+        .textTheme
+        .headline5!
+        .copyWith(color: const Color(0xFFFFFFFF));
+
     if (child != null) {
       return AppBar(
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: Theme.of(context).colorScheme.primary,
           centerTitle: true,
-          shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(25),
-                  bottomRight: Radius.circular(25))),
-          toolbarHeight: 75,
-          title: Text(title,
-              style: Theme.of(context)
-                  .textTheme
-                  .headline5!
-                  .copyWith(color: const Color(0xFFFFFFFF))),
+          shape: shape,
+          toolbarHeight: toolbarHeight,
+          title: Text(title, style: textTheme),
           bottom: child);
     }
     return AppBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
         centerTitle: true,
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(25),
-                bottomRight: Radius.circular(25))),
-        toolbarHeight: 75,
-        title: Text(title,
-            style: Theme.of(context)
-                .textTheme
-                .headline5!
-                .copyWith(color: const Color(0xFFFFFFFF))));
+        shape: shape,
+        toolbarHeight: toolbarHeight,
+        title: Text(title, style: textTheme));
   }
 }
