@@ -65,24 +65,37 @@ class PolSocsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
+    return Column(mainAxisSize: MainAxisSize.min, children: [
       Expanded(
-          child: ListView.builder(
-              itemCount: list.length,
-              shrinkWrap: true,
-              reverse: false,
-              cacheExtent: 80.0,
-              itemBuilder: (context, index) {
-                return ElevatedButton(
-                    onPressed: () {},
-                    child: Text(
-                      list[index].fullName,
-                      style: Theme.of(context)
-                          .textTheme
-                          .subtitle2!
-                          .copyWith(color: Colors.black),
-                    ));
-              }))
+          child: Padding(
+              padding: const EdgeInsets.only(left: 3.0, right: 3.0),
+              child: ListView.builder(
+                  itemCount: list.length,
+                  shrinkWrap: true,
+                  reverse: false,
+                  cacheExtent: 80.0,
+                  itemBuilder: (context, index) {
+                    return TextButton(
+                        onPressed: () {},
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                Theme.of(context).colorScheme.onBackground),
+                            shape: MaterialStateProperty.all<OutlinedBorder>(
+                                const RoundedRectangleBorder(
+                                    side: BorderSide(
+                                        width: 0.9375,
+                                        color: Color(0x88888888)),
+                                    borderRadius: BorderRadius.horizontal(
+                                        left: Radius.circular(25),
+                                        right: Radius.circular(25))))),
+                        child: Text(
+                          list[index].fullName,
+                          style: Theme.of(context)
+                              .textTheme
+                              .subtitle2!
+                              .copyWith(color: Colors.black),
+                        ));
+                  })))
     ]);
   }
 }

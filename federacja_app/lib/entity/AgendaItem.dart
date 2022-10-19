@@ -1,14 +1,14 @@
 class AgendaItem {
   final int id;
   final String name;
-  final String venue;
+  String? venue;
   final String time;
   final String description;
 
   AgendaItem(
       {required this.id,
       required this.name,
-      required this.venue,
+      this.venue,
       required this.time,
       required this.description});
 

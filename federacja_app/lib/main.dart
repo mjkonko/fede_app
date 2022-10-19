@@ -15,9 +15,8 @@ class FedeApp extends StatelessWidget {
     return MaterialApp(
         title: 'FederacjaApp',
         theme: ThemeData(
-          colorSchemeSeed:
-              const Color.fromRGBO(236, 27, 36, 1), //const Color(0xFFC62818),
-          useMaterial3: true,
+          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.red)
+              .copyWith(secondary: const Color.fromRGBO(0, 0, 0, 0.85)),
           scaffoldBackgroundColor: Theme.of(context).colorScheme.onBackground,
           appBarTheme:
               const AppBarTheme(iconTheme: IconThemeData(color: Colors.white)),

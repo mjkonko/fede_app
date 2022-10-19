@@ -48,7 +48,7 @@ class _EventsPageState extends State<EventsPage> with TickerProviderStateMixin {
                   text: "Info",
                 ),
                 Tab(
-                  text: "Contact us",
+                  text: "More",
                 )
               ]),
           widget.title),
@@ -115,42 +115,49 @@ class EventsAgendaState extends State<EventsAgenda>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-          padding: const EdgeInsets.all(7.5),
-          child: ListView.builder(
-            itemCount: agenda.length,
-            shrinkWrap: true,
-            cacheExtent: 75.0,
-            itemBuilder: (context, index) {
-              return ExpansionTile(
-                leading: Container(
-                  padding: const EdgeInsets.only(right: 12.0),
-                  decoration: const BoxDecoration(
-                      border: Border(
-                          right:
-                              BorderSide(width: 1.0, color: Colors.black26))),
-                  child: const Icon(Icons.event, color: Colors.black),
-                ),
-                title: Text(
-                  agenda[index].name,
-                  style: Theme.of(context)
-                      .textTheme
-                      .subtitle2!
-                      .copyWith(color: Colors.black),
-                ),
-                children: [makeListTile(agenda[index])],
-              );
-            },
-          )),
-    );
+        body: Container(
+      padding: const EdgeInsets.all(7.5),
+      child: ListView.builder(
+        itemCount: agenda.length,
+        shrinkWrap: true,
+        cacheExtent: 75.0,
+        itemBuilder: (context, index) {
+          return ExpansionTile(
+            tilePadding: const EdgeInsets.only(left: 25, right: 25),
+            leading: Container(
+              padding: const EdgeInsets.only(right: 12.0),
+              decoration: const BoxDecoration(
+                  border: Border(
+                      right: BorderSide(width: 0.75, color: Colors.red))),
+              child: const Icon(Icons.event, color: Colors.black),
+            ),
+            title: Column(children: <Widget>[
+              Text(
+                agenda[index].name,
+                style: Theme.of(context)
+                    .textTheme
+                    .subtitle2!
+                    .copyWith(color: Colors.black),
+              ),
+              Padding(
+                  padding: const EdgeInsets.only(
+                      left: 25.0, top: 0.0, right: 0.0, bottom: 0.0),
+                  child: parseDT(DateTime.parse(agenda[index].time)))
+            ]),
+            children: [makeListTile(agenda[index])],
+          );
+        },
+      ),
+    ));
   }
 
   Text parseDT(DateTime dt) => Text(
       "${DateFormat('dd/MM/yyyy').format(dt)} ${DateFormat('HH:mm').format(dt)}",
       style: TextStyle(
-          color: Theme.of(context).colorScheme.primary,
-          fontWeight: FontWeight.w400,
-          letterSpacing: 2));
+          color: Theme.of(context).colorScheme.secondary,
+          fontWeight: FontWeight.w200,
+          fontSize: 12,
+          letterSpacing: 1));
 
   ListTile makeListTile(AgendaItem item) => ListTile(
         contentPadding:
@@ -174,16 +181,28 @@ class EventsAgendaState extends State<EventsAgenda>
             ]),
             const Divider(
               color: Colors.black45,
-              height: 40,
+              height: 30,
               thickness: 0.5,
               indent: 10,
               endIndent: 10,
             ),
-            Padding(
-              padding: const EdgeInsets.only(
-                  left: 0.0, top: 0.0, right: 0.0, bottom: 5.0),
-              child: parseDT(DateTime.parse(item.time)),
-            ),
+            Row(children: [
+              Flexible(
+                fit: FlexFit.loose,
+                child: Padding(
+                  padding:
+                      const EdgeInsets.only(left: 14.0, top: 0.0, right: 14.0),
+                  child: Text(
+                      "Venue: ${item.venue ?? "Not available for this event"}",
+                      softWrap: true,
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.secondary,
+                          fontWeight: FontWeight.w200,
+                          fontSize: 12,
+                          letterSpacing: 1)),
+                ),
+              ),
+            ]),
           ],
         ),
       );

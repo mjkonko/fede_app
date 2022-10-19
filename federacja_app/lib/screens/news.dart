@@ -93,7 +93,7 @@ class NewsList extends StatelessWidget {
                   child: Text(item.text,
                       style: const TextStyle(
                           color: Colors.black87, fontWeight: FontWeight.w400))),
-            )
+            ),
           ],
         ),
         Row(children: <Widget>[
