@@ -121,10 +121,10 @@ class NewsList extends StatelessWidget {
 
 Future<List<NewsItem>> fetchNews() async {
   // alternatively you can also fetch all records at once via getFullList:
-  final records = await Globals()
-      .getPBClient()
-      .records
-      .getFullList('news', batch: 200, sort: '-created');
+  var client = await Globals().getPBClient();
+  var records =
+      await client.records.getFullList('news', batch: 200, sort: '-created');
+
   if (records.isNotEmpty) {
     return parseNews(records);
   } else {

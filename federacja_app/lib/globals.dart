@@ -5,8 +5,10 @@ class Globals {
   bool isProd = true;
   List<String> regions = ["England", "Wales", "Scotland", "Northern Ireland"];
 
-  PocketBase getPBClient() {
-    return PocketBase('https://nenna.is');
+  Future<PocketBase> getPBClient() async {
+    final client = PocketBase('https://nenna.is');
+    //final appUserAuthData = await client.users.authViaEmail('?', '?');
+    return client;
   }
 
   AppBar getAppBar(

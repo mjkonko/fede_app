@@ -151,9 +151,8 @@ class AboutCommittee extends StatefulWidget {
 class AboutCommitteeState extends State<AboutCommittee>
     with TickerProviderStateMixin {
   Future<List<CommitteeMember>> fetchCommittee() async {
-    final records = await Globals()
-        .getPBClient()
-        .records
+    var client = await Globals().getPBClient();
+    var records = await client.records
         .getFullList('committee', batch: 200, sort: '-created');
 
     if (records.isNotEmpty) {
