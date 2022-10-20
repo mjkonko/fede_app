@@ -153,7 +153,7 @@ class AboutCommitteeState extends State<AboutCommittee>
   Future<List<CommitteeMember>> fetchCommittee() async {
     var client = await Globals().getPBClient();
     var records = await client.records
-        .getFullList('committee', batch: 200, sort: '-created');
+        .getFullList('committee', batch: 200, sort: '+order');
 
     if (records.isNotEmpty) {
       return parseCommittee(records);
@@ -209,7 +209,7 @@ class CommitteeList extends StatelessWidget {
     return ListView.builder(
         itemCount: list.length,
         shrinkWrap: true,
-        reverse: true,
+        reverse: false,
         cacheExtent: 75.0,
         itemBuilder: (context, index) {
           return Card(
