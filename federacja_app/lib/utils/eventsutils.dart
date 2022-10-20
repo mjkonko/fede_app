@@ -74,6 +74,7 @@ class EventList extends StatelessWidget {
                               instaPage: item.instaPage,
                               linkedInPage: item.linkedInPage,
                               agenda: item.agenda,
+                              links: item.links,
                               //'[{"id": 1, "name": "Test", "venue": "Venue", "time": "2022-09-25T12:15:23.701Z", "description": "desc"},{"id": 2, "name": "Test", "venue": "Venue", "time": "2022-09-25T12:15:23.701Z", "description": "desc"}]',
                               created: item.created,
                               updated: item.updated),

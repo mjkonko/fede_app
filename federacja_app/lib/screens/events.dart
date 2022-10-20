@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 
 import '../entity/AgendaItem.dart';
 import '../entity/EventInstance.dart';
+import '../entity/EventLinkInstance.dart';
 import '../globals.dart';
 import '../utils/utils.dart';
 
@@ -73,6 +74,7 @@ class _EventsPageState extends State<EventsPage> with TickerProviderStateMixin {
             fb: widget.event.facebookPage,
             insta: widget.event.instaPage,
             linkedin: widget.event.linkedInPage,
+            links: widget.event.links,
           ))
         ],
       ),
@@ -266,7 +268,7 @@ class EventsInfoState extends State<EventsInfo> with TickerProviderStateMixin {
                                     color: Colors.black87,
                                     wordSpacing: 1,
                                     overflow: TextOverflow.fade,
-                                    height: 1.5,
+                                    height: 2.5,
                                   )),
                           Container(
                             padding: const EdgeInsets.only(top: 10),
@@ -297,7 +299,8 @@ class EventsContact extends StatefulWidget {
       required this.email,
       required this.fb,
       required this.insta,
-      required this.linkedin})
+      required this.linkedin,
+      this.links})
       : super(key: key);
 
   final String title;
@@ -305,6 +308,7 @@ class EventsContact extends StatefulWidget {
   final String fb;
   final String insta;
   final String linkedin;
+  final String? links;
 
   @override
   EventsContactState createState() => EventsContactState();
@@ -312,7 +316,70 @@ class EventsContact extends StatefulWidget {
 
 class EventsContactState extends State<EventsContact>
     with TickerProviderStateMixin {
+  late final List<EventLinkInstance> links;
   var utils = Utils();
+
+  List<EventLinkInstance> parseLinks(String? links) {
+    if (links == null) {
+      return [];
+    }
+
+    final parsed = json.decode(links).cast<Map<String, dynamic>>();
+
+    List<EventLinkInstance> list = parsed
+        .map<EventLinkInstance>((json) => EventLinkInstance.fromJson(json))
+        .toList();
+    list.sort((item1, item2) => item1.id.compareTo(item2.id));
+
+    return list;
+  }
+
+  List<Widget> returnGeneratedLinkButtons(List<EventLinkInstance> listOfLinks) {
+    List<Widget> widgetList = [];
+
+    for (var link in listOfLinks) {
+      widgetList.add(TextButton(
+          child: Text(link.title),
+          onPressed: () {
+            utils.openUrl(url: link.link);
+          }));
+    }
+
+    return widgetList;
+  }
+
+  Widget returnLinksWidget(List<Widget> widgets) {
+    if (widgets.isEmpty) {
+      return Divider(
+        color: Theme.of(context).colorScheme.secondary,
+      );
+    }
+
+    return Column(
+      children: [
+        Divider(
+          color: Theme.of(context).colorScheme.secondary,
+        ),
+        Center(
+          child: Text("Additional links",
+              style: Theme.of(context).textTheme.headline6!.copyWith(
+                    color: Colors.black87,
+                    wordSpacing: 1,
+                    overflow: TextOverflow.fade,
+                    height: 2.0,
+                  )),
+        ),
+        Center(
+            child: ButtonBar(
+                mainAxisSize: MainAxisSize.min,
+                alignment: MainAxisAlignment.center,
+                children: widgets)),
+        Divider(
+          color: Theme.of(context).colorScheme.secondary,
+        )
+      ],
+    );
+  }
 
   @override
   void initState() {
@@ -366,6 +433,8 @@ class EventsContactState extends State<EventsContact>
               ),
             ],
           )),
+          returnLinksWidget(
+              returnGeneratedLinkButtons(parseLinks(widget.links)))
         ],
       ),
     ));
