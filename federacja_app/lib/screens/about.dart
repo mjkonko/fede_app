@@ -206,42 +206,54 @@ class CommitteeList extends StatelessWidget {
   Widget build(BuildContext context) {
     var utils = Utils();
 
-    return ListView.builder(
+    return GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+        ),
         itemCount: list.length,
         shrinkWrap: true,
         reverse: false,
         cacheExtent: 75.0,
         itemBuilder: (context, index) {
           return Card(
-              margin: const EdgeInsets.all(10),
               child: Column(
-                children: [
-                  ListTile(
-                    isThreeLine: false,
-                    style: ListTileStyle.list,
-                    contentPadding:
-                        const EdgeInsets.only(left: 16.0, right: 10.0),
-                    subtitle: Text(list[index].name),
-                    title: Text(list[index].position),
+            children: [
+              ListTile(
+                  isThreeLine: false,
+                  style: ListTileStyle.list,
+                  contentPadding: const EdgeInsets.only(
+                      left: 10.0, right: 10.0, bottom: 10),
+                  subtitle: Padding(
+                      padding: const EdgeInsets.only(top: 6.0),
+                      child: Center(child: Text(list[index].name))),
+                  title: Center(
+                      child: Text(list[index].position,
+                          softWrap: true, textAlign: TextAlign.center))),
+              Divider(
+                color: Theme.of(context).colorScheme.secondary,
+                indent: 12.0,
+                endIndent: 12.0,
+              ),
+              Center(
+                  child: ButtonBar(
+                overflowDirection: VerticalDirection.down,
+                children: <Widget>[
+                  TextButton(
+                    child: const Text('Email'),
+                    onPressed: () {
+                      utils.sendEmail(email: list[index].email);
+                    },
                   ),
-                  ButtonBar(
-                    children: <Widget>[
-                      TextButton(
-                        child: const Text('Email'),
-                        onPressed: () {
-                          utils.sendEmail(email: list[index].email);
-                        },
-                      ),
-                      TextButton(
-                        child: const Text('LinkedIn'),
-                        onPressed: () {
-                          utils.launchInBrowser(list[index].linkedin);
-                        },
-                      ),
-                    ],
+                  TextButton(
+                    child: const Text('LinkedIn'),
+                    onPressed: () {
+                      utils.launchInBrowser(list[index].linkedin);
+                    },
                   ),
                 ],
-              ));
+              )),
+            ],
+          ));
         });
   }
 }
