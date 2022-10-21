@@ -3,9 +3,9 @@ import 'package:pocketbase/pocketbase.dart';
 class PolSocInstance {
   final String id;
   final String fullName;
-  String? name;
+  final String name;
   final String university;
-  String? description;
+  final String description;
   String? facebook;
   String? instagram;
   String? linkedin;
@@ -16,15 +16,16 @@ class PolSocInstance {
   String? logo;
   final bool verified;
   final bool active;
+  String? links;
   final String created;
   final String updated;
 
   PolSocInstance(
       {required this.id,
       required this.fullName,
-      this.name,
+      required this.name,
       required this.university,
-      this.description,
+      required this.description,
       this.facebook,
       this.instagram,
       this.linkedin,
@@ -35,6 +36,7 @@ class PolSocInstance {
       this.logo,
       required this.verified,
       required this.active,
+      this.links,
       required this.created,
       required this.updated});
 
@@ -55,6 +57,7 @@ class PolSocInstance {
         logo: json['logo'],
         verified: json['verified'],
         active: json['active'],
+        links: json['links'],
         created: json['created'],
         updated: json['updated']);
   }

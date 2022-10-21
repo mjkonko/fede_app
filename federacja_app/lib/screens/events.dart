@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../entity/AgendaItem.dart';
-import '../entity/EventInstance.dart';
-import '../entity/EventLinkInstance.dart';
+import '../entity/agenda_item.dart';
+import '../entity/event_instance.dart';
+import '../entity/event_link_instance.dart';
 import '../globals.dart';
 import '../utils/utils.dart';
 

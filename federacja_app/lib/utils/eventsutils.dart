@@ -1,4 +1,4 @@
-import 'package:federacja_app/entity/EventInstance.dart';
+import 'package:federacja_app/entity/event_instance.dart';
 import 'package:federacja_app/screens/events.dart';
 import 'package:federacja_app/utils/tileutils.dart';
 import 'package:flutter/foundation.dart';

@@ -1,10 +1,11 @@
-import 'package:federacja_app/entity/PolSocInstance.dart';
+import 'package:federacja_app/entity/polsoc_instance.dart';
+import 'package:federacja_app/screens/polsocs/polsoc_entity_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
 
-import '../globals.dart';
+import '../../globals.dart';
 
 class PolSocsPage extends StatefulWidget {
   const PolSocsPage({Key? key}) : super(key: key);
@@ -76,7 +77,15 @@ class PolSocsList extends StatelessWidget {
                   cacheExtent: 80.0,
                   itemBuilder: (context, index) {
                     return TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => PolSocEntityPage(
+                                    title: list[index].fullName,
+                                    polsoc: list[index])),
+                          );
+                        },
                         style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all<Color>(
                                 Theme.of(context).colorScheme.onBackground),

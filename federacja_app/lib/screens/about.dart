@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
 
-import '../entity/ComitteeMember.dart';
+import '../entity/comittee_member.dart';
 import '../globals.dart';
 import '../utils/utils.dart';
 

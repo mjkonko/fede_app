@@ -1,4 +1,4 @@
-import 'package:federacja_app/screens/polsocs.dart';
+import 'package:federacja_app/screens/polsocs/polsocs.dart';
 import 'package:flutter/material.dart';
 
 import '../screens/about.dart';
