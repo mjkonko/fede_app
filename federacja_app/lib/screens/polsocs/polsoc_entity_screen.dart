@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:federacja_app/entity/polsoc_instance.dart';
 import 'package:flutter/material.dart';
 
@@ -71,7 +72,7 @@ class _PolSocEntityPageState extends State<PolSocEntityPage>
 }
 
 class PolSocEntityAbout extends StatefulWidget {
-  const PolSocEntityAbout({Key? key, required this.title, required this.polsoc})
+  PolSocEntityAbout({Key? key, required this.polsoc, required this.title})
       : super(key: key);
 
   final String title;
@@ -85,6 +86,18 @@ class PolSocEntityAboutState extends State<PolSocEntityAbout> {
   @override
   void initState() {
     super.initState();
+  }
+
+  Text getTextTitleWhenError() {
+    return Text(widget.polsoc.fullName,
+        softWrap: true,
+        textAlign: TextAlign.center,
+        style: Theme.of(context).textTheme.headline4!.copyWith(
+              color: Colors.black87,
+              wordSpacing: 1,
+              overflow: TextOverflow.fade,
+              height: 1.2,
+            ));
   }
 
   @override
@@ -102,20 +115,62 @@ class PolSocEntityAboutState extends State<PolSocEntityAbout> {
                       child: Column(
                         children: [
                           Center(
-                              child: Text(widget.polsoc.fullName,
-                                  softWrap: true,
-                                  textAlign: TextAlign.center,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline4!
-                                      .copyWith(
-                                        color: Colors.black87,
-                                        wordSpacing: 1,
-                                        overflow: TextOverflow.fade,
-                                        height: 1.2,
-                                      ))),
+                              child: FutureBuilder(
+                                  future: Globals().getFileUrl(
+                                      'polsocs', widget.polsoc.id, 0, 'logo'),
+                                  builder: (context,
+                                      AsyncSnapshot<String> snapshot) {
+                                    switch (snapshot.connectionState) {
+                                      case ConnectionState.none:
+                                      case ConnectionState.waiting:
+                                      case ConnectionState.active:
+                                      case ConnectionState.done:
+                                        if (snapshot.hasError) {
+                                          return Column(children: [
+                                            const Text(
+                                              'Failed to download the logo, please report this issue.',
+                                              style:
+                                                  TextStyle(color: Colors.red),
+                                            ),
+                                            getTextTitleWhenError()
+                                          ]);
+                                        } else {
+                                          return Center(
+                                            child: CachedNetworkImage(
+                                              width: 240,
+                                              imageUrl:
+                                                  snapshot.data.toString(),
+                                              placeholder: (context, url) =>
+                                                  Column(
+                                                children: [
+                                                  Text(widget.polsoc.fullName,
+                                                      softWrap: true,
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .headline4!
+                                                          .copyWith(
+                                                            color:
+                                                                Colors.black87,
+                                                            wordSpacing: 1,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .fade,
+                                                            height: 1.2,
+                                                          )),
+                                                ],
+                                              ),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      getTextTitleWhenError(),
+                                            ),
+                                          );
+                                        }
+                                    }
+                                  })),
                           Container(
-                            padding: const EdgeInsets.only(top: 10),
+                            padding: const EdgeInsets.only(top: 5),
                             child: Text(widget.polsoc.description,
                                 style: Theme.of(context)
                                     .textTheme

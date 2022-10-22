@@ -1,6 +1,5 @@
 import 'package:federacja_app/entity/polsoc_instance.dart';
 import 'package:federacja_app/screens/polsocs/polsoc_entity_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';

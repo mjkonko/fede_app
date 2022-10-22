@@ -11,6 +11,15 @@ class Globals {
     return client;
   }
 
+  Future<String> getFileUrl(String collectionName, String recordId,
+      int fileNumber, String fieldName) async {
+    var client = await getPBClient();
+    var record = await client.records.getOne(collectionName, recordId);
+    var firstFilename = record.getListValue<String>(fieldName)[fileNumber];
+
+    return client.records.getFileUrl(record, firstFilename).toString();
+  }
+
   AppBar getAppBar(
       BuildContext context, PreferredSizeWidget? child, String title) {
     const toolbarHeight = 75.0;
