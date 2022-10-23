@@ -1,0 +1,44 @@
+Index: federacja_app/ios/Runner.xcodeproj/project.pbxproj
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/federacja_app/ios/Runner.xcodeproj/project.pbxproj b/federacja_app/ios/Runner.xcodeproj/project.pbxproj
+--- a/federacja_app/ios/Runner.xcodeproj/project.pbxproj	(revision b652ac6155aa8619f47117528831c5ec93a8c016)
++++ b/federacja_app/ios/Runner.xcodeproj/project.pbxproj	(date 1666441974649)
+@@ -358,6 +358,11 @@
+ 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+ 				GCC_WARN_UNUSED_FUNCTION = YES;
+ 				GCC_WARN_UNUSED_VARIABLE = YES;
++				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "This app does not use your location.";
++				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "This app does not use your location.";
++				INFOPLIST_KEY_NSLocationTemporaryUsageDescriptionDictionary = "This app does not use your location.";
++				INFOPLIST_KEY_NSLocationUsageDescription = "This app does not use your location.";
++				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app does not use your location.";
+ 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+ 				MTL_ENABLE_DEBUG_INFO = NO;
+ 				SDKROOT = iphoneos;
+@@ -441,6 +446,11 @@
+ 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+ 				GCC_WARN_UNUSED_FUNCTION = YES;
+ 				GCC_WARN_UNUSED_VARIABLE = YES;
++				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "This app does not use your location.";
++				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "This app does not use your location.";
++				INFOPLIST_KEY_NSLocationTemporaryUsageDescriptionDictionary = "This app does not use your location.";
++				INFOPLIST_KEY_NSLocationUsageDescription = "This app does not use your location.";
++				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app does not use your location.";
+ 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+ 				MTL_ENABLE_DEBUG_INFO = YES;
+ 				ONLY_ACTIVE_ARCH = YES;
+@@ -491,6 +501,11 @@
+ 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+ 				GCC_WARN_UNUSED_FUNCTION = YES;
+ 				GCC_WARN_UNUSED_VARIABLE = YES;
++				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "This app does not use your location.";
++				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "This app does not use your location.";
++				INFOPLIST_KEY_NSLocationTemporaryUsageDescriptionDictionary = "This app does not use your location.";
++				INFOPLIST_KEY_NSLocationUsageDescription = "This app does not use your location.";
++				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app does not use your location.";
+ 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+ 				MTL_ENABLE_DEBUG_INFO = NO;
+ 				SDKROOT = iphoneos;

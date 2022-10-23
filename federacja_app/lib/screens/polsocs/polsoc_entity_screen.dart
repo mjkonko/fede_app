@@ -58,13 +58,9 @@ class _PolSocEntityPageState extends State<PolSocEntityPage>
                   PolSocEntityAbout(title: 'About Us', polsoc: widget.polsoc)),
           Center(
               child: PolSocEntityMore(
-            title: 'More',
-            email: widget.polsoc.email,
-            fb: widget.polsoc.facebook,
-            insta: widget.polsoc.instagram,
-            linkedin: widget.polsoc.linkedin,
-            links: widget.polsoc.links,
-          ))
+                  title: 'More',
+                  email: widget.polsoc.email,
+                  links: widget.polsoc.links))
         ],
       ),
     );
@@ -192,20 +188,11 @@ class PolSocEntityAboutState extends State<PolSocEntityAbout> {
 
 class PolSocEntityMore extends StatefulWidget {
   PolSocEntityMore(
-      {Key? key,
-      required this.title,
-      this.email,
-      this.fb,
-      this.insta,
-      this.linkedin,
-      this.links})
+      {Key? key, required this.title, required this.email, this.links})
       : super(key: key);
 
   final String title;
-  String? email;
-  String? fb;
-  String? insta;
-  String? linkedin;
+  final String email;
   String? links;
 
   @override
@@ -299,6 +286,19 @@ class PolSocEntityMoreState extends State<PolSocEntityMore> {
                       height: 1.2,
                     )),
           ),
+          Center(
+              child: ButtonBar(
+            mainAxisSize: MainAxisSize.min,
+            alignment: MainAxisAlignment.center,
+            children: <Widget>[
+              TextButton(
+                child: const Text('Email'),
+                onPressed: () {
+                  utils.sendEmail(email: widget.email);
+                },
+              )
+            ],
+          )),
           const Center(
               child: ButtonBar(
             mainAxisSize: MainAxisSize.min,

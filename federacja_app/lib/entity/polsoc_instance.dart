@@ -6,10 +6,7 @@ class PolSocInstance {
   final String name;
   final String university;
   final String description;
-  String? facebook;
-  String? instagram;
-  String? linkedin;
-  String? email;
+  String email;
   final String address;
   String? geoPosition;
   final String region;
@@ -26,10 +23,7 @@ class PolSocInstance {
       required this.name,
       required this.university,
       required this.description,
-      this.facebook,
-      this.instagram,
-      this.linkedin,
-      this.email,
+      required this.email,
       required this.address,
       this.geoPosition,
       required this.region,
@@ -47,9 +41,6 @@ class PolSocInstance {
         name: json['name'],
         university: json['university'],
         description: json['description'],
-        facebook: json['facebook'],
-        instagram: json['instagram'],
-        linkedin: json['linkedin'],
         email: json['email'],
         address: json['address'],
         geoPosition: json['geoPosition'],

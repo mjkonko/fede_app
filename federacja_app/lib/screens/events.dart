@@ -70,7 +70,7 @@ class _EventsPageState extends State<EventsPage> with TickerProviderStateMixin {
           Center(
               child: EventsContact(
             title: 'Contact',
-            email: widget.event.date,
+            email: widget.event.email,
             fb: widget.event.facebookPage,
             insta: widget.event.instaPage,
             linkedin: widget.event.linkedInPage,

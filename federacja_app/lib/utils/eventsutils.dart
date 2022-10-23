@@ -70,6 +70,7 @@ class EventList extends StatelessWidget {
                               subtitle: item.subtitle,
                               description: item.description,
                               date: item.date,
+                              email: item.email,
                               facebookPage: item.facebookPage,
                               instaPage: item.instaPage,
                               linkedInPage: item.linkedInPage,
