@@ -319,68 +319,6 @@ class EventsContactState extends State<EventsContact>
   late final List<EventLinkInstance> links;
   var utils = Utils();
 
-  List<EventLinkInstance> parseLinks(String? links) {
-    if (links == null) {
-      return [];
-    }
-
-    final parsed = json.decode(links).cast<Map<String, dynamic>>();
-
-    List<EventLinkInstance> list = parsed
-        .map<EventLinkInstance>((json) => EventLinkInstance.fromJson(json))
-        .toList();
-    list.sort((item1, item2) => item1.id.compareTo(item2.id));
-
-    return list;
-  }
-
-  List<Widget> returnGeneratedLinkButtons(List<EventLinkInstance> listOfLinks) {
-    List<Widget> widgetList = [];
-
-    for (var link in listOfLinks) {
-      widgetList.add(TextButton(
-          child: Text(link.title),
-          onPressed: () {
-            utils.openUrl(url: link.link);
-          }));
-    }
-
-    return widgetList;
-  }
-
-  Widget returnLinksWidget(List<Widget> widgets) {
-    if (widgets.isEmpty) {
-      return Divider(
-        color: Theme.of(context).colorScheme.secondary,
-      );
-    }
-
-    return Column(
-      children: [
-        Divider(
-          color: Theme.of(context).colorScheme.secondary,
-        ),
-        Center(
-          child: Text("Additional links",
-              style: Theme.of(context).textTheme.headline6!.copyWith(
-                    color: Colors.black87,
-                    wordSpacing: 1,
-                    overflow: TextOverflow.fade,
-                    height: 2.0,
-                  )),
-        ),
-        Center(
-            child: ButtonBar(
-                mainAxisSize: MainAxisSize.min,
-                alignment: MainAxisAlignment.center,
-                children: widgets)),
-        Divider(
-          color: Theme.of(context).colorScheme.secondary,
-        )
-      ],
-    );
-  }
-
   @override
   void initState() {
     super.initState();
@@ -433,8 +371,7 @@ class EventsContactState extends State<EventsContact>
               ),
             ],
           )),
-          returnLinksWidget(
-              returnGeneratedLinkButtons(parseLinks(widget.links)))
+          utils.returnLinksWidget(widget.links, context)
         ],
       ),
     ));

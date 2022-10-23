@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:federacja_app/entity/polsoc_instance.dart';
 import 'package:flutter/material.dart';
@@ -203,68 +201,6 @@ class PolSocEntityMoreState extends State<PolSocEntityMore> {
   late final List<EventLinkInstance> links;
   var utils = Utils();
 
-  List<EventLinkInstance> parseLinks(String? links) {
-    if (links == null) {
-      return [];
-    }
-
-    final parsed = json.decode(links).cast<Map<String, dynamic>>();
-
-    List<EventLinkInstance> list = parsed
-        .map<EventLinkInstance>((json) => EventLinkInstance.fromJson(json))
-        .toList();
-    list.sort((item1, item2) => item1.id.compareTo(item2.id));
-
-    return list;
-  }
-
-  List<Widget> returnGeneratedLinkButtons(List<EventLinkInstance> listOfLinks) {
-    List<Widget> widgetList = [];
-
-    for (var link in listOfLinks) {
-      widgetList.add(TextButton(
-          child: Text(link.title),
-          onPressed: () {
-            utils.openUrl(url: link.link);
-          }));
-    }
-
-    return widgetList;
-  }
-
-  Widget returnLinksWidget(List<Widget> widgets) {
-    if (widgets.isEmpty) {
-      return Divider(
-        color: Theme.of(context).colorScheme.secondary,
-      );
-    }
-
-    return Column(
-      children: [
-        Divider(
-          color: Theme.of(context).colorScheme.secondary,
-        ),
-        Center(
-          child: Text("Additional links",
-              style: Theme.of(context).textTheme.headline6!.copyWith(
-                    color: Colors.black87,
-                    wordSpacing: 1,
-                    overflow: TextOverflow.fade,
-                    height: 2.0,
-                  )),
-        ),
-        Center(
-            child: ButtonBar(
-                mainAxisSize: MainAxisSize.min,
-                alignment: MainAxisAlignment.center,
-                children: widgets)),
-        Divider(
-          color: Theme.of(context).colorScheme.secondary,
-        )
-      ],
-    );
-  }
-
   @override
   void initState() {
     super.initState();
@@ -299,14 +235,7 @@ class PolSocEntityMoreState extends State<PolSocEntityMore> {
               )
             ],
           )),
-          const Center(
-              child: ButtonBar(
-            mainAxisSize: MainAxisSize.min,
-            alignment: MainAxisAlignment.center,
-            children: <Widget>[],
-          )),
-          returnLinksWidget(
-              returnGeneratedLinkButtons(parseLinks(widget.links)))
+          Center(child: utils.returnLinksWidget(widget.links, context)),
         ],
       ),
     ));
