@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -62,10 +63,12 @@ class _EventsPageState extends State<EventsPage> with TickerProviderStateMixin {
                   EventsAgenda(title: 'Agenda', agenda: widget.event.agenda)),
           Center(
               child: EventsInfo(
+            id: widget.event.id,
             title: 'Info',
             infoTitle: widget.event.title,
             infoSubtitle: widget.event.subtitle,
             infoText: widget.event.description,
+            photosNumber: widget.event.photos,
           )),
           Center(
               child: EventsContact(
@@ -212,18 +215,22 @@ class EventsAgendaState extends State<EventsAgenda>
 
 /// Event operations page - information section
 class EventsInfo extends StatefulWidget {
-  const EventsInfo(
+  EventsInfo(
       {Key? key,
+      required this.id,
       required this.title,
       required this.infoTitle,
       required this.infoSubtitle,
-      required this.infoText})
+      required this.infoText,
+      required this.photosNumber})
       : super(key: key);
 
+  final String id;
   final String title;
   final String infoTitle;
   final String infoSubtitle;
   final String infoText;
+  final int photosNumber;
 
   @override
   EventsInfoState createState() => EventsInfoState();
@@ -233,6 +240,48 @@ class EventsInfoState extends State<EventsInfo> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+  }
+
+  Column returnPhotosIfAvailable() {
+    return Column(
+      children: getPhotos(),
+    );
+  }
+
+  List<Widget> getPhotos() {
+    List<Widget> photosWidgets = [];
+
+    for (int i = 0; i < widget.photosNumber; i++) {
+      photosWidgets.add(FutureBuilder(
+          future: Globals().getFileUrl('event', widget.id, i, 'photos'),
+          builder: (context, AsyncSnapshot<String> snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+              case ConnectionState.waiting:
+              case ConnectionState.active:
+              case ConnectionState.done:
+                if (snapshot.hasError) {
+                  return Column(children: [
+                    Text(
+                      "Couldn't load the picture ${snapshot.error}",
+                      style: const TextStyle(color: Colors.red),
+                    )
+                  ]);
+                } else {
+                  return Center(
+                      child: Padding(
+                    padding: const EdgeInsets.only(top: 12.5),
+                    child: CachedNetworkImage(
+                        width: 600,
+                        imageUrl: snapshot.data.toString(),
+                        placeholder: (context, url) => Container(),
+                        errorWidget: (context, url, error) => Container()),
+                  ));
+                }
+            }
+          }));
+    }
+    return photosWidgets;
   }
 
   @override
@@ -282,7 +331,8 @@ class EventsInfoState extends State<EventsInfo> with TickerProviderStateMixin {
                                       overflow: TextOverflow.fade,
                                       height: 1.5,
                                     )),
-                          )
+                          ),
+                          returnPhotosIfAvailable()
                         ],
                       ),
                     ))

@@ -12,6 +12,7 @@ class EventInstance {
   final String linkedInPage;
   final String agenda;
   String? links;
+  final int photos;
   final String created;
   final String updated;
 
@@ -27,6 +28,7 @@ class EventInstance {
       required this.linkedInPage,
       required this.agenda,
       this.links,
+      required this.photos,
       required this.created,
       required this.updated});
 
@@ -43,6 +45,7 @@ class EventInstance {
         linkedInPage: json['linkedinpage'],
         agenda: json['agenda'],
         links: json['links'],
+        photos: json['photos'].length,
         created: json['created'],
         updated: json['updated']);
   }
