@@ -16,7 +16,7 @@
         </intent>
     </queries>
    <application
-        android:label="federacja_app"
+        android:label="FedeApp"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
