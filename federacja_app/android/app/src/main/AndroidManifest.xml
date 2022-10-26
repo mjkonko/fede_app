@@ -15,6 +15,10 @@
             <data android:mimeType="*/*" />
         </intent>
     </queries>
+    <supports-screens android:smallScreens="false"
+        android:normalScreens="false"
+        android:largeScreens="true"
+        android:xlargeScreens="true"/>
    <application
         android:label="FedeApp"
         android:name="${applicationName}"
