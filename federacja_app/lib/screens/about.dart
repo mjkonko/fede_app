@@ -166,6 +166,7 @@ class AboutCommitteeState extends State<AboutCommittee>
     List<CommitteeMember> list = records
         .map<CommitteeMember>((json) => CommitteeMember.fromRecordModel(json))
         .toList();
+
     return list;
   }
 

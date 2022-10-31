@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart' as ul;
 import 'package:url_launcher/url_launcher.dart';
@@ -14,11 +13,7 @@ class Utils {
         path: email,
         queryParameters: {'subject': '', 'body': ''});
 
-    if (await ul.canLaunchUrl(params)) {
-      await ul.launchUrl(params, mode: ul.LaunchMode.externalApplication);
-    } else {
-      throw Exception("Unable to open the email");
-    }
+    await ul.launchUrl(params, mode: ul.LaunchMode.externalApplication);
   }
 
   Future<void> launchInBrowser(String url) async {
