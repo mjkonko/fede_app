@@ -22,6 +22,17 @@ class Utils {
       uri,
       mode: LaunchMode.externalNonBrowserApplication,
     )) {
+      extLaunchInBrowser(url);
+      throw 'Could not launch $url';
+    }
+  }
+
+  Future<void> extLaunchInBrowser(String url) async {
+    Uri uri = Uri.parse(url);
+    if (!await launchUrl(
+      uri,
+      mode: LaunchMode.platformDefault,
+    )) {
       throw 'Could not launch $url';
     }
   }
