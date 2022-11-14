@@ -6,11 +6,13 @@ class EventInstance {
   final String subtitle;
   final String description;
   final String date;
+  final String email;
   final String facebookPage;
   final String instaPage;
   final String linkedInPage;
   final String agenda;
   String? links;
+  final int photos;
   final String created;
   final String updated;
 
@@ -20,11 +22,13 @@ class EventInstance {
       required this.subtitle,
       required this.description,
       required this.date,
+      required this.email,
       required this.facebookPage,
       required this.instaPage,
       required this.linkedInPage,
       required this.agenda,
       this.links,
+      required this.photos,
       required this.created,
       required this.updated});
 
@@ -35,11 +39,13 @@ class EventInstance {
         subtitle: json['subtitle'],
         description: json['description'],
         date: json['date'],
+        email: json['email'],
         facebookPage: json['facebookpage'],
         instaPage: json['instapage'],
         linkedInPage: json['linkedinpage'],
         agenda: json['agenda'],
         links: json['links'],
+        photos: json['photos'].length,
         created: json['created'],
         updated: json['updated']);
   }

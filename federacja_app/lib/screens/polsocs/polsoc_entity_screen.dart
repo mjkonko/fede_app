@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:federacja_app/entity/polsoc_instance.dart';
 import 'package:flutter/material.dart';
@@ -58,13 +56,9 @@ class _PolSocEntityPageState extends State<PolSocEntityPage>
                   PolSocEntityAbout(title: 'About Us', polsoc: widget.polsoc)),
           Center(
               child: PolSocEntityMore(
-            title: 'More',
-            email: widget.polsoc.email,
-            fb: widget.polsoc.facebook,
-            insta: widget.polsoc.instagram,
-            linkedin: widget.polsoc.linkedin,
-            links: widget.polsoc.links,
-          ))
+                  title: 'More',
+                  email: widget.polsoc.email,
+                  links: widget.polsoc.links))
         ],
       ),
     );
@@ -192,20 +186,11 @@ class PolSocEntityAboutState extends State<PolSocEntityAbout> {
 
 class PolSocEntityMore extends StatefulWidget {
   PolSocEntityMore(
-      {Key? key,
-      required this.title,
-      this.email,
-      this.fb,
-      this.insta,
-      this.linkedin,
-      this.links})
+      {Key? key, required this.title, required this.email, this.links})
       : super(key: key);
 
   final String title;
-  String? email;
-  String? fb;
-  String? insta;
-  String? linkedin;
+  final String email;
   String? links;
 
   @override
@@ -215,68 +200,6 @@ class PolSocEntityMore extends StatefulWidget {
 class PolSocEntityMoreState extends State<PolSocEntityMore> {
   late final List<EventLinkInstance> links;
   var utils = Utils();
-
-  List<EventLinkInstance> parseLinks(String? links) {
-    if (links == null) {
-      return [];
-    }
-
-    final parsed = json.decode(links).cast<Map<String, dynamic>>();
-
-    List<EventLinkInstance> list = parsed
-        .map<EventLinkInstance>((json) => EventLinkInstance.fromJson(json))
-        .toList();
-    list.sort((item1, item2) => item1.id.compareTo(item2.id));
-
-    return list;
-  }
-
-  List<Widget> returnGeneratedLinkButtons(List<EventLinkInstance> listOfLinks) {
-    List<Widget> widgetList = [];
-
-    for (var link in listOfLinks) {
-      widgetList.add(TextButton(
-          child: Text(link.title),
-          onPressed: () {
-            utils.openUrl(url: link.link);
-          }));
-    }
-
-    return widgetList;
-  }
-
-  Widget returnLinksWidget(List<Widget> widgets) {
-    if (widgets.isEmpty) {
-      return Divider(
-        color: Theme.of(context).colorScheme.secondary,
-      );
-    }
-
-    return Column(
-      children: [
-        Divider(
-          color: Theme.of(context).colorScheme.secondary,
-        ),
-        Center(
-          child: Text("Additional links",
-              style: Theme.of(context).textTheme.headline6!.copyWith(
-                    color: Colors.black87,
-                    wordSpacing: 1,
-                    overflow: TextOverflow.fade,
-                    height: 2.0,
-                  )),
-        ),
-        Center(
-            child: ButtonBar(
-                mainAxisSize: MainAxisSize.min,
-                alignment: MainAxisAlignment.center,
-                children: widgets)),
-        Divider(
-          color: Theme.of(context).colorScheme.secondary,
-        )
-      ],
-    );
-  }
 
   @override
   void initState() {
@@ -299,14 +222,20 @@ class PolSocEntityMoreState extends State<PolSocEntityMore> {
                       height: 1.2,
                     )),
           ),
-          const Center(
+          Center(
               child: ButtonBar(
             mainAxisSize: MainAxisSize.min,
             alignment: MainAxisAlignment.center,
-            children: <Widget>[],
+            children: <Widget>[
+              TextButton(
+                child: const Text('Email'),
+                onPressed: () {
+                  utils.sendEmail(email: widget.email);
+                },
+              )
+            ],
           )),
-          returnLinksWidget(
-              returnGeneratedLinkButtons(parseLinks(widget.links)))
+          Center(child: utils.returnLinksWidget(widget.links, context)),
         ],
       ),
     ));
