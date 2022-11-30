@@ -10,7 +10,7 @@ class EventInstance {
   final String facebookPage;
   final String instaPage;
   final String linkedInPage;
-  final String agenda;
+  String? agenda;
   String? links;
   final int photos;
   final String created;
@@ -26,13 +26,14 @@ class EventInstance {
       required this.facebookPage,
       required this.instaPage,
       required this.linkedInPage,
-      required this.agenda,
+      this.agenda,
       this.links,
       required this.photos,
       required this.created,
       required this.updated});
 
   factory EventInstance.fromJson(Map<String, dynamic> json) {
+    print(json);
     return EventInstance(
         id: json['id'],
         title: json['title'],

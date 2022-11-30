@@ -87,11 +87,10 @@ class _EventsPageState extends State<EventsPage> with TickerProviderStateMixin {
 
 /// Event operations page - agenda section
 class EventsAgenda extends StatefulWidget {
-  const EventsAgenda({Key? key, required this.title, required this.agenda})
-      : super(key: key);
+  EventsAgenda({Key? key, required this.title, this.agenda}) : super(key: key);
 
   final String title;
-  final String agenda;
+  String? agenda;
 
   @override
   EventsAgendaState createState() => EventsAgendaState();
@@ -107,7 +106,11 @@ class EventsAgendaState extends State<EventsAgenda>
     agenda = parseAgenda(widget.agenda);
   }
 
-  List<AgendaItem> parseAgenda(String agenda) {
+  List<AgendaItem> parseAgenda(String? agenda) {
+    if (agenda == null) {
+      return [];
+    }
+
     final parsed = json.decode(agenda).cast<Map<String, dynamic>>();
 
     List<AgendaItem> list =
@@ -122,38 +125,53 @@ class EventsAgendaState extends State<EventsAgenda>
     return Scaffold(
         body: Container(
       padding: const EdgeInsets.all(7.5),
-      child: ListView.builder(
-        itemCount: agenda.length,
-        shrinkWrap: true,
-        cacheExtent: 75.0,
-        itemBuilder: (context, index) {
-          return ExpansionTile(
-            tilePadding: const EdgeInsets.only(left: 25, right: 25),
-            leading: Container(
-              padding: const EdgeInsets.only(right: 12.0),
-              decoration: const BoxDecoration(
-                  border: Border(
-                      right: BorderSide(width: 0.75, color: Colors.red))),
-              child: const Icon(Icons.event, color: Colors.black),
-            ),
-            title: Column(children: <Widget>[
-              Text(
-                agenda[index].name,
-                style: Theme.of(context)
-                    .textTheme
-                    .subtitle2!
-                    .copyWith(color: Colors.black),
-              ),
-              Padding(
-                  padding: const EdgeInsets.only(
-                      left: 25.0, top: 0.0, right: 0.0, bottom: 0.0),
-                  child: parseDT(DateTime.parse(agenda[index].time)))
-            ]),
-            children: [makeListTile(agenda[index])],
-          );
-        },
-      ),
+      child: getView(),
     ));
+  }
+
+  Widget getView() {
+    if (agenda.isEmpty) {
+      return Center(
+          child: Text(
+        "There is no agenda available now.",
+        style: Theme.of(context)
+            .textTheme
+            .subtitle2!
+            .copyWith(color: Colors.black),
+      ));
+    }
+
+    return ListView.builder(
+      itemCount: agenda.length,
+      shrinkWrap: true,
+      cacheExtent: 75.0,
+      itemBuilder: (context, index) {
+        return ExpansionTile(
+          tilePadding: const EdgeInsets.only(left: 25, right: 25),
+          leading: Container(
+            padding: const EdgeInsets.only(right: 12.0),
+            decoration: const BoxDecoration(
+                border:
+                    Border(right: BorderSide(width: 0.75, color: Colors.red))),
+            child: const Icon(Icons.event, color: Colors.black),
+          ),
+          title: Column(children: <Widget>[
+            Text(
+              agenda[index].name,
+              style: Theme.of(context)
+                  .textTheme
+                  .subtitle2!
+                  .copyWith(color: Colors.black),
+            ),
+            Padding(
+                padding: const EdgeInsets.only(
+                    left: 25.0, top: 0.0, right: 0.0, bottom: 0.0),
+                child: parseDT(DateTime.parse(agenda[index].time)))
+          ]),
+          children: [makeListTile(agenda[index])],
+        );
+      },
+    );
   }
 
   Text parseDT(DateTime dt) => Text(
