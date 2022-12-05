@@ -113,7 +113,7 @@ class PartnerEntityAboutState extends State<PartnerEntityAbout> {
                           Center(
                               child: FutureBuilder(
                                   future: Globals().getFileUrl(
-                                      'polsocs', widget.partner.id, 0, 'logo'),
+                                      'partners', widget.partner.id, 0, 'logo'),
                                   builder: (context,
                                       AsyncSnapshot<String> snapshot) {
                                     switch (snapshot.connectionState) {
