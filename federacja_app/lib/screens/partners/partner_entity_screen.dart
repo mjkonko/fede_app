@@ -47,7 +47,7 @@ class _PartnerEntityPageState extends State<PartnerEntityPage>
                   text: "More",
                 )
               ]),
-          widget.partner.shortName),
+          widget.partner.fullName),
       body: TabBarView(
         controller: _tabController,
         physics: const NeverScrollableScrollPhysics(),

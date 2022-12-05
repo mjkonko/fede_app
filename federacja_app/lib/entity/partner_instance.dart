@@ -3,7 +3,6 @@ import 'package:pocketbase/pocketbase.dart';
 class PartnerInstance {
   final String id;
   final String fullName;
-  final String shortName;
   final String description;
   final String email;
   String? address;
@@ -18,7 +17,6 @@ class PartnerInstance {
   PartnerInstance(
       {required this.id,
       required this.fullName,
-      required this.shortName,
       required this.description,
       required this.email,
       this.address,
@@ -31,10 +29,10 @@ class PartnerInstance {
       required this.updated});
 
   factory PartnerInstance.fromJson(Map<String, dynamic> json) {
+    print(json);
     return PartnerInstance(
         id: json['id'],
-        fullName: json['full_name'],
-        shortName: json['shortName'],
+        fullName: json['name'],
         description: json['description'],
         email: json['email'],
         address: json['address'],

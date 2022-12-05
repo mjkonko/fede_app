@@ -52,7 +52,6 @@ class TileUtils extends StatelessWidget {
           'PolSocs',
           Theme.of(context).colorScheme.surfaceTint)
     ];
-
     return tiles;
   }
 }

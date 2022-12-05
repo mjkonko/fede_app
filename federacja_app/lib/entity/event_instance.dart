@@ -33,7 +33,6 @@ class EventInstance {
       required this.updated});
 
   factory EventInstance.fromJson(Map<String, dynamic> json) {
-    print(json);
     return EventInstance(
         id: json['id'],
         title: json['title'],

@@ -1,3 +1,4 @@
+import 'package:federacja_app/utils/partnersutils.dart';
 import 'package:federacja_app/utils/tileutils.dart';
 import 'package:flutter/material.dart';
 
@@ -63,7 +64,8 @@ class _MyHomePageState extends State<TiledHomePage> {
                       physics: const BouncingScrollPhysics(),
                       child: Column(children: [
                         const EventUtils(),
-                        const TileUtils().build(context)
+                        const PartnerUtils(),
+                        const TileUtils().build(context),
                       ])))
             ])));
   }
