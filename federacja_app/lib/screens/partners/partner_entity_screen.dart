@@ -216,7 +216,7 @@ class PartnerEntityMoreState extends State<PartnerEntityMore> {
       child: Column(
         children: [
           Center(
-            child: Text("Contact the organisers",
+            child: Text("Get in touch",
                 style: Theme.of(context).textTheme.headline5!.copyWith(
                       color: Colors.black87,
                       wordSpacing: 1,

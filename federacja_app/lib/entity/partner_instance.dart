@@ -29,7 +29,6 @@ class PartnerInstance {
       required this.updated});
 
   factory PartnerInstance.fromJson(Map<String, dynamic> json) {
-    print(json);
     return PartnerInstance(
         id: json['id'],
         fullName: json['name'],

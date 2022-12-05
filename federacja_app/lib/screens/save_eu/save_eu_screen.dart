@@ -1,13 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:federacja_app/entity/save_eu_page_instance.dart';
+import 'package:federacja_app/utils/saveeuutils.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../entity/event_link_instance.dart';
-import '../../entity/partner_instance.dart';
 import '../../globals.dart';
 import '../../utils/utils.dart';
 
 class SaveEUPage extends StatefulWidget {
-  const SaveEUPage({Key? key}) : super(key: key);
+  SaveEUPage({Key? key}) : super(key: key);
 
   final String title = "SaveEU Students";
 
@@ -28,45 +30,59 @@ class _SaveEUPagePageState extends State<SaveEUPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Globals().getAppBar(
-          context,
-          TabBar(
-              controller: _tabController,
-              indicatorWeight: 1.5,
-              indicatorSize: TabBarIndicatorSize.label,
-              automaticIndicatorColorAdjustment: true,
-              indicatorColor: const Color.fromRGBO(255, 255, 255, 1.0),
-              tabs: const <Widget>[
-                Tab(
-                  text: "About Us",
-                ),
-                Tab(
-                  text: "More",
-                )
-              ]),
-          "widget.partner.fullName"),
-      body: TabBarView(
-        controller: _tabController,
-        physics: const NeverScrollableScrollPhysics(),
-        children: <Widget>[
-          Center(child: SaveEntityAbout(title: 'About Us', partner: null)),
-          Center(
-              child: SaveEUMore(
-                  title: 'More',
-                  email: "widget.partner.email",
-                  links: "widget.partner.links"))
-        ],
-      ),
-    );
+        appBar: Globals().getAppBar(
+            context,
+            TabBar(
+                controller: _tabController,
+                indicatorWeight: 1.5,
+                indicatorSize: TabBarIndicatorSize.label,
+                automaticIndicatorColorAdjustment: true,
+                indicatorColor: const Color.fromRGBO(255, 255, 255, 1.0),
+                tabs: const <Widget>[
+                  Tab(
+                    text: "About Us",
+                  ),
+                  Tab(
+                    text: "More",
+                  )
+                ]),
+            widget.title),
+        body: FutureBuilder<SaveEUPageInstance>(
+          future: fetchSaveEUPage(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              if (kDebugMode) {
+                snapshot.error.toString();
+              }
+              return Text(snapshot.error.toString());
+            } else if (snapshot.hasData) {
+              return TabBarView(
+                controller: _tabController,
+                physics: const NeverScrollableScrollPhysics(),
+                children: <Widget>[
+                  Center(
+                      child: SaveEntityAbout(
+                          title: 'About Us', page: snapshot.data)),
+                  Center(
+                      child: SaveEUMore(
+                          title: "More",
+                          email: snapshot.data!.email,
+                          links: snapshot.data!.links))
+                ],
+              );
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          },
+        ));
   }
 }
 
 class SaveEntityAbout extends StatefulWidget {
-  const SaveEntityAbout({Key? key, required this.partner, required this.title})
-      : super(key: key);
+  SaveEntityAbout({Key? key, this.page, required this.title}) : super(key: key);
 
   final String title;
-  final PartnerInstance partner;
+  SaveEUPageInstance? page;
 
   @override
   SaveEntityAboutState createState() => SaveEntityAboutState();
@@ -79,7 +95,7 @@ class SaveEntityAboutState extends State<SaveEntityAbout> {
   }
 
   Text getTextTitleWhenError() {
-    return Text(widget.partner.fullName,
+    return Text(widget.page!.title,
         softWrap: true,
         textAlign: TextAlign.center,
         style: Theme.of(context).textTheme.headline4!.copyWith(
@@ -107,7 +123,10 @@ class SaveEntityAboutState extends State<SaveEntityAbout> {
                           Center(
                               child: FutureBuilder(
                                   future: Globals().getFileUrl(
-                                      'polsocs', widget.partner.id, 0, 'logo'),
+                                      'fedeapp_page_save_eu_students',
+                                      widget.page!.id,
+                                      0,
+                                      'logo'),
                                   builder: (context,
                                       AsyncSnapshot<String> snapshot) {
                                     switch (snapshot.connectionState) {
@@ -133,7 +152,7 @@ class SaveEntityAboutState extends State<SaveEntityAbout> {
                                               placeholder: (context, url) =>
                                                   Column(
                                                 children: [
-                                                  Text(widget.partner.fullName,
+                                                  Text(widget.page!.title,
                                                       softWrap: true,
                                                       textAlign:
                                                           TextAlign.center,
@@ -161,7 +180,7 @@ class SaveEntityAboutState extends State<SaveEntityAbout> {
                                   })),
                           Container(
                             padding: const EdgeInsets.only(top: 5),
-                            child: Text(widget.partner.description,
+                            child: Text(widget.page!.description,
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyText2!
@@ -181,12 +200,13 @@ class SaveEntityAboutState extends State<SaveEntityAbout> {
 }
 
 class SaveEUMore extends StatefulWidget {
-  SaveEUMore({Key? key, required this.title, required this.email, this.links})
+  SaveEUMore(
+      {Key? key, required this.title, required this.email, required this.links})
       : super(key: key);
 
   final String title;
   final String email;
-  String? links;
+  final String links;
 
   @override
   SaveEUMoreState createState() => SaveEUMoreState();

@@ -56,7 +56,7 @@ class TileUtils extends StatelessWidget {
           () => {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const SaveEUPage()),
+                  MaterialPageRoute(builder: (context) => SaveEUPage()),
                 )
               },
           'SaveEU Students',

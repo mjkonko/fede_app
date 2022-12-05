@@ -29,22 +29,14 @@ class EventState extends State<EventUtils> with TickerProviderStateMixin {
           if (kDebugMode) {
             snapshot.error.toString();
           }
-          return Center(
-              child: Text('There are no events currently available',
-                  softWrap: true,
-                  style: Theme.of(context)
-                      .textTheme
-                      .subtitle2!
-                      .copyWith(color: Colors.black)));
+          return const SizedBox.shrink();
         } else if (snapshot.hasData) {
           return EventList(
             list: snapshot.data!,
             context: context,
           );
         } else {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const SizedBox.shrink();
         }
       },
     );
