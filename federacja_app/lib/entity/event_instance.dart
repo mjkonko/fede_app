@@ -10,7 +10,7 @@ class EventInstance {
   final String facebookPage;
   final String instaPage;
   final String linkedInPage;
-  String? agenda;
+  final String agenda;
   String? links;
   final int photos;
   final String created;
@@ -26,7 +26,7 @@ class EventInstance {
       required this.facebookPage,
       required this.instaPage,
       required this.linkedInPage,
-      this.agenda,
+      required this.agenda,
       this.links,
       required this.photos,
       required this.created,

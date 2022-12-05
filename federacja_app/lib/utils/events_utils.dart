@@ -1,6 +1,6 @@
 import 'package:federacja_app/entity/event_instance.dart';
-import 'package:federacja_app/screens/events.dart';
-import 'package:federacja_app/utils/tileutils.dart';
+import 'package:federacja_app/screens/events/event_entity.dart';
+import 'package:federacja_app/utils/tile_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';

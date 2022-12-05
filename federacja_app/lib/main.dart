@@ -1,8 +1,8 @@
-import 'package:federacja_app/utils/partnersutils.dart';
-import 'package:federacja_app/utils/tileutils.dart';
+import 'package:federacja_app/utils/partners_utils.dart';
+import 'package:federacja_app/utils/tile_utils.dart';
 import 'package:flutter/material.dart';
 
-import 'utils/eventsutils.dart';
+import 'utils/events_utils.dart';
 
 void main() {
   runApp(const FedeApp());

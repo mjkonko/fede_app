@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:federacja_app/entity/save_eu_page_instance.dart';
-import 'package:federacja_app/utils/saveeuutils.dart';
+import 'package:federacja_app/utils/saveeu_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
