@@ -18,7 +18,10 @@ class FedeApp extends StatelessWidget {
         title: 'FederacjaApp',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.red)
-              .copyWith(secondary: const Color.fromRGBO(0, 0, 0, 0.85)),
+              .copyWith(
+                  secondary: const Color.fromRGBO(0, 0, 0, 0.85),
+                  tertiary:
+                      const Color.fromRGBO(17, 53, 206, 0.8509803921568627)),
           scaffoldBackgroundColor: Theme.of(context).colorScheme.onBackground,
           appBarTheme:
               const AppBarTheme(iconTheme: IconThemeData(color: Colors.white)),
@@ -64,8 +67,8 @@ class _MyHomePageState extends State<TiledHomePage> {
                       physics: const BouncingScrollPhysics(),
                       child: Column(children: [
                         const EventUtils(),
-                        const PartnerUtils(),
                         const TileUtils().build(context),
+                        const PartnerUtils(),
                       ])))
             ])));
   }

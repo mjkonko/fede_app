@@ -103,10 +103,10 @@ class PartnerList extends StatelessWidget {
       tiles.add(makeTile(context, list[i]));
     }
 
-    if (tiles.length.isOdd) {
-      tiles.add(ImageLogoTile(
-          () => {}, 'Placeholder', Theme.of(context).colorScheme.secondary));
-    }
+    // if (tiles.length.isOdd) {
+    //   tiles.add(ImageLogoTile(
+    //       () => {}, 'Placeholder', Theme.of(context).colorScheme.secondary));
+    // }
 
     return tiles;
   }

@@ -3,7 +3,7 @@ import 'package:pocketbase/pocketbase.dart';
 
 class Globals {
   bool isProd = true;
-  List<String> regions = ["England", "Wales", "Scotland", "Northern Ireland"];
+  List<String> regions = ["England", "Wales", "Scotland"];
 
   Future<PocketBase> getPBClient() async {
     final client = PocketBase('https://nenna.is');

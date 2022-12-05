@@ -1,4 +1,5 @@
 import 'package:federacja_app/screens/polsocs/polsocs.dart';
+import 'package:federacja_app/screens/save_eu/save_eu_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../screens/about.dart';
@@ -50,7 +51,16 @@ class TileUtils extends StatelessWidget {
                 )
               },
           'PolSocs',
-          Theme.of(context).colorScheme.surfaceTint)
+          Theme.of(context).colorScheme.surfaceTint),
+      Tile(
+          () => {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SaveEUPage()),
+                )
+              },
+          'SaveEU Students',
+          Theme.of(context).colorScheme.tertiary)
     ];
     return tiles;
   }
