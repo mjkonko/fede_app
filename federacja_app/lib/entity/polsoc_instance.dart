@@ -14,6 +14,7 @@ class PolSocInstance {
   final bool verified;
   final bool active;
   String? links;
+  final int photos;
   final String created;
   final String updated;
 
@@ -31,6 +32,7 @@ class PolSocInstance {
       required this.verified,
       required this.active,
       this.links,
+      required this.photos,
       required this.created,
       required this.updated});
 
@@ -49,6 +51,7 @@ class PolSocInstance {
         verified: json['verified'],
         active: json['active'],
         links: json['links'],
+        photos: json['photos'].length,
         created: json['created'],
         updated: json['updated']);
   }
