@@ -88,7 +88,7 @@ class PartnerEntityAboutState extends State<PartnerEntityAbout> {
     return Text(widget.partner.fullName,
         softWrap: true,
         textAlign: TextAlign.center,
-        style: Theme.of(context).textTheme.headline4!.copyWith(
+        style: Theme.of(context).textTheme.headline6!.copyWith(
               color: Colors.black87,
               wordSpacing: 1,
               overflow: TextOverflow.fade,
@@ -123,11 +123,6 @@ class PartnerEntityAboutState extends State<PartnerEntityAbout> {
                                       case ConnectionState.done:
                                         if (snapshot.hasError) {
                                           return Column(children: [
-                                            const Text(
-                                              'Failed to download the logo, please report this issue.',
-                                              style:
-                                                  TextStyle(color: Colors.red),
-                                            ),
                                             getTextTitleWhenError()
                                           ]);
                                         } else {
