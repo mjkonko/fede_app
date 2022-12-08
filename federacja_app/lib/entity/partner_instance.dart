@@ -1,15 +1,12 @@
 import 'package:pocketbase/pocketbase.dart';
 
-class PolSocInstance {
+class PartnerInstance {
   final String id;
   final String fullName;
-  final String name;
-  final String university;
   final String description;
-  String email;
-  final String address;
+  final String email;
+  String? address;
   String? geoPosition;
-  final String region;
   String? logo;
   final bool verified;
   final bool active;
@@ -18,16 +15,13 @@ class PolSocInstance {
   final String created;
   final String updated;
 
-  PolSocInstance(
+  PartnerInstance(
       {required this.id,
       required this.fullName,
-      required this.name,
-      required this.university,
       required this.description,
       required this.email,
-      required this.address,
+      this.address,
       this.geoPosition,
-      required this.region,
       this.logo,
       required this.verified,
       required this.active,
@@ -36,17 +30,14 @@ class PolSocInstance {
       required this.created,
       required this.updated});
 
-  factory PolSocInstance.fromJson(Map<String, dynamic> json) {
-    return PolSocInstance(
+  factory PartnerInstance.fromJson(Map<String, dynamic> json) {
+    return PartnerInstance(
         id: json['id'],
-        fullName: json['full_name'],
-        name: json['name'],
-        university: json['university'],
+        fullName: json['name'],
         description: json['description'],
         email: json['email'],
         address: json['address'],
         geoPosition: json['geoPosition'],
-        region: json['region'],
         logo: json['logo'],
         verified: json['verified'],
         active: json['active'],
@@ -56,7 +47,7 @@ class PolSocInstance {
         updated: json['updated']);
   }
 
-  factory PolSocInstance.fromRecordModel(RecordModel model) {
-    return PolSocInstance.fromJson(model.toJson());
+  factory PartnerInstance.fromRecordModel(RecordModel model) {
+    return PartnerInstance.fromJson(model.toJson());
   }
 }

@@ -9,7 +9,7 @@ import '../../globals.dart';
 class PolSocsPage extends StatefulWidget {
   const PolSocsPage({Key? key}) : super(key: key);
 
-  final String title = "PolSocs";
+  final String title = "Polish Societies";
 
   @override
   State<PolSocsPage> createState() => _PolSocsPageState();
@@ -75,34 +75,39 @@ class PolSocsList extends StatelessWidget {
                   reverse: false,
                   cacheExtent: 80.0,
                   itemBuilder: (context, index) {
-                    return TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => PolSocEntityPage(
-                                    title: list[index].fullName,
-                                    polsoc: list[index])),
-                          );
-                        },
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(
-                                Theme.of(context).colorScheme.onBackground),
-                            shape: MaterialStateProperty.all<OutlinedBorder>(
-                                const RoundedRectangleBorder(
-                                    side: BorderSide(
-                                        width: 0.9375,
-                                        color: Color(0x88888888)),
-                                    borderRadius: BorderRadius.horizontal(
-                                        left: Radius.circular(25),
-                                        right: Radius.circular(25))))),
-                        child: Text(
-                          list[index].fullName,
-                          style: Theme.of(context)
-                              .textTheme
-                              .subtitle2!
-                              .copyWith(color: Colors.black),
-                        ));
+                    return Padding(
+                        padding: const EdgeInsets.only(bottom: 5, top: 5),
+                        child: TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => PolSocEntityPage(
+                                        title: list[index].fullName,
+                                        polsoc: list[index])),
+                              );
+                            },
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all<
+                                        Color>(
+                                    Theme.of(context).colorScheme.onBackground),
+                                minimumSize: MaterialStateProperty.all<Size>(
+                                    const Size(0, 100)),
+                                shape: MaterialStateProperty.all<OutlinedBorder>(
+                                    const RoundedRectangleBorder(
+                                        side: BorderSide(
+                                            width: 1.5,
+                                            color: Color(0x88000000)),
+                                        borderRadius: BorderRadius.horizontal(
+                                            left: Radius.circular(25),
+                                            right: Radius.circular(25))))),
+                            child: Text(
+                              list[index].fullName,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .subtitle1!
+                                  .copyWith(color: Colors.black),
+                            )));
                   })))
     ]);
   }

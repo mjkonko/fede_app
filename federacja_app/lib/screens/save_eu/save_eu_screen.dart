@@ -1,23 +1,23 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:federacja_app/entity/polsoc_instance.dart';
+import 'package:federacja_app/entity/save_eu_page_instance.dart';
+import 'package:federacja_app/utils/saveeu_utils.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../entity/event_link_instance.dart';
 import '../../globals.dart';
 import '../../utils/utils.dart';
 
-class PolSocEntityPage extends StatefulWidget {
-  const PolSocEntityPage({Key? key, required this.title, required this.polsoc})
-      : super(key: key);
+class SaveEUPage extends StatefulWidget {
+  SaveEUPage({Key? key}) : super(key: key);
 
-  final String title;
-  final PolSocInstance polsoc;
+  final String title = "SaveEU Students";
 
   @override
-  State<PolSocEntityPage> createState() => _PolSocEntityPageState();
+  State<SaveEUPage> createState() => _SaveEUPagePageState();
 }
 
-class _PolSocEntityPageState extends State<PolSocEntityPage>
+class _SaveEUPagePageState extends State<SaveEUPage>
     with TickerProviderStateMixin {
   late TabController _tabController;
 
@@ -30,60 +30,72 @@ class _PolSocEntityPageState extends State<PolSocEntityPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Globals().getAppBar(
-          context,
-          TabBar(
-              controller: _tabController,
-              indicatorWeight: 1.5,
-              indicatorSize: TabBarIndicatorSize.label,
-              automaticIndicatorColorAdjustment: true,
-              indicatorColor: const Color.fromRGBO(255, 255, 255, 1.0),
-              tabs: const <Widget>[
-                Tab(
-                  text: "About Us",
-                ),
-                Tab(
-                  text: "More",
-                )
-              ]),
-          widget.polsoc.name),
-      body: TabBarView(
-        controller: _tabController,
-        physics: const NeverScrollableScrollPhysics(),
-        children: <Widget>[
-          Center(
-              child:
-                  PolSocEntityAbout(title: 'About Us', polsoc: widget.polsoc)),
-          Center(
-              child: PolSocEntityMore(
-                  title: 'More',
-                  email: widget.polsoc.email,
-                  links: widget.polsoc.links))
-        ],
-      ),
-    );
+        appBar: Globals().getAppBar(
+            context,
+            TabBar(
+                controller: _tabController,
+                indicatorWeight: 1.5,
+                indicatorSize: TabBarIndicatorSize.label,
+                automaticIndicatorColorAdjustment: true,
+                indicatorColor: const Color.fromRGBO(255, 255, 255, 1.0),
+                tabs: const <Widget>[
+                  Tab(
+                    text: "About Us",
+                  ),
+                  Tab(
+                    text: "More",
+                  )
+                ]),
+            widget.title),
+        body: FutureBuilder<SaveEUPageInstance>(
+          future: fetchSaveEUPage(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              if (kDebugMode) {
+                snapshot.error.toString();
+              }
+              return Text(snapshot.error.toString());
+            } else if (snapshot.hasData) {
+              return TabBarView(
+                controller: _tabController,
+                physics: const NeverScrollableScrollPhysics(),
+                children: <Widget>[
+                  Center(
+                      child: SaveEntityAbout(
+                          title: 'About Us', page: snapshot.data)),
+                  Center(
+                      child: SaveEUMore(
+                          title: "More",
+                          email: snapshot.data!.email,
+                          links: snapshot.data!.links))
+                ],
+              );
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          },
+        ));
   }
 }
 
-class PolSocEntityAbout extends StatefulWidget {
-  PolSocEntityAbout({Key? key, required this.polsoc, required this.title})
-      : super(key: key);
+class SaveEntityAbout extends StatefulWidget {
+  SaveEntityAbout({Key? key, this.page, required this.title}) : super(key: key);
 
   final String title;
-  final PolSocInstance polsoc;
+  SaveEUPageInstance? page;
 
   @override
-  PolSocEntityAboutState createState() => PolSocEntityAboutState();
+  SaveEntityAboutState createState() => SaveEntityAboutState();
 }
 
-class PolSocEntityAboutState extends State<PolSocEntityAbout> {
+class SaveEntityAboutState extends State<SaveEntityAbout> {
   @override
   void initState() {
     super.initState();
   }
 
   Text getTextTitleWhenError() {
-    return Text(widget.polsoc.fullName,
+    return Text(widget.page!.title,
         softWrap: true,
         textAlign: TextAlign.center,
         style: Theme.of(context).textTheme.headline4!.copyWith(
@@ -111,7 +123,10 @@ class PolSocEntityAboutState extends State<PolSocEntityAbout> {
                           Center(
                               child: FutureBuilder(
                                   future: Globals().getFileUrl(
-                                      'polsocs', widget.polsoc.id, 0, 'logo'),
+                                      'fedeapp_page_save_eu_students',
+                                      widget.page!.id,
+                                      0,
+                                      'logo'),
                                   builder: (context,
                                       AsyncSnapshot<String> snapshot) {
                                     switch (snapshot.connectionState) {
@@ -137,7 +152,7 @@ class PolSocEntityAboutState extends State<PolSocEntityAbout> {
                                               placeholder: (context, url) =>
                                                   Column(
                                                 children: [
-                                                  Text(widget.polsoc.fullName,
+                                                  Text(widget.page!.title,
                                                       softWrap: true,
                                                       textAlign:
                                                           TextAlign.center,
@@ -165,7 +180,7 @@ class PolSocEntityAboutState extends State<PolSocEntityAbout> {
                                   })),
                           Container(
                             padding: const EdgeInsets.only(top: 5),
-                            child: Text(widget.polsoc.description,
+                            child: Text(widget.page!.description,
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyText2!
@@ -179,7 +194,7 @@ class PolSocEntityAboutState extends State<PolSocEntityAbout> {
                           returnPhotosIfAvailable()
                         ],
                       ),
-                    )),
+                    ))
               ],
             )));
   }
@@ -193,10 +208,10 @@ class PolSocEntityAboutState extends State<PolSocEntityAbout> {
   List<Widget> getPhotos() {
     List<Widget> photosWidgets = [];
 
-    for (int i = 0; i < widget.polsoc.photos; i++) {
+    for (int i = 0; i < widget.page!.photos; i++) {
       photosWidgets.add(FutureBuilder(
-          future:
-              Globals().getFileUrl('polsocs', widget.polsoc.id, i, 'photos'),
+          future: Globals().getFileUrl(
+              'fedeapp_page_save_eu_students', widget.page!.id, i, 'photos'),
           builder: (context, AsyncSnapshot<String> snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.none:
@@ -228,20 +243,20 @@ class PolSocEntityAboutState extends State<PolSocEntityAbout> {
   }
 }
 
-class PolSocEntityMore extends StatefulWidget {
-  PolSocEntityMore(
-      {Key? key, required this.title, required this.email, this.links})
+class SaveEUMore extends StatefulWidget {
+  SaveEUMore(
+      {Key? key, required this.title, required this.email, required this.links})
       : super(key: key);
 
   final String title;
   final String email;
-  String? links;
+  final String links;
 
   @override
-  PolSocEntityMoreState createState() => PolSocEntityMoreState();
+  SaveEUMoreState createState() => SaveEUMoreState();
 }
 
-class PolSocEntityMoreState extends State<PolSocEntityMore> {
+class SaveEUMoreState extends State<SaveEUMore> {
   late final List<EventLinkInstance> links;
   var utils = Utils();
 

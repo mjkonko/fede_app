@@ -1,23 +1,24 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:federacja_app/entity/polsoc_instance.dart';
 import 'package:flutter/material.dart';
 
 import '../../entity/event_link_instance.dart';
+import '../../entity/partner_instance.dart';
 import '../../globals.dart';
 import '../../utils/utils.dart';
 
-class PolSocEntityPage extends StatefulWidget {
-  const PolSocEntityPage({Key? key, required this.title, required this.polsoc})
+class PartnerEntityPage extends StatefulWidget {
+  const PartnerEntityPage(
+      {Key? key, required this.title, required this.partner})
       : super(key: key);
 
   final String title;
-  final PolSocInstance polsoc;
+  final PartnerInstance partner;
 
   @override
-  State<PolSocEntityPage> createState() => _PolSocEntityPageState();
+  State<PartnerEntityPage> createState() => _PartnerEntityPageState();
 }
 
-class _PolSocEntityPageState extends State<PolSocEntityPage>
+class _PartnerEntityPageState extends State<PartnerEntityPage>
     with TickerProviderStateMixin {
   late TabController _tabController;
 
@@ -46,47 +47,48 @@ class _PolSocEntityPageState extends State<PolSocEntityPage>
                   text: "More",
                 )
               ]),
-          widget.polsoc.name),
+          widget.partner.fullName),
       body: TabBarView(
         controller: _tabController,
         physics: const NeverScrollableScrollPhysics(),
         children: <Widget>[
           Center(
-              child:
-                  PolSocEntityAbout(title: 'About Us', polsoc: widget.polsoc)),
+              child: PartnerEntityAbout(
+                  title: 'About Us', partner: widget.partner)),
           Center(
-              child: PolSocEntityMore(
+              child: PartnerEntityMore(
                   title: 'More',
-                  email: widget.polsoc.email,
-                  links: widget.polsoc.links))
+                  email: widget.partner.email,
+                  links: widget.partner.links))
         ],
       ),
     );
   }
 }
 
-class PolSocEntityAbout extends StatefulWidget {
-  PolSocEntityAbout({Key? key, required this.polsoc, required this.title})
+class PartnerEntityAbout extends StatefulWidget {
+  const PartnerEntityAbout(
+      {Key? key, required this.partner, required this.title})
       : super(key: key);
 
   final String title;
-  final PolSocInstance polsoc;
+  final PartnerInstance partner;
 
   @override
-  PolSocEntityAboutState createState() => PolSocEntityAboutState();
+  PartnerEntityAboutState createState() => PartnerEntityAboutState();
 }
 
-class PolSocEntityAboutState extends State<PolSocEntityAbout> {
+class PartnerEntityAboutState extends State<PartnerEntityAbout> {
   @override
   void initState() {
     super.initState();
   }
 
   Text getTextTitleWhenError() {
-    return Text(widget.polsoc.fullName,
+    return Text(widget.partner.fullName,
         softWrap: true,
         textAlign: TextAlign.center,
-        style: Theme.of(context).textTheme.headline4!.copyWith(
+        style: Theme.of(context).textTheme.headline6!.copyWith(
               color: Colors.black87,
               wordSpacing: 1,
               overflow: TextOverflow.fade,
@@ -111,7 +113,7 @@ class PolSocEntityAboutState extends State<PolSocEntityAbout> {
                           Center(
                               child: FutureBuilder(
                                   future: Globals().getFileUrl(
-                                      'polsocs', widget.polsoc.id, 0, 'logo'),
+                                      'partners', widget.partner.id, 0, 'logo'),
                                   builder: (context,
                                       AsyncSnapshot<String> snapshot) {
                                     switch (snapshot.connectionState) {
@@ -121,11 +123,6 @@ class PolSocEntityAboutState extends State<PolSocEntityAbout> {
                                       case ConnectionState.done:
                                         if (snapshot.hasError) {
                                           return Column(children: [
-                                            const Text(
-                                              'Failed to download the logo, please report this issue.',
-                                              style:
-                                                  TextStyle(color: Colors.red),
-                                            ),
                                             getTextTitleWhenError()
                                           ]);
                                         } else {
@@ -137,7 +134,7 @@ class PolSocEntityAboutState extends State<PolSocEntityAbout> {
                                               placeholder: (context, url) =>
                                                   Column(
                                                 children: [
-                                                  Text(widget.polsoc.fullName,
+                                                  Text(widget.partner.fullName,
                                                       softWrap: true,
                                                       textAlign:
                                                           TextAlign.center,
@@ -165,7 +162,7 @@ class PolSocEntityAboutState extends State<PolSocEntityAbout> {
                                   })),
                           Container(
                             padding: const EdgeInsets.only(top: 5),
-                            child: Text(widget.polsoc.description,
+                            child: Text(widget.partner.description,
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyText2!
@@ -179,7 +176,7 @@ class PolSocEntityAboutState extends State<PolSocEntityAbout> {
                           returnPhotosIfAvailable()
                         ],
                       ),
-                    )),
+                    ))
               ],
             )));
   }
@@ -193,10 +190,10 @@ class PolSocEntityAboutState extends State<PolSocEntityAbout> {
   List<Widget> getPhotos() {
     List<Widget> photosWidgets = [];
 
-    for (int i = 0; i < widget.polsoc.photos; i++) {
+    for (int i = 0; i < widget.partner.photos; i++) {
       photosWidgets.add(FutureBuilder(
           future:
-              Globals().getFileUrl('polsocs', widget.polsoc.id, i, 'photos'),
+              Globals().getFileUrl('partners', widget.partner.id, i, 'photos'),
           builder: (context, AsyncSnapshot<String> snapshot) {
             switch (snapshot.connectionState) {
               case ConnectionState.none:
@@ -228,8 +225,8 @@ class PolSocEntityAboutState extends State<PolSocEntityAbout> {
   }
 }
 
-class PolSocEntityMore extends StatefulWidget {
-  PolSocEntityMore(
+class PartnerEntityMore extends StatefulWidget {
+  PartnerEntityMore(
       {Key? key, required this.title, required this.email, this.links})
       : super(key: key);
 
@@ -238,10 +235,10 @@ class PolSocEntityMore extends StatefulWidget {
   String? links;
 
   @override
-  PolSocEntityMoreState createState() => PolSocEntityMoreState();
+  PartnerEntityMoreState createState() => PartnerEntityMoreState();
 }
 
-class PolSocEntityMoreState extends State<PolSocEntityMore> {
+class PartnerEntityMoreState extends State<PartnerEntityMore> {
   late final List<EventLinkInstance> links;
   var utils = Utils();
 
@@ -258,7 +255,7 @@ class PolSocEntityMoreState extends State<PolSocEntityMore> {
       child: Column(
         children: [
           Center(
-            child: Text("Contact the organisers",
+            child: Text("Get in touch",
                 style: Theme.of(context).textTheme.headline5!.copyWith(
                       color: Colors.black87,
                       wordSpacing: 1,

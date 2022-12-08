@@ -4,11 +4,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../entity/agenda_item.dart';
-import '../entity/event_instance.dart';
-import '../entity/event_link_instance.dart';
-import '../globals.dart';
-import '../utils/utils.dart';
+import '../../entity/agenda_item.dart';
+import '../../entity/event_instance.dart';
+import '../../entity/event_link_instance.dart';
+import '../../globals.dart';
+import '../../utils/utils.dart';
 
 /// Event operations page
 class EventsPage extends StatefulWidget {
@@ -23,12 +23,81 @@ class EventsPage extends StatefulWidget {
 }
 
 class _EventsPageState extends State<EventsPage> with TickerProviderStateMixin {
+  List<Widget> _tabs = <Tab>[];
+  List<Widget> _generalWidgets = <Widget>[];
   late TabController _tabController;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabs = getHeaderTabs();
+    _tabController = getTabController();
+    _generalWidgets = getTabs(widget);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  TabController getTabController() {
+    return TabController(length: _tabs.length, vsync: this);
+  }
+
+  List<Widget> getHeaderTabs() {
+    List<Widget> list = [];
+
+    if (widget.event.agenda != "[]") {
+      list.add(const Tab(
+        text: "Agenda",
+      ));
+    }
+
+    List<Widget> defaultTabs = [
+      const Tab(
+        text: "Info",
+      ),
+      const Tab(
+        text: "More",
+      )
+    ];
+
+    list.addAll(defaultTabs);
+    return list;
+  }
+
+  List<Widget> getTabs(EventsPage widget) {
+    List<Widget> list = [];
+
+    if (widget.event.agenda != "[]") {
+      list.add(Center(
+          child: EventsAgenda(title: 'Agenda', agenda: widget.event.agenda)));
+    }
+
+    List<Widget> defaultTabs = [
+      Center(
+          child: EventsInfo(
+        id: widget.event.id,
+        title: 'Info',
+        infoTitle: widget.event.title,
+        infoSubtitle: widget.event.subtitle,
+        infoText: widget.event.description,
+        photosNumber: widget.event.photos,
+      )),
+      Center(
+          child: EventsContact(
+        title: 'Contact',
+        email: widget.event.email,
+        fb: widget.event.facebookPage,
+        insta: widget.event.instaPage,
+        linkedin: widget.event.linkedInPage,
+        links: widget.event.links,
+      ))
+    ];
+
+    list.addAll(defaultTabs);
+    return list;
   }
 
   @override
@@ -42,56 +111,22 @@ class _EventsPageState extends State<EventsPage> with TickerProviderStateMixin {
               indicatorSize: TabBarIndicatorSize.label,
               automaticIndicatorColorAdjustment: true,
               indicatorColor: const Color.fromRGBO(255, 255, 255, 1.0),
-              tabs: const <Widget>[
-                Tab(
-                  text: "Agenda",
-                ),
-                Tab(
-                  text: "Info",
-                ),
-                Tab(
-                  text: "More",
-                )
-              ]),
+              tabs: _tabs),
           widget.title),
       body: TabBarView(
-        controller: _tabController,
-        physics: const NeverScrollableScrollPhysics(),
-        children: <Widget>[
-          Center(
-              child:
-                  EventsAgenda(title: 'Agenda', agenda: widget.event.agenda)),
-          Center(
-              child: EventsInfo(
-            id: widget.event.id,
-            title: 'Info',
-            infoTitle: widget.event.title,
-            infoSubtitle: widget.event.subtitle,
-            infoText: widget.event.description,
-            photosNumber: widget.event.photos,
-          )),
-          Center(
-              child: EventsContact(
-            title: 'Contact',
-            email: widget.event.email,
-            fb: widget.event.facebookPage,
-            insta: widget.event.instaPage,
-            linkedin: widget.event.linkedInPage,
-            links: widget.event.links,
-          ))
-        ],
-      ),
+          controller: _tabController,
+          physics: const NeverScrollableScrollPhysics(),
+          children: _generalWidgets),
     );
   }
 }
 
 /// Event operations page - agenda section
 class EventsAgenda extends StatefulWidget {
-  const EventsAgenda({Key? key, required this.title, required this.agenda})
-      : super(key: key);
+  EventsAgenda({Key? key, required this.title, this.agenda}) : super(key: key);
 
   final String title;
-  final String agenda;
+  String? agenda;
 
   @override
   EventsAgendaState createState() => EventsAgendaState();
@@ -107,7 +142,11 @@ class EventsAgendaState extends State<EventsAgenda>
     agenda = parseAgenda(widget.agenda);
   }
 
-  List<AgendaItem> parseAgenda(String agenda) {
+  List<AgendaItem> parseAgenda(String? agenda) {
+    if (agenda == null) {
+      return [];
+    }
+
     final parsed = json.decode(agenda).cast<Map<String, dynamic>>();
 
     List<AgendaItem> list =
@@ -122,38 +161,53 @@ class EventsAgendaState extends State<EventsAgenda>
     return Scaffold(
         body: Container(
       padding: const EdgeInsets.all(7.5),
-      child: ListView.builder(
-        itemCount: agenda.length,
-        shrinkWrap: true,
-        cacheExtent: 75.0,
-        itemBuilder: (context, index) {
-          return ExpansionTile(
-            tilePadding: const EdgeInsets.only(left: 25, right: 25),
-            leading: Container(
-              padding: const EdgeInsets.only(right: 12.0),
-              decoration: const BoxDecoration(
-                  border: Border(
-                      right: BorderSide(width: 0.75, color: Colors.red))),
-              child: const Icon(Icons.event, color: Colors.black),
-            ),
-            title: Column(children: <Widget>[
-              Text(
-                agenda[index].name,
-                style: Theme.of(context)
-                    .textTheme
-                    .subtitle2!
-                    .copyWith(color: Colors.black),
-              ),
-              Padding(
-                  padding: const EdgeInsets.only(
-                      left: 25.0, top: 0.0, right: 0.0, bottom: 0.0),
-                  child: parseDT(DateTime.parse(agenda[index].time)))
-            ]),
-            children: [makeListTile(agenda[index])],
-          );
-        },
-      ),
+      child: getView(),
     ));
+  }
+
+  Widget getView() {
+    if (agenda.isEmpty) {
+      return Center(
+          child: Text(
+        "There is no agenda available now.",
+        style: Theme.of(context)
+            .textTheme
+            .subtitle2!
+            .copyWith(color: Colors.black),
+      ));
+    }
+
+    return ListView.builder(
+      itemCount: agenda.length,
+      shrinkWrap: true,
+      cacheExtent: 75.0,
+      itemBuilder: (context, index) {
+        return ExpansionTile(
+          tilePadding: const EdgeInsets.only(left: 25, right: 25),
+          leading: Container(
+            padding: const EdgeInsets.only(right: 12.0),
+            decoration: const BoxDecoration(
+                border:
+                    Border(right: BorderSide(width: 0.75, color: Colors.red))),
+            child: const Icon(Icons.event, color: Colors.black),
+          ),
+          title: Column(children: <Widget>[
+            Text(
+              agenda[index].name,
+              style: Theme.of(context)
+                  .textTheme
+                  .subtitle2!
+                  .copyWith(color: Colors.black),
+            ),
+            Padding(
+                padding: const EdgeInsets.only(
+                    left: 25.0, top: 0.0, right: 0.0, bottom: 0.0),
+                child: parseDT(DateTime.parse(agenda[index].time)))
+          ]),
+          children: [makeListTile(agenda[index])],
+        );
+      },
+    );
   }
 
   Text parseDT(DateTime dt) => Text(

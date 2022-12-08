@@ -1,6 +1,7 @@
 import 'package:federacja_app/entity/event_instance.dart';
-import 'package:federacja_app/screens/events.dart';
-import 'package:federacja_app/utils/tileutils.dart';
+import 'package:federacja_app/screens/events/event_entity.dart';
+import 'package:federacja_app/utils/tile_utils.dart';
+import 'package:federacja_app/utils/utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
@@ -29,22 +30,14 @@ class EventState extends State<EventUtils> with TickerProviderStateMixin {
           if (kDebugMode) {
             snapshot.error.toString();
           }
-          return Center(
-              child: Text('There are no events currently available',
-                  softWrap: true,
-                  style: Theme.of(context)
-                      .textTheme
-                      .subtitle2!
-                      .copyWith(color: Colors.black)));
+          return const SizedBox.shrink();
         } else if (snapshot.hasData) {
           return EventList(
             list: snapshot.data!,
             context: context,
           );
         } else {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const SizedBox.shrink();
         }
       },
     );
@@ -107,10 +100,14 @@ class EventList extends StatelessWidget {
     }
 
     if (tiles.length.isOdd) {
-      tiles.add(ImageLogoTile(
-          () => {}, 'Placeholder', Theme.of(context).colorScheme.secondary));
+      tiles.add(
+        ImageLogoTile(
+            () => {Utils().launchInBrowser("https://polsocfederation.com/")},
+            'Placeholder',
+            Theme.of(context).colorScheme.secondary,
+            'lib/assets/img/logo.png'),
+      );
     }
-
     return tiles;
   }
 }
