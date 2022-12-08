@@ -92,12 +92,12 @@ class PolSocsList extends StatelessWidget {
                                         Color>(
                                     Theme.of(context).colorScheme.onBackground),
                                 minimumSize: MaterialStateProperty.all<Size>(
-                                    const Size(0, 60)),
+                                    const Size(0, 100)),
                                 shape: MaterialStateProperty.all<OutlinedBorder>(
                                     const RoundedRectangleBorder(
                                         side: BorderSide(
-                                            width: 1.25,
-                                            color: Color(0x88888888)),
+                                            width: 1.5,
+                                            color: Color(0x88000000)),
                                         borderRadius: BorderRadius.horizontal(
                                             left: Radius.circular(25),
                                             right: Radius.circular(25))))),
@@ -105,7 +105,7 @@ class PolSocsList extends StatelessWidget {
                               list[index].fullName,
                               style: Theme.of(context)
                                   .textTheme
-                                  .subtitle2!
+                                  .subtitle1!
                                   .copyWith(color: Colors.black),
                             )));
                   })))
