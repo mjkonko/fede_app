@@ -4,6 +4,7 @@ class SaveEUPageInstance {
   final String description;
   final String email;
   final String logo;
+  final int photos;
   final String links;
   final String created;
   final String updated;
@@ -15,6 +16,7 @@ class SaveEUPageInstance {
       required this.email,
       required this.logo,
       required this.links,
+      required this.photos,
       required this.created,
       required this.updated});
 
@@ -26,6 +28,7 @@ class SaveEUPageInstance {
         email: json['email'],
         logo: json['logo'],
         links: json['links'],
+        photos: json['photos'].length,
         created: json['created'],
         updated: json['updated']);
   }

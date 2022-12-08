@@ -190,12 +190,56 @@ class SaveEntityAboutState extends State<SaveEntityAbout> {
                                       overflow: TextOverflow.fade,
                                       height: 1.5,
                                     )),
-                          )
+                          ),
+                          returnPhotosIfAvailable()
                         ],
                       ),
                     ))
               ],
             )));
+  }
+
+  Column returnPhotosIfAvailable() {
+    return Column(
+      children: getPhotos(),
+    );
+  }
+
+  List<Widget> getPhotos() {
+    List<Widget> photosWidgets = [];
+
+    for (int i = 0; i < widget.page!.photos; i++) {
+      photosWidgets.add(FutureBuilder(
+          future: Globals().getFileUrl(
+              'fedeapp_page_save_eu_students', widget.page!.id, i, 'photos'),
+          builder: (context, AsyncSnapshot<String> snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+              case ConnectionState.waiting:
+              case ConnectionState.active:
+              case ConnectionState.done:
+                if (snapshot.hasError) {
+                  return Column(children: [
+                    Text(
+                      "Couldn't load the picture ${snapshot.error}",
+                      style: const TextStyle(color: Colors.red),
+                    )
+                  ]);
+                } else {
+                  return Center(
+                      child: Padding(
+                    padding: const EdgeInsets.only(top: 12.5),
+                    child: CachedNetworkImage(
+                        width: 600,
+                        imageUrl: snapshot.data.toString(),
+                        placeholder: (context, url) => Container(),
+                        errorWidget: (context, url, error) => Container()),
+                  ));
+                }
+            }
+          }));
+    }
+    return photosWidgets;
   }
 }
 
