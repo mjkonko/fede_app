@@ -9,7 +9,7 @@ import '../../globals.dart';
 class PolSocsPage extends StatefulWidget {
   const PolSocsPage({Key? key}) : super(key: key);
 
-  final String title = "PolSocs";
+  final String title = "Polish Societies";
 
   @override
   State<PolSocsPage> createState() => _PolSocsPageState();

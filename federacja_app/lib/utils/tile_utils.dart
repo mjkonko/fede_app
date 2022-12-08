@@ -1,9 +1,9 @@
 import 'package:federacja_app/screens/polsocs/polsocs.dart';
 import 'package:federacja_app/screens/save_eu/save_eu_screen.dart';
+import 'package:federacja_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 import '../screens/about.dart';
-import '../screens/news.dart';
 
 class TileUtils extends StatelessWidget {
   const TileUtils({Key? key}) : super(key: key);
@@ -34,15 +34,15 @@ class TileUtils extends StatelessWidget {
               },
           'About',
           Theme.of(context).colorScheme.surfaceTint),
-      Tile(
-          () => {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const NewsPage()),
-                )
-              },
-          'News',
-          Theme.of(context).colorScheme.surfaceTint),
+      // Tile(
+      //     () => {
+      //           Navigator.push(
+      //             context,
+      //             MaterialPageRoute(builder: (context) => const NewsPage()),
+      //           )
+      //         },
+      //     'News',
+      //     Theme.of(context).colorScheme.surfaceTint),
       Tile(
           () => {
                 Navigator.push(
@@ -50,9 +50,9 @@ class TileUtils extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => const PolSocsPage()),
                 )
               },
-          'PolSocs',
+          'Polish Societies',
           Theme.of(context).colorScheme.surfaceTint),
-      Tile(
+      ImageLogoTile(
           () => {
                 Navigator.push(
                   context,
@@ -60,8 +60,28 @@ class TileUtils extends StatelessWidget {
                 )
               },
           'SaveEU Students',
-          Theme.of(context).colorScheme.tertiary)
+          Theme.of(context).colorScheme.tertiary,
+          'lib/assets/img/save_eu_logo.png'),
+      Tile(
+          () => {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SaveEUPage()),
+                )
+              },
+          'Mentoring',
+          Theme.of(context).colorScheme.surfaceTint),
+      Tile(
+          () =>
+              {Utils().launchInBrowser("https://polsocfederation.com/guides")},
+          'Freshers Guides',
+          Theme.of(context).colorScheme.surfaceTint),
+      Tile(
+          () => {Utils().launchInBrowser("https://polsocfederation.com/press")},
+          'Press',
+          Theme.of(context).colorScheme.secondary)
     ];
+
     return tiles;
   }
 }
@@ -96,23 +116,29 @@ class Tile extends StatelessWidget {
 }
 
 class ImageLogoTile extends Tile {
-  const ImageLogoTile(Function action, String title, Color color, {Key? key})
+  final String image;
+
+  const ImageLogoTile(Function action, String title, Color color, this.image,
+      {Key? key})
       : super(action, title, color, key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
-        onPressed: () {},
+        onPressed: () {
+          action();
+        },
         child: Container(
             padding: const EdgeInsets.all(1.0),
             alignment: Alignment.center,
             decoration: BoxDecoration(
                 color: color,
                 borderRadius: const BorderRadius.all(Radius.circular(10.0))),
-            foregroundDecoration: const BoxDecoration(
+            foregroundDecoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(Radius.circular(10.0)),
                 image: DecorationImage(
-              fit: BoxFit.fitWidth,
-              image: AssetImage('lib/assets/img/logo.png'),
-            ))));
+                  fit: BoxFit.scaleDown,
+                  image: AssetImage(image),
+                ))));
   }
 }
