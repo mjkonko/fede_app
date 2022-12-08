@@ -1,3 +1,4 @@
+import 'package:federacja_app/screens/mentoring/mentoring_screen.dart';
 import 'package:federacja_app/screens/polsocs/polsocs.dart';
 import 'package:federacja_app/screens/save_eu/save_eu_screen.dart';
 import 'package:federacja_app/utils/utils.dart';
@@ -66,7 +67,7 @@ class TileUtils extends StatelessWidget {
           () => {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SaveEUPage()),
+                  MaterialPageRoute(builder: (context) => MentoringPage()),
                 )
               },
           'Mentoring',
