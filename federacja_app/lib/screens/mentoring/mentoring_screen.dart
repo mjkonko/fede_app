@@ -11,7 +11,7 @@ import '../../utils/utils.dart';
 class MentoringPage extends StatefulWidget {
   MentoringPage({Key? key}) : super(key: key);
 
-  final String title = "MentoringPage";
+  final String title = "Mentoring";
 
   @override
   State<MentoringPage> createState() => _MentoringPageState();
@@ -62,7 +62,8 @@ class _MentoringPageState extends State<MentoringPage>
                 children: <Widget>[
                   Center(
                       child: MentoringPageAbout(
-                          title: 'About', page: snapshot.data)),
+                          title: 'About the mentoring programmes',
+                          page: snapshot.data)),
                   Center(
                       child: MentoringPageMore(
                           title: "More",
@@ -95,18 +96,6 @@ class MentoringPageAboutState extends State<MentoringPageAbout> {
     super.initState();
   }
 
-  Text getTextTitleWhenError() {
-    return Text(widget.title,
-        softWrap: true,
-        textAlign: TextAlign.center,
-        style: Theme.of(context).textTheme.headline4!.copyWith(
-              color: Colors.black87,
-              wordSpacing: 1,
-              overflow: TextOverflow.fade,
-              height: 1.2,
-            ));
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -122,60 +111,20 @@ class MentoringPageAboutState extends State<MentoringPageAbout> {
                       child: Column(
                         children: [
                           Center(
-                              child: FutureBuilder(
-                                  future: Globals().getFileUrl(
-                                      'fedeapp_page_save_eu_students',
-                                      widget.page!.id,
-                                      0,
-                                      'logo'),
-                                  builder: (context,
-                                      AsyncSnapshot<String> snapshot) {
-                                    switch (snapshot.connectionState) {
-                                      case ConnectionState.none:
-                                      case ConnectionState.waiting:
-                                      case ConnectionState.active:
-                                      case ConnectionState.done:
-                                        if (snapshot.hasError) {
-                                          return Column(children: [
-                                            getTextTitleWhenError()
-                                          ]);
-                                        } else {
-                                          return Center(
-                                            child: CachedNetworkImage(
-                                              width: 240,
-                                              imageUrl:
-                                                  snapshot.data.toString(),
-                                              placeholder: (context, url) =>
-                                                  Column(
-                                                children: [
-                                                  Text(widget.page!.title,
-                                                      softWrap: true,
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: Theme.of(context)
-                                                          .textTheme
-                                                          .headline4!
-                                                          .copyWith(
-                                                            color:
-                                                                Colors.black87,
-                                                            wordSpacing: 1,
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .fade,
-                                                            height: 1.2,
-                                                          )),
-                                                ],
-                                              ),
-                                              errorWidget:
-                                                  (context, url, error) =>
-                                                      getTextTitleWhenError(),
-                                            ),
-                                          );
-                                        }
-                                    }
-                                  })),
+                              child: Text(widget.title,
+                                  softWrap: true,
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline4!
+                                      .copyWith(
+                                        color: Colors.black87,
+                                        wordSpacing: 1,
+                                        overflow: TextOverflow.fade,
+                                        height: 1.2,
+                                      ))),
                           Container(
-                            padding: const EdgeInsets.only(top: 5),
+                            padding: const EdgeInsets.only(top: 15),
                             child: Text(widget.page!.description,
                                 style: Theme.of(context)
                                     .textTheme
@@ -186,12 +135,56 @@ class MentoringPageAboutState extends State<MentoringPageAbout> {
                                       overflow: TextOverflow.fade,
                                       height: 1.5,
                                     )),
-                          )
+                          ),
+                          returnPhotosIfAvailable()
                         ],
                       ),
                     ))
               ],
             )));
+  }
+
+  Column returnPhotosIfAvailable() {
+    return Column(
+      children: getPhotos(),
+    );
+  }
+
+  List<Widget> getPhotos() {
+    List<Widget> photosWidgets = [];
+
+    for (int i = 0; i < widget.page!.photos; i++) {
+      photosWidgets.add(FutureBuilder(
+          future: Globals().getFileUrl(
+              'fedeapp_page_mentoring', widget.page!.id, i, 'photos'),
+          builder: (context, AsyncSnapshot<String> snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+              case ConnectionState.waiting:
+              case ConnectionState.active:
+              case ConnectionState.done:
+                if (snapshot.hasError) {
+                  return Column(children: [
+                    Text(
+                      "Couldn't load the picture ${snapshot.error}",
+                      style: const TextStyle(color: Colors.red),
+                    )
+                  ]);
+                } else {
+                  return Center(
+                      child: Padding(
+                    padding: const EdgeInsets.only(top: 12.5),
+                    child: CachedNetworkImage(
+                        width: 600,
+                        imageUrl: snapshot.data.toString(),
+                        placeholder: (context, url) => Container(),
+                        errorWidget: (context, url, error) => Container()),
+                  ));
+                }
+            }
+          }));
+    }
+    return photosWidgets;
   }
 }
 
@@ -224,28 +217,6 @@ class MentoringPageMoreState extends State<MentoringPageMore> {
       padding: const EdgeInsets.all(20),
       child: Column(
         children: [
-          Center(
-            child: Text("Contact us directly",
-                style: Theme.of(context).textTheme.headline5!.copyWith(
-                      color: Colors.black87,
-                      wordSpacing: 1,
-                      overflow: TextOverflow.fade,
-                      height: 1.2,
-                    )),
-          ),
-          Center(
-              child: ButtonBar(
-            mainAxisSize: MainAxisSize.min,
-            alignment: MainAxisAlignment.center,
-            children: <Widget>[
-              TextButton(
-                child: const Text('Email'),
-                onPressed: () {
-                  utils.sendEmail(email: widget.email);
-                },
-              )
-            ],
-          )),
           Center(child: utils.returnLinksWidget(widget.links, context)),
         ],
       ),

@@ -4,6 +4,7 @@ class MentoringPageInstance {
   final String description;
   final String email;
   final String links;
+  final int photos;
   final String created;
   final String updated;
 
@@ -13,6 +14,7 @@ class MentoringPageInstance {
       required this.description,
       required this.email,
       required this.links,
+      required this.photos,
       required this.created,
       required this.updated});
 
@@ -23,6 +25,7 @@ class MentoringPageInstance {
         description: json['description'],
         email: json['email'],
         links: json['links'],
+        photos: json['photos'].length,
         created: json['created'],
         updated: json['updated']);
   }
