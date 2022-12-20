@@ -6,7 +6,7 @@ class Globals {
   List<String> regions = ["England", "Wales", "Scotland", "Northern Ireland"];
 
   Future<PocketBase> getPBClient() async {
-    final client = PocketBase('https://nenna.is');
+    final client = PocketBase('http://65.109.160.165/');
     //final appUserAuthData = await client.users.authViaEmail('?', '?');
     return client;
   }
@@ -14,10 +14,10 @@ class Globals {
   Future<String> getFileUrl(String collectionName, String recordId,
       int fileNumber, String fieldName) async {
     var client = await getPBClient();
-    var record = await client.records.getOne(collectionName, recordId);
+    var record = await client.collection(collectionName).getOne(recordId);
     var firstFilename = record.getListValue<String>(fieldName)[fileNumber];
 
-    return client.records.getFileUrl(record, firstFilename).toString();
+    return client.getFileUrl(record, firstFilename).toString();
   }
 
   AppBar getAppBar(

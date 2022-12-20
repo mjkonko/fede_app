@@ -269,7 +269,7 @@ class EventsAgendaState extends State<EventsAgenda>
 
 /// Event operations page - information section
 class EventsInfo extends StatefulWidget {
-  EventsInfo(
+  const EventsInfo(
       {Key? key,
       required this.id,
       required this.title,

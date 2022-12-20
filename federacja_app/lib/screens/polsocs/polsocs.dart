@@ -158,7 +158,7 @@ Widget generateRegionWidget(String region) {
 Future<List<PolSocInstance>> fetchPolSocs(String region) async {
   // alternatively you can also fetch all records at once via getFullList:
   var client = await Globals().getPBClient();
-  var records = await client.records.getFullList('polsocs',
+  var records = await client.collection('polsocs').getFullList(
       batch: 200,
       sort: '-created',
       filter: 'region ~"$region"&&active=true&&verified=true');

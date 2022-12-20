@@ -123,7 +123,7 @@ Future<List<NewsItem>> fetchNews() async {
   // alternatively you can also fetch all records at once via getFullList:
   var client = await Globals().getPBClient();
   var records =
-      await client.records.getFullList('news', batch: 200, sort: '-created');
+      await client.collection('news').getFullList(batch: 200, sort: '-created');
 
   if (records.isNotEmpty) {
     return parseNews(records);

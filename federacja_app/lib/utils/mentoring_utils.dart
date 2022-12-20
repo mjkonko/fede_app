@@ -5,8 +5,9 @@ import '../globals.dart';
 
 Future<MentoringPageInstance> fetchMentoringPage() async {
   var client = await Globals().getPBClient();
-  var records = await client.records
-      .getFullList('fedeapp_page_mentoring', batch: 200, sort: '-created');
+  var records = await client
+      .collection('fedeapp_page_mentoring')
+      .getFullList(batch: 200, sort: '-created');
 
   if (records.isNotEmpty) {
     return parseRecord(records.first);

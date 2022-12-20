@@ -66,7 +66,7 @@ class _PolSocEntityPageState extends State<PolSocEntityPage>
 }
 
 class PolSocEntityAbout extends StatefulWidget {
-  PolSocEntityAbout({Key? key, required this.polsoc, required this.title})
+  const PolSocEntityAbout({Key? key, required this.polsoc, required this.title})
       : super(key: key);
 
   final String title;

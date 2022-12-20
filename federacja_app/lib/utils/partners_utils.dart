@@ -107,8 +107,9 @@ class PartnerList extends StatelessWidget {
 
 Future<List<PartnerInstance>> fetchPartner() async {
   var client = await Globals().getPBClient();
-  var records = await client.records
-      .getFullList('partners', batch: 200, sort: '-created');
+  var records = await client
+      .collection('partners')
+      .getFullList(batch: 200, sort: '-created');
 
   if (records.isNotEmpty) {
     return parsePartner(records);

@@ -9,7 +9,7 @@ import '../../utils/mentoring_utils.dart';
 import '../../utils/utils.dart';
 
 class MentoringPage extends StatefulWidget {
-  MentoringPage({Key? key}) : super(key: key);
+  const MentoringPage({Key? key}) : super(key: key);
 
   final String title = "Mentoring";
 
@@ -189,7 +189,7 @@ class MentoringPageAboutState extends State<MentoringPageAbout> {
 }
 
 class MentoringPageMore extends StatefulWidget {
-  MentoringPageMore(
+  const MentoringPageMore(
       {Key? key, required this.title, required this.email, required this.links})
       : super(key: key);
 

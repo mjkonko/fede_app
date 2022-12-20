@@ -114,8 +114,9 @@ class EventList extends StatelessWidget {
 
 Future<List<EventInstance>> fetchEvents() async {
   var client = await Globals().getPBClient();
-  var records =
-      await client.records.getFullList('event', batch: 200, sort: '-created');
+  var records = await client
+      .collection('event')
+      .getFullList(batch: 200, sort: '-created');
 
   if (records.isNotEmpty) {
     return parseEvent(records);

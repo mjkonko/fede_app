@@ -9,7 +9,7 @@ import '../../globals.dart';
 import '../../utils/utils.dart';
 
 class SaveEUPage extends StatefulWidget {
-  SaveEUPage({Key? key}) : super(key: key);
+  const SaveEUPage({Key? key}) : super(key: key);
 
   final String title = "SaveEU Students";
 
@@ -244,7 +244,7 @@ class SaveEntityAboutState extends State<SaveEntityAbout> {
 }
 
 class SaveEUMore extends StatefulWidget {
-  SaveEUMore(
+  const SaveEUMore(
       {Key? key, required this.title, required this.email, required this.links})
       : super(key: key);
 
