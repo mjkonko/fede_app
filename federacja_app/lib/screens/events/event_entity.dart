@@ -182,32 +182,62 @@ class EventsAgendaState extends State<EventsAgenda>
       shrinkWrap: true,
       cacheExtent: 75.0,
       itemBuilder: (context, index) {
-        return ExpansionTile(
-          tilePadding: const EdgeInsets.only(left: 25, right: 25),
-          leading: Container(
-            padding: const EdgeInsets.only(right: 12.0),
-            decoration: const BoxDecoration(
-                border:
-                    Border(right: BorderSide(width: 0.75, color: Colors.red))),
-            child: const Icon(Icons.event, color: Colors.black),
-          ),
-          title: Column(children: <Widget>[
-            Text(
-              agenda[index].name,
-              style: Theme.of(context)
-                  .textTheme
-                  .subtitle2!
-                  .copyWith(color: Colors.black),
-            ),
-            Padding(
-                padding: const EdgeInsets.only(
-                    left: 25.0, top: 0.0, right: 0.0, bottom: 0.0),
-                child: parseDT(DateTime.parse(agenda[index].time)))
-          ]),
-          children: [makeListTile(agenda[index])],
-        );
+        return ListTileTheme(
+            contentPadding: const EdgeInsets.all(0),
+            dense: true,
+            horizontalTitleGap: 0.0,
+            minLeadingWidth: 0,
+            child: ExpansionTile(
+              tilePadding: const EdgeInsets.only(left: 25, right: 25),
+              leading: Container(
+                padding: const EdgeInsets.only(right: 12.0),
+                decoration: const BoxDecoration(
+                    border: Border(
+                        right: BorderSide(width: 0.75, color: Colors.red))),
+                child: const Icon(Icons.event, color: Colors.black),
+              ),
+              title: Column(children: <Widget>[
+                Text(
+                  agenda[index].name,
+                  style: Theme.of(context)
+                      .textTheme
+                      .subtitle2!
+                      .copyWith(color: Colors.black),
+                ),
+                Padding(
+                    padding: const EdgeInsets.only(
+                        left: 30.0, top: 0.0, right: 0.0, bottom: 0.0),
+                    child: generateEventTimeRow(agenda[index], context))
+              ]),
+              children: [makeListTile(agenda[index])],
+            ));
       },
     );
+  }
+
+  Widget generateEventTimeRow(AgendaItem item, BuildContext context) {
+    List<Widget> list = [];
+
+    list.add(parseDT(DateTime.parse(item.time)));
+    list.add(Text(" - ",
+        style: TextStyle(
+            color: Theme.of(context).colorScheme.secondary,
+            fontWeight: FontWeight.w200,
+            fontSize: 12,
+            letterSpacing: 1)));
+
+    if (item.endTime == null) {
+      list.add(Text("no end time",
+          style: TextStyle(
+              color: Theme.of(context).colorScheme.secondary,
+              fontWeight: FontWeight.w200,
+              fontSize: 12,
+              letterSpacing: 1)));
+      return Row(children: list);
+    }
+
+    list.add(parseDT(DateTime.parse(item.endTime!)));
+    return Row(children: list);
   }
 
   Text parseDT(DateTime dt) => Text(
@@ -262,6 +292,23 @@ class EventsAgendaState extends State<EventsAgenda>
                 ),
               ),
             ]),
+            Row(children: [
+              Flexible(
+                fit: FlexFit.loose,
+                child: Padding(
+                  padding:
+                      const EdgeInsets.only(left: 14.0, top: 0.0, right: 14.0),
+                  child: Text(
+                      "Led by: ${item.speaker ?? "Not available for this event"}",
+                      softWrap: true,
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.secondary,
+                          fontWeight: FontWeight.w200,
+                          fontSize: 12,
+                          letterSpacing: 1)),
+                ),
+              ),
+            ]),
           ],
         ),
       );
@@ -305,7 +352,7 @@ class EventsInfoState extends State<EventsInfo> with TickerProviderStateMixin {
   List<Widget> getPhotos() {
     List<Widget> photosWidgets = [];
 
-    for (int i = 0; i < widget.photosNumber; i++) {
+    for (int i = 1; i < widget.photosNumber; i++) {
       photosWidgets.add(FutureBuilder(
           future: Globals().getFileUrl('event', widget.id, i, 'photos'),
           builder: (context, AsyncSnapshot<String> snapshot) {
@@ -338,6 +385,18 @@ class EventsInfoState extends State<EventsInfo> with TickerProviderStateMixin {
     return photosWidgets;
   }
 
+  Text getTextTitleWhenError() {
+    return Text(widget.infoTitle,
+        softWrap: true,
+        textAlign: TextAlign.center,
+        style: Theme.of(context).textTheme.headline4!.copyWith(
+              color: Colors.black87,
+              wordSpacing: 1,
+              overflow: TextOverflow.fade,
+              height: 1.2,
+            ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -353,16 +412,56 @@ class EventsInfoState extends State<EventsInfo> with TickerProviderStateMixin {
                       child: Column(
                         children: [
                           Center(
-                              child: Text(widget.infoTitle,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline4!
-                                      .copyWith(
-                                        color: Colors.black87,
-                                        wordSpacing: 1,
-                                        overflow: TextOverflow.fade,
-                                        height: 1.2,
-                                      ))),
+                              child: FutureBuilder(
+                                  future: Globals().getFileUrl('event',
+                                      widget.id, 0, 'photos'), // get logo
+                                  builder: (context,
+                                      AsyncSnapshot<String> snapshot) {
+                                    switch (snapshot.connectionState) {
+                                      case ConnectionState.none:
+                                      case ConnectionState.waiting:
+                                      case ConnectionState.active:
+                                      case ConnectionState.done:
+                                        if (snapshot.hasError) {
+                                          print(snapshot.error.toString());
+                                          return Column(children: [
+                                            getTextTitleWhenError()
+                                          ]);
+                                        } else {
+                                          return Center(
+                                            child: CachedNetworkImage(
+                                              width: 240,
+                                              imageUrl:
+                                                  snapshot.data.toString(),
+                                              placeholder: (context, url) =>
+                                                  Column(
+                                                children: [
+                                                  Text(widget.infoTitle,
+                                                      softWrap: true,
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .headline4!
+                                                          .copyWith(
+                                                            color:
+                                                                Colors.black87,
+                                                            wordSpacing: 1,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .fade,
+                                                            height: 1.2,
+                                                          )),
+                                                ],
+                                              ),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      getTextTitleWhenError(),
+                                            ),
+                                          );
+                                        }
+                                    }
+                                  })),
                           Text(widget.infoSubtitle,
                               style: Theme.of(context)
                                   .textTheme

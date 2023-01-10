@@ -6,7 +6,7 @@ class Globals {
   List<String> regions = ["England", "Wales", "Scotland", "Northern Ireland"];
 
   Future<PocketBase> getPBClient() async {
-    final client = PocketBase('http://65.109.160.165/');
+    final client = PocketBase('https://api.polsocfederation.com');
     //final appUserAuthData = await client.users.authViaEmail('?', '?');
     return client;
   }
