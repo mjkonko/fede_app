@@ -185,28 +185,33 @@ class EventsAgendaState extends State<EventsAgenda>
         return ListTileTheme(
             contentPadding: const EdgeInsets.all(0),
             dense: true,
-            horizontalTitleGap: 0.0,
-            minLeadingWidth: 0,
+            horizontalTitleGap: 12.5,
+            minLeadingWidth: 5,
             child: ExpansionTile(
               tilePadding: const EdgeInsets.only(left: 25, right: 25),
               leading: Container(
-                padding: const EdgeInsets.only(right: 12.0),
+                padding: const EdgeInsets.only(right: 12.5),
                 decoration: const BoxDecoration(
                     border: Border(
                         right: BorderSide(width: 0.75, color: Colors.red))),
                 child: const Icon(Icons.event, color: Colors.black),
               ),
               title: Column(children: <Widget>[
-                Text(
-                  agenda[index].name,
-                  style: Theme.of(context)
-                      .textTheme
-                      .subtitle2!
-                      .copyWith(color: Colors.black),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: 5.0, top: 5.0, right: 5.0, bottom: 7.0),
+                  child: Text(
+                    agenda[index].name,
+                    softWrap: true,
+                    style: Theme.of(context)
+                        .textTheme
+                        .subtitle2!
+                        .copyWith(color: Colors.black),
+                  ),
                 ),
                 Padding(
                     padding: const EdgeInsets.only(
-                        left: 30.0, top: 0.0, right: 0.0, bottom: 0.0),
+                        left: 5.0, top: 0.0, right: 0.0, bottom: 0.0),
                     child: generateEventTimeRow(agenda[index], context))
               ]),
               children: [makeListTile(agenda[index])],
@@ -222,7 +227,6 @@ class EventsAgendaState extends State<EventsAgenda>
     list.add(Text(" - ",
         style: TextStyle(
             color: Theme.of(context).colorScheme.secondary,
-            fontWeight: FontWeight.w200,
             fontSize: 12,
             letterSpacing: 1)));
 
@@ -230,7 +234,6 @@ class EventsAgendaState extends State<EventsAgenda>
       list.add(Text("no end time",
           style: TextStyle(
               color: Theme.of(context).colorScheme.secondary,
-              fontWeight: FontWeight.w200,
               fontSize: 12,
               letterSpacing: 1)));
       return Row(children: list);
@@ -242,9 +245,10 @@ class EventsAgendaState extends State<EventsAgenda>
 
   Text parseDT(DateTime dt) => Text(
       "${DateFormat('dd/MM/yyyy').format(dt)} ${DateFormat('HH:mm').format(dt)}",
+      softWrap: true,
       style: TextStyle(
           color: Theme.of(context).colorScheme.secondary,
-          fontWeight: FontWeight.w200,
+          fontWeight: FontWeight.w300,
           fontSize: 12,
           letterSpacing: 1));
 
@@ -258,7 +262,7 @@ class EventsAgendaState extends State<EventsAgenda>
                 fit: FlexFit.loose,
                 child: Padding(
                   padding:
-                      const EdgeInsets.only(left: 14.0, top: 20.0, right: 14.0),
+                      const EdgeInsets.only(left: 10.0, top: 10.0, right: 10.0),
                   child: Text(item.description,
                       softWrap: true,
                       style: Theme.of(context)
@@ -280,7 +284,7 @@ class EventsAgendaState extends State<EventsAgenda>
                 fit: FlexFit.loose,
                 child: Padding(
                   padding:
-                      const EdgeInsets.only(left: 14.0, top: 0.0, right: 14.0),
+                      const EdgeInsets.only(left: 10.0, top: 0.0, right: 14.0),
                   child: Text(
                       "Venue: ${item.venue ?? "Not available for this event"}",
                       softWrap: true,
@@ -297,7 +301,7 @@ class EventsAgendaState extends State<EventsAgenda>
                 fit: FlexFit.loose,
                 child: Padding(
                   padding:
-                      const EdgeInsets.only(left: 14.0, top: 0.0, right: 14.0),
+                      const EdgeInsets.only(left: 10.0, top: 0.0, right: 14.0),
                   child: Text(
                       "Led by: ${item.speaker ?? "Not available for this event"}",
                       softWrap: true,
