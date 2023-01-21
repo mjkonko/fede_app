@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pocketbase/src/dtos/record_model.dart';
 
-import '../entity/news_item.dart';
+import '../entity/news/news_item.dart';
 import '../globals.dart';
+import '../utils/ui_utils.dart';
 
 class NewsPage extends StatefulWidget {
   const NewsPage({Key? key}) : super(key: key);
@@ -24,7 +25,7 @@ class NewsState extends State<NewsPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: Globals().getAppBar(context, null, widget.title),
+        appBar: UiUtils().getAppBar(context, null, widget.title),
         body: Scaffold(
             body: FutureBuilder<List<NewsItem>>(
           future: fetchNews(),

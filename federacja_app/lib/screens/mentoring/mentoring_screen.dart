@@ -2,11 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../entity/event_link_instance.dart';
-import '../../entity/mentoring_page_instance.dart';
+import '../../entity/global/link_item.dart';
+import '../../entity/mentoring/mentoring_page_instance.dart';
 import '../../globals.dart';
-import '../../utils/mentoring_utils.dart';
-import '../../utils/utils.dart';
+import '../../utils/mentoring/mentoring_utils.dart';
+import '../../utils/ui_utils.dart';
 
 class MentoringPage extends StatefulWidget {
   const MentoringPage({Key? key}) : super(key: key);
@@ -30,7 +30,7 @@ class _MentoringPageState extends State<MentoringPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: Globals().getAppBar(
+        appBar: UiUtils().getAppBar(
             context,
             TabBar(
                 controller: _tabController,
@@ -202,8 +202,7 @@ class MentoringPageMore extends StatefulWidget {
 }
 
 class MentoringPageMoreState extends State<MentoringPageMore> {
-  late final List<EventLinkInstance> links;
-  var utils = Utils();
+  late final List<LinkItem> links;
 
   @override
   void initState() {
@@ -217,7 +216,7 @@ class MentoringPageMoreState extends State<MentoringPageMore> {
       padding: const EdgeInsets.all(20),
       child: Column(
         children: [
-          Center(child: utils.returnLinksWidget(widget.links, context)),
+          Center(child: UiUtils().returnLinksWidget(widget.links, context)),
         ],
       ),
     ));

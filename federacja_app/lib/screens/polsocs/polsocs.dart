@@ -1,10 +1,11 @@
-import 'package:federacja_app/entity/polsoc_instance.dart';
+import 'package:federacja_app/entity/polsocs/polsoc_instance.dart';
 import 'package:federacja_app/screens/polsocs/polsoc_entity_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 import '../../globals.dart';
+import '../../utils/ui_utils.dart';
 
 class PolSocsPage extends StatefulWidget {
   const PolSocsPage({Key? key}) : super(key: key);
@@ -42,7 +43,7 @@ class _PolSocsPageState extends State<PolSocsPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: Globals().getAppBar(
+        appBar: UiUtils().getAppBar(
             context,
             TabBar(
                 controller: _tabController,

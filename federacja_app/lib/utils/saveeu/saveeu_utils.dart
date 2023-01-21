@@ -1,12 +1,12 @@
-import 'package:federacja_app/entity/mentoring_page_instance.dart';
+import 'package:federacja_app/entity/save_eu/save_eu_page_instance.dart';
 import 'package:pocketbase/pocketbase.dart';
 
-import '../globals.dart';
+import '../../globals.dart';
 
-Future<MentoringPageInstance> fetchMentoringPage() async {
+Future<SaveEUPageInstance> fetchSaveEUPage() async {
   var client = await Globals().getPBClient();
   var records = await client
-      .collection('fedeapp_page_mentoring')
+      .collection('fedeapp_page_save_eu_students')
       .getFullList(batch: 200, sort: '-created');
 
   if (records.isNotEmpty) {
@@ -16,7 +16,7 @@ Future<MentoringPageInstance> fetchMentoringPage() async {
   }
 }
 
-MentoringPageInstance parseRecord(RecordModel model) {
+SaveEUPageInstance parseRecord(RecordModel model) {
   var json = model.toJson();
-  return MentoringPageInstance.fromJson(json);
+  return SaveEUPageInstance.fromJson(json);
 }

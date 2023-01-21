@@ -4,11 +4,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../entity/agenda_item.dart';
-import '../../entity/event_instance.dart';
-import '../../entity/event_link_instance.dart';
+import '../../entity/events/agenda_item.dart';
+import '../../entity/events/event_instance.dart';
+import '../../entity/global/link_item.dart';
 import '../../globals.dart';
-import '../../utils/utils.dart';
+import '../../utils/global_utils.dart';
+import '../../utils/ui_utils.dart';
 
 /// Event operations page
 class EventsPage extends StatefulWidget {
@@ -103,7 +104,7 @@ class _EventsPageState extends State<EventsPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Globals().getAppBar(
+      appBar: UiUtils().getAppBar(
           context,
           TabBar(
               controller: _tabController,
@@ -523,8 +524,8 @@ class EventsContact extends StatefulWidget {
 
 class EventsContactState extends State<EventsContact>
     with TickerProviderStateMixin {
-  late final List<EventLinkInstance> links;
-  var utils = Utils();
+  late final List<LinkItem> links;
+  var utils = GlobalUtils();
 
   @override
   void initState() {
@@ -578,7 +579,7 @@ class EventsContactState extends State<EventsContact>
               ),
             ],
           )),
-          utils.returnLinksWidget(widget.links, context)
+          UiUtils().returnLinksWidget(widget.links, context)
         ],
       ),
     ));

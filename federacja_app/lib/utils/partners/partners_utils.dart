@@ -1,11 +1,11 @@
-import 'package:federacja_app/entity/partner_instance.dart';
+import 'package:federacja_app/entity/partners/partner_instance.dart';
 import 'package:federacja_app/utils/tile_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
 
-import '../globals.dart';
-import '../screens/partners/partner_entity_screen.dart';
+import '../../globals.dart';
+import '../../screens/partners/partner_entity_screen.dart';
 
 class PartnerUtils extends StatefulWidget {
   const PartnerUtils({Key? key}) : super(key: key);

@@ -1,10 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:federacja_app/entity/polsoc_instance.dart';
+import 'package:federacja_app/entity/polsocs/polsoc_instance.dart';
 import 'package:flutter/material.dart';
 
-import '../../entity/event_link_instance.dart';
+import '../../entity/global/link_item.dart';
 import '../../globals.dart';
-import '../../utils/utils.dart';
+import '../../utils/global_utils.dart';
+import '../../utils/ui_utils.dart';
 
 class PolSocEntityPage extends StatefulWidget {
   const PolSocEntityPage({Key? key, required this.title, required this.polsoc})
@@ -30,7 +31,7 @@ class _PolSocEntityPageState extends State<PolSocEntityPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Globals().getAppBar(
+      appBar: UiUtils().getAppBar(
           context,
           TabBar(
               controller: _tabController,
@@ -242,8 +243,8 @@ class PolSocEntityMore extends StatefulWidget {
 }
 
 class PolSocEntityMoreState extends State<PolSocEntityMore> {
-  late final List<EventLinkInstance> links;
-  var utils = Utils();
+  late final List<LinkItem> links;
+  var utils = GlobalUtils();
 
   @override
   void initState() {
@@ -279,7 +280,7 @@ class PolSocEntityMoreState extends State<PolSocEntityMore> {
               )
             ],
           )),
-          Center(child: utils.returnLinksWidget(widget.links, context)),
+          Center(child: UiUtils().returnLinksWidget(widget.links, context)),
         ],
       ),
     ));

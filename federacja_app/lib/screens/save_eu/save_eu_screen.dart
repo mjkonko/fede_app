@@ -1,12 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:federacja_app/entity/save_eu_page_instance.dart';
-import 'package:federacja_app/utils/saveeu_utils.dart';
+import 'package:federacja_app/entity/save_eu/save_eu_page_instance.dart';
+import 'package:federacja_app/utils/saveeu/saveeu_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../entity/event_link_instance.dart';
+import '../../entity/global/link_item.dart';
 import '../../globals.dart';
-import '../../utils/utils.dart';
+import '../../utils/global_utils.dart';
+import '../../utils/ui_utils.dart';
 
 class SaveEUPage extends StatefulWidget {
   const SaveEUPage({Key? key}) : super(key: key);
@@ -30,7 +31,7 @@ class _SaveEUPagePageState extends State<SaveEUPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: Globals().getAppBar(
+        appBar: UiUtils().getAppBar(
             context,
             TabBar(
                 controller: _tabController,
@@ -257,8 +258,8 @@ class SaveEUMore extends StatefulWidget {
 }
 
 class SaveEUMoreState extends State<SaveEUMore> {
-  late final List<EventLinkInstance> links;
-  var utils = Utils();
+  late final List<LinkItem> links;
+  var utils = GlobalUtils();
 
   @override
   void initState() {
@@ -294,7 +295,7 @@ class SaveEUMoreState extends State<SaveEUMore> {
               )
             ],
           )),
-          Center(child: utils.returnLinksWidget(widget.links, context)),
+          Center(child: UiUtils().returnLinksWidget(widget.links, context)),
         ],
       ),
     ));

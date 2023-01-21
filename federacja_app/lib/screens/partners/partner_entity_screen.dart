@@ -1,10 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-import '../../entity/event_link_instance.dart';
-import '../../entity/partner_instance.dart';
+import '../../entity/global/link_item.dart';
+import '../../entity/partners/partner_instance.dart';
 import '../../globals.dart';
-import '../../utils/utils.dart';
+import '../../utils/global_utils.dart';
+import '../../utils/ui_utils.dart';
 
 class PartnerEntityPage extends StatefulWidget {
   const PartnerEntityPage(
@@ -31,7 +32,7 @@ class _PartnerEntityPageState extends State<PartnerEntityPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Globals().getAppBar(
+      appBar: UiUtils().getAppBar(
           context,
           TabBar(
               controller: _tabController,
@@ -239,8 +240,8 @@ class PartnerEntityMore extends StatefulWidget {
 }
 
 class PartnerEntityMoreState extends State<PartnerEntityMore> {
-  late final List<EventLinkInstance> links;
-  var utils = Utils();
+  late final List<LinkItem> links;
+  var utils = GlobalUtils();
 
   @override
   void initState() {
@@ -276,7 +277,7 @@ class PartnerEntityMoreState extends State<PartnerEntityMore> {
               )
             ],
           )),
-          Center(child: utils.returnLinksWidget(widget.links, context)),
+          Center(child: UiUtils().returnLinksWidget(widget.links, context)),
         ],
       ),
     ));

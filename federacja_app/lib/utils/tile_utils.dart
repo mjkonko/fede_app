@@ -1,11 +1,12 @@
 import 'package:federacja_app/screens/mentoring/mentoring_screen.dart';
 import 'package:federacja_app/screens/polsocs/polsocs.dart';
 import 'package:federacja_app/screens/save_eu/save_eu_screen.dart';
-import 'package:federacja_app/utils/utils.dart';
+import 'package:federacja_app/utils/global_utils.dart';
 import 'package:flutter/material.dart';
 
 import '../screens/about.dart';
 
+/// Static Tiles Generation Class
 class TileUtils extends StatelessWidget {
   const TileUtils({Key? key}) : super(key: key);
 
@@ -23,7 +24,7 @@ class TileUtils extends StatelessWidget {
         children: generateTiles(context));
   }
 
-  //Use this element to add more static tile objects
+  /// Use this method to add more static tile objects
   List<Widget> generateTiles(BuildContext context) {
     List<Tile> tiles = [
       Tile(
@@ -74,12 +75,17 @@ class TileUtils extends StatelessWidget {
           'Mentoring',
           Theme.of(context).colorScheme.surfaceTint),
       Tile(
-          () =>
-              {Utils().launchInBrowser("https://polsocfederation.com/guides")},
+          () => {
+                GlobalUtils()
+                    .launchInBrowser("https://polsocfederation.com/guides")
+              },
           'Freshers Guides',
           Theme.of(context).colorScheme.surfaceTint),
       Tile(
-          () => {Utils().launchInBrowser("https://polsocfederation.com/press")},
+          () => {
+                GlobalUtils()
+                    .launchInBrowser("https://polsocfederation.com/press")
+              },
           'Press',
           Theme.of(context).colorScheme.secondary)
     ];
@@ -88,6 +94,7 @@ class TileUtils extends StatelessWidget {
   }
 }
 
+/// Static Tile with Text
 class Tile extends StatelessWidget {
   final Function action;
   final String title;
@@ -117,6 +124,7 @@ class Tile extends StatelessWidget {
   }
 }
 
+/// Tile with Local Logo File
 class ImageLogoTile extends Tile {
   final String image;
 
