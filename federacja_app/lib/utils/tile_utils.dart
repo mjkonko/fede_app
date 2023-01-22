@@ -4,9 +4,9 @@ import 'package:federacja_app/screens/save_eu/save_eu_screen.dart';
 import 'package:federacja_app/utils/global_utils.dart';
 import 'package:flutter/material.dart';
 
-import '../screens/about.dart';
+import '../screens/about/about.dart';
 
-/// Static Tiles Generation Class
+/// Main Screen Static Tiles Generation Class
 class TileUtils extends StatelessWidget {
   const TileUtils({Key? key}) : super(key: key);
 

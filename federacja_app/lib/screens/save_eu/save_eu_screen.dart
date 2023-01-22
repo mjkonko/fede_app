@@ -49,7 +49,7 @@ class _SaveEUPagePageState extends State<SaveEUPage>
                 ]),
             widget.title),
         body: FutureBuilder<SaveEUPageInstance>(
-          future: fetchSaveEUPage(),
+          future: SaveEuUtils().fetch(),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               if (kDebugMode) {

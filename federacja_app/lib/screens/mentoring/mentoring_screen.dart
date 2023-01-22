@@ -48,7 +48,7 @@ class _MentoringPageState extends State<MentoringPage>
                 ]),
             widget.title),
         body: FutureBuilder<MentoringPageInstance>(
-          future: fetchMentoringPage(),
+          future: MentoringUtils().fetch(),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               if (kDebugMode) {

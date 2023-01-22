@@ -2,10 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
 
-import '../entity/about/comittee_member.dart';
-import '../globals.dart';
-import '../utils/global_utils.dart';
-import '../utils/ui_utils.dart';
+import '../../entity/about/comittee_member.dart';
+import '../../globals.dart';
+import '../../utils/global_utils.dart';
+import '../../utils/ui_utils.dart';
 
 class AboutPage extends StatefulWidget {
   const AboutPage({Key? key}) : super(key: key);

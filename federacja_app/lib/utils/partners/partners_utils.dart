@@ -6,6 +6,7 @@ import 'package:pocketbase/pocketbase.dart';
 
 import '../../globals.dart';
 import '../../screens/partners/partner_entity_screen.dart';
+import '../Instance.dart';
 
 class PartnerUtils extends StatefulWidget {
   const PartnerUtils({Key? key}) : super(key: key);
@@ -14,16 +15,40 @@ class PartnerUtils extends StatefulWidget {
   PartnerState createState() => PartnerState();
 }
 
-class PartnerState extends State<PartnerUtils> with TickerProviderStateMixin {
+class PartnerState extends State<PartnerUtils>
+    with TickerProviderStateMixin
+    implements Instance {
   @override
   void initState() {
     super.initState();
   }
 
   @override
+  Future<List<PartnerInstance>> fetch() async {
+    var client = await Globals().getPBClient();
+    var records = await client
+        .collection('partners')
+        .getFullList(batch: 200, sort: '-created');
+
+    if (records.isNotEmpty) {
+      return parse(records);
+    } else {
+      throw Exception('Failed to load event items');
+    }
+  }
+
+  @override
+  List<PartnerInstance> parse(List<RecordModel> records) {
+    List<PartnerInstance> list = records
+        .map<PartnerInstance>((json) => PartnerInstance.fromRecordModel(json))
+        .toList();
+    return list;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<PartnerInstance>>(
-      future: fetchPartner(),
+      future: fetch(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           if (kDebugMode) {
@@ -63,7 +88,6 @@ class PartnerList extends StatelessWidget {
                             email: item.email,
                             links: item.links,
                             photos: item.photos,
-                            //'[{"id": 1, "name": "Test", "venue": "Venue", "time": "2022-09-25T12:15:23.701Z", "description": "desc"},{"id": 2, "name": "Test", "venue": "Venue", "time": "2022-09-25T12:15:23.701Z", "description": "desc"}]',
                             created: item.created,
                             updated: item.updated,
                             verified: item.verified,
@@ -103,24 +127,4 @@ class PartnerList extends StatelessWidget {
 
     return tiles;
   }
-}
-
-Future<List<PartnerInstance>> fetchPartner() async {
-  var client = await Globals().getPBClient();
-  var records = await client
-      .collection('partners')
-      .getFullList(batch: 200, sort: '-created');
-
-  if (records.isNotEmpty) {
-    return parsePartner(records);
-  } else {
-    throw Exception('Failed to load event items');
-  }
-}
-
-List<PartnerInstance> parsePartner(List<RecordModel> records) {
-  List<PartnerInstance> list = records
-      .map<PartnerInstance>((json) => PartnerInstance.fromRecordModel(json))
-      .toList();
-  return list;
 }

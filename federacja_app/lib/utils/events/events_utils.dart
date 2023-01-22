@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 import '../../globals.dart';
+import '../Instance.dart';
 
 class EventUtils extends StatefulWidget {
   const EventUtils({Key? key}) : super(key: key);
@@ -15,16 +16,40 @@ class EventUtils extends StatefulWidget {
   EventState createState() => EventState();
 }
 
-class EventState extends State<EventUtils> with TickerProviderStateMixin {
+class EventState extends State<EventUtils>
+    with TickerProviderStateMixin
+    implements Instance {
   @override
   void initState() {
     super.initState();
   }
 
   @override
+  Future<List<EventInstance>> fetch() async {
+    var client = await Globals().getPBClient();
+    var records = await client
+        .collection('event')
+        .getFullList(batch: 200, sort: '-created');
+
+    if (records.isNotEmpty) {
+      return parse(records);
+    } else {
+      throw Exception('Failed to load event items');
+    }
+  }
+
+  @override
+  List<EventInstance> parse(List<RecordModel> records) {
+    List<EventInstance> list = records
+        .map<EventInstance>((json) => EventInstance.fromRecordModel(json))
+        .toList();
+    return list;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<EventInstance>>(
-      future: fetchEvents(),
+      future: fetch(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           if (kDebugMode) {
@@ -112,24 +137,4 @@ class EventList extends StatelessWidget {
     }
     return tiles;
   }
-}
-
-Future<List<EventInstance>> fetchEvents() async {
-  var client = await Globals().getPBClient();
-  var records = await client
-      .collection('event')
-      .getFullList(batch: 200, sort: '-created');
-
-  if (records.isNotEmpty) {
-    return parseEvent(records);
-  } else {
-    throw Exception('Failed to load event items');
-  }
-}
-
-List<EventInstance> parseEvent(List<RecordModel> records) {
-  List<EventInstance> list = records
-      .map<EventInstance>((json) => EventInstance.fromRecordModel(json))
-      .toList();
-  return list;
 }
