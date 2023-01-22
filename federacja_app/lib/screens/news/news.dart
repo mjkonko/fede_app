@@ -7,6 +7,8 @@ import '../../entity/news/news_item.dart';
 import '../../globals.dart';
 import '../../utils/ui_utils.dart';
 
+@Deprecated(
+    "Has been removed from expected features. Could be reused - December 2022")
 class NewsPage extends StatefulWidget {
   const NewsPage({Key? key}) : super(key: key);
 

@@ -1,85 +1,21 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-import '../../entity/global/link_item.dart';
 import '../../entity/partners/partner_instance.dart';
 import '../../globals.dart';
-import '../../utils/global_utils.dart';
-import '../../utils/ui_utils.dart';
 
-class PartnerEntityPage extends StatefulWidget {
-  const PartnerEntityPage(
-      {Key? key, required this.title, required this.partner})
+class PartnerPageAbout extends StatefulWidget {
+  const PartnerPageAbout({Key? key, required this.partner, required this.title})
       : super(key: key);
 
   final String title;
   final PartnerInstance partner;
 
   @override
-  State<PartnerEntityPage> createState() => _PartnerEntityPageState();
+  PartnerPageAboutState createState() => PartnerPageAboutState();
 }
 
-class _PartnerEntityPageState extends State<PartnerEntityPage>
-    with TickerProviderStateMixin {
-  late TabController _tabController;
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 2, vsync: this);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: UiUtils().getAppBar(
-          context,
-          TabBar(
-              controller: _tabController,
-              indicatorWeight: 1.5,
-              indicatorSize: TabBarIndicatorSize.label,
-              automaticIndicatorColorAdjustment: true,
-              indicatorColor: const Color.fromRGBO(255, 255, 255, 1.0),
-              tabs: const <Widget>[
-                Tab(
-                  text: "About Us",
-                ),
-                Tab(
-                  text: "More",
-                )
-              ]),
-          widget.partner.fullName),
-      body: TabBarView(
-        controller: _tabController,
-        physics: const NeverScrollableScrollPhysics(),
-        children: <Widget>[
-          Center(
-              child: PartnerEntityAbout(
-                  title: 'About Us', partner: widget.partner)),
-          Center(
-              child: PartnerEntityMore(
-                  title: 'More',
-                  email: widget.partner.email,
-                  links: widget.partner.links))
-        ],
-      ),
-    );
-  }
-}
-
-class PartnerEntityAbout extends StatefulWidget {
-  const PartnerEntityAbout(
-      {Key? key, required this.partner, required this.title})
-      : super(key: key);
-
-  final String title;
-  final PartnerInstance partner;
-
-  @override
-  PartnerEntityAboutState createState() => PartnerEntityAboutState();
-}
-
-class PartnerEntityAboutState extends State<PartnerEntityAbout> {
+class PartnerPageAboutState extends State<PartnerPageAbout> {
   @override
   void initState() {
     super.initState();
@@ -223,63 +159,5 @@ class PartnerEntityAboutState extends State<PartnerEntityAbout> {
           }));
     }
     return photosWidgets;
-  }
-}
-
-class PartnerEntityMore extends StatefulWidget {
-  PartnerEntityMore(
-      {Key? key, required this.title, required this.email, this.links})
-      : super(key: key);
-
-  final String title;
-  final String email;
-  String? links;
-
-  @override
-  PartnerEntityMoreState createState() => PartnerEntityMoreState();
-}
-
-class PartnerEntityMoreState extends State<PartnerEntityMore> {
-  late final List<LinkItem> links;
-  var utils = GlobalUtils();
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        body: Container(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        children: [
-          Center(
-            child: Text("Get in touch",
-                style: Theme.of(context).textTheme.headline5!.copyWith(
-                      color: Colors.black87,
-                      wordSpacing: 1,
-                      overflow: TextOverflow.fade,
-                      height: 1.2,
-                    )),
-          ),
-          Center(
-              child: ButtonBar(
-            mainAxisSize: MainAxisSize.min,
-            alignment: MainAxisAlignment.center,
-            children: <Widget>[
-              TextButton(
-                child: const Text('Email'),
-                onPressed: () {
-                  utils.sendEmail(email: widget.email);
-                },
-              )
-            ],
-          )),
-          Center(child: UiUtils().returnLinksWidget(widget.links, context)),
-        ],
-      ),
-    ));
   }
 }

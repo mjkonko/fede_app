@@ -1,10 +1,10 @@
-import 'package:federacja_app/screens/mentoring/mentoring_screen.dart';
-import 'package:federacja_app/screens/polsocs/polsocs.dart';
+import 'package:federacja_app/screens/mentoring/mentoring_main_screen.dart';
+import 'package:federacja_app/screens/polsocs/polsocs_list_screen.dart';
 import 'package:federacja_app/screens/save_eu/save_eu_screen.dart';
 import 'package:federacja_app/utils/global_utils.dart';
 import 'package:flutter/material.dart';
 
-import '../screens/about/about.dart';
+import '../screens/about/about_main_screen.dart';
 
 /// Main Screen Static Tiles Generation Class
 class TileUtils extends StatelessWidget {
@@ -49,7 +49,8 @@ class TileUtils extends StatelessWidget {
           () => {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const PolSocsPage()),
+                  MaterialPageRoute(
+                      builder: (context) => const PolSocsListPage()),
                 )
               },
           'Polish Societies',

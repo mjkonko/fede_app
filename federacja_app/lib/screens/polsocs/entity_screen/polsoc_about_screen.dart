@@ -2,69 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:federacja_app/entity/polsocs/polsoc_instance.dart';
 import 'package:flutter/material.dart';
 
-import '../../entity/global/link_item.dart';
-import '../../globals.dart';
-import '../../utils/global_utils.dart';
-import '../../utils/ui_utils.dart';
-
-class PolSocEntityPage extends StatefulWidget {
-  const PolSocEntityPage({Key? key, required this.title, required this.polsoc})
-      : super(key: key);
-
-  final String title;
-  final PolSocInstance polsoc;
-
-  @override
-  State<PolSocEntityPage> createState() => _PolSocEntityPageState();
-}
-
-class _PolSocEntityPageState extends State<PolSocEntityPage>
-    with TickerProviderStateMixin {
-  late TabController _tabController;
-
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 2, vsync: this);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: UiUtils().getAppBar(
-          context,
-          TabBar(
-              controller: _tabController,
-              indicatorWeight: 1.5,
-              indicatorSize: TabBarIndicatorSize.label,
-              automaticIndicatorColorAdjustment: true,
-              indicatorColor: const Color.fromRGBO(255, 255, 255, 1.0),
-              tabs: const <Widget>[
-                Tab(
-                  text: "About Us",
-                ),
-                Tab(
-                  text: "More",
-                )
-              ]),
-          widget.polsoc.name),
-      body: TabBarView(
-        controller: _tabController,
-        physics: const NeverScrollableScrollPhysics(),
-        children: <Widget>[
-          Center(
-              child:
-                  PolSocEntityAbout(title: 'About Us', polsoc: widget.polsoc)),
-          Center(
-              child: PolSocEntityMore(
-                  title: 'More',
-                  email: widget.polsoc.email,
-                  links: widget.polsoc.links))
-        ],
-      ),
-    );
-  }
-}
+import '../../../globals.dart';
 
 class PolSocEntityAbout extends StatefulWidget {
   const PolSocEntityAbout({Key? key, required this.polsoc, required this.title})
@@ -226,63 +164,5 @@ class PolSocEntityAboutState extends State<PolSocEntityAbout> {
           }));
     }
     return photosWidgets;
-  }
-}
-
-class PolSocEntityMore extends StatefulWidget {
-  PolSocEntityMore(
-      {Key? key, required this.title, required this.email, this.links})
-      : super(key: key);
-
-  final String title;
-  final String email;
-  String? links;
-
-  @override
-  PolSocEntityMoreState createState() => PolSocEntityMoreState();
-}
-
-class PolSocEntityMoreState extends State<PolSocEntityMore> {
-  late final List<LinkItem> links;
-  var utils = GlobalUtils();
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        body: Container(
-      padding: const EdgeInsets.all(20),
-      child: Column(
-        children: [
-          Center(
-            child: Text("Contact the organisers",
-                style: Theme.of(context).textTheme.headline5!.copyWith(
-                      color: Colors.black87,
-                      wordSpacing: 1,
-                      overflow: TextOverflow.fade,
-                      height: 1.2,
-                    )),
-          ),
-          Center(
-              child: ButtonBar(
-            mainAxisSize: MainAxisSize.min,
-            alignment: MainAxisAlignment.center,
-            children: <Widget>[
-              TextButton(
-                child: const Text('Email'),
-                onPressed: () {
-                  utils.sendEmail(email: widget.email);
-                },
-              )
-            ],
-          )),
-          Center(child: UiUtils().returnLinksWidget(widget.links, context)),
-        ],
-      ),
-    ));
   }
 }

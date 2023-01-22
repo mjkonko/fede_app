@@ -1,22 +1,21 @@
-import 'package:federacja_app/entity/polsocs/polsoc_instance.dart';
-import 'package:federacja_app/screens/polsocs/polsoc_entity_screen.dart';
+import 'package:federacja_app/screens/polsocs/entity_screen/polsoc_main_screen.dart';
+import 'package:federacja_app/utils/polsocs/polsocs_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:pocketbase/pocketbase.dart';
 
-import '../../globals.dart';
+import '../../entity/polsocs/polsoc_instance.dart';
 import '../../utils/ui_utils.dart';
 
-class PolSocsPage extends StatefulWidget {
-  const PolSocsPage({Key? key}) : super(key: key);
+class PolSocsListPage extends StatefulWidget {
+  const PolSocsListPage({Key? key}) : super(key: key);
 
   final String title = "Polish Societies";
 
   @override
-  State<PolSocsPage> createState() => _PolSocsPageState();
+  State<PolSocsListPage> createState() => _PolSocsListPageState();
 }
 
-class _PolSocsPageState extends State<PolSocsPage>
+class _PolSocsListPageState extends State<PolSocsListPage>
     with TickerProviderStateMixin {
   List<Widget> _tabs = <Tab>[];
   List<Widget> _generalWidgets = <Widget>[];
@@ -24,9 +23,9 @@ class _PolSocsPageState extends State<PolSocsPage>
 
   @override
   initState() {
-    _tabs = getRegionTabs();
+    _tabs = PolSocsUtils().getRegionTabs();
     _tabController = getTabController();
-    _generalWidgets = getRegionWidgets();
+    _generalWidgets = PolSocsUtils().getRegionWidgets();
     super.initState();
   }
 
@@ -112,64 +111,4 @@ class PolSocsList extends StatelessWidget {
                   })))
     ]);
   }
-}
-
-List<Tab> getRegionTabs() {
-  List<Tab> tabs = [];
-
-  for (var region in Globals().regions) {
-    tabs.add(Tab(
-      text: region,
-    ));
-  }
-
-  return tabs;
-}
-
-List<Widget> getRegionWidgets() {
-  List<Widget> widgets = [];
-
-  for (var region in Globals().regions) {
-    widgets.add(generateRegionWidget(region));
-  }
-
-  return widgets;
-}
-
-Widget generateRegionWidget(String region) {
-  return FutureBuilder<List<PolSocInstance>>(
-    future: fetchPolSocs(region),
-    builder: (context, snapshot) {
-      if (snapshot.hasError) {
-        if (kDebugMode) {
-          snapshot.error.toString();
-        }
-        return Center(child: Text('An error has occurred! ${snapshot.error}'));
-      } else if (snapshot.hasData) {
-        return PolSocsList(list: snapshot.data!);
-      } else {
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      }
-    },
-  );
-}
-
-Future<List<PolSocInstance>> fetchPolSocs(String region) async {
-  // alternatively you can also fetch all records at once via getFullList:
-  var client = await Globals().getPBClient();
-  var records = await client.collection('polsocs').getFullList(
-      batch: 200,
-      sort: '-created',
-      filter: 'region ~"$region"&&active=true&&verified=true');
-
-  return parsePolSocs(records);
-}
-
-List<PolSocInstance> parsePolSocs(List<RecordModel> records) {
-  List<PolSocInstance> list = records
-      .map<PolSocInstance>((json) => PolSocInstance.fromRecordModel(json))
-      .toList();
-  return list;
 }

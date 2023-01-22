@@ -1,5 +1,5 @@
 import 'package:federacja_app/entity/events/event_instance.dart';
-import 'package:federacja_app/screens/events/event_entity.dart';
+import 'package:federacja_app/screens/events/event_main_screen.dart';
 import 'package:federacja_app/utils/global_utils.dart';
 import 'package:federacja_app/utils/tile_utils.dart';
 import 'package:flutter/foundation.dart';

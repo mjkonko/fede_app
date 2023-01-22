@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 import '../../globals.dart';
-import '../../screens/partners/partner_entity_screen.dart';
+import '../../screens/partners/partner_main_screen.dart';
 import '../Instance.dart';
 
 class PartnerUtils extends StatefulWidget {
@@ -80,7 +80,7 @@ class PartnerList extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => PartnerEntityPage(
+                    builder: (context) => PartnerPage(
                           title: item.fullName,
                           partner: PartnerInstance(
                             id: item.id,
