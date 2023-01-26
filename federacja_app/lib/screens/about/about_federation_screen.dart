@@ -1,10 +1,15 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:federacja_app/entity/about/about_page_instance.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import '../../globals.dart';
+
 class AboutFederation extends StatefulWidget {
-  const AboutFederation({Key? key, required this.title}) : super(key: key);
+  AboutFederation({Key? key, required this.title, this.page}) : super(key: key);
 
   final String title;
+  AboutPageInstance? page;
 
   @override
   AboutFederationState createState() => AboutFederationState();
@@ -12,24 +17,6 @@ class AboutFederation extends StatefulWidget {
 
 class AboutFederationState extends State<AboutFederation>
     with TickerProviderStateMixin {
-  final String textTitle = "Our mission";
-  final String textParagraph1 = "To foster cooperation between Polish student "
-      "Societies in the UK by providing guidance to local and nationwide initiatives "
-      "and representing the interest of Polish students in the UK on the national "
-      "and international level.";
-  final String textParagraph2 =
-      "There are currently tens of thousands Polish students in the UK. "
-      "Through the establishment of Polish Societies at universities across the country, "
-      "they create small local communities organising celebrations, social meetings,"
-      "and networking opportunities. The Federation serves as an integrating body providing support and knowledge,"
-      "helping consecutive generations continue the work of PolSocs."
-      "It is the primary body responsible for defending the interests"
-      "of Polish Students in the United Kingdom. Through flagship projects such "
-      "as annual Congress of Polish Student Societies, international pro-European"
-      "students campaign SaveEU Students, and a mentoring scheme EmpowerPL run in"
-      "cooperation with The Boston Consulting Group, The Federation continues to grow"
-      "and flourish, promoting Polish culture and influence on international affairs.";
-
   @override
   void initState() {
     super.initState();
@@ -47,7 +34,7 @@ class AboutFederationState extends State<AboutFederation>
                     scrollDirection: Axis.vertical,
                     child: Column(
                       children: [
-                        Text(textTitle,
+                        Text(widget.page!.textTitle,
                             style:
                                 Theme.of(context).textTheme.headline3!.copyWith(
                                       color: Colors.black87,
@@ -55,7 +42,7 @@ class AboutFederationState extends State<AboutFederation>
                                       overflow: TextOverflow.fade,
                                       height: 1.2,
                                     )),
-                        Text(textParagraph1,
+                        Text(widget.page!.text1,
                             style:
                                 Theme.of(context).textTheme.subtitle2!.copyWith(
                                       color: Colors.black87,
@@ -65,7 +52,7 @@ class AboutFederationState extends State<AboutFederation>
                                     )),
                         Container(
                           padding: const EdgeInsets.only(top: 10),
-                          child: Text(textParagraph2,
+                          child: Text(widget.page!.text2,
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyText2!
@@ -75,10 +62,54 @@ class AboutFederationState extends State<AboutFederation>
                                     overflow: TextOverflow.fade,
                                     height: 1.5,
                                   )),
-                        )
+                        ),
+                        returnPhotosIfAvailable()
                       ],
                     ),
                   ))
             ])));
+  }
+
+  Column returnPhotosIfAvailable() {
+    return Column(
+      children: getPhotos(),
+    );
+  }
+
+  List<Widget> getPhotos() {
+    List<Widget> photosWidgets = [];
+
+    for (int i = 0; i < widget.page!.photos; i++) {
+      photosWidgets.add(FutureBuilder(
+          future: Globals()
+              .getFileUrl('fedeapp_page_about', widget.page!.id, i, 'photos'),
+          builder: (context, AsyncSnapshot<String> snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+              case ConnectionState.waiting:
+              case ConnectionState.active:
+              case ConnectionState.done:
+                if (snapshot.hasError) {
+                  return Column(children: [
+                    Text(
+                      "Couldn't load the picture ${snapshot.error}",
+                      style: const TextStyle(color: Colors.red),
+                    )
+                  ]);
+                } else {
+                  return Center(
+                      child: Padding(
+                    padding: const EdgeInsets.only(top: 12.5),
+                    child: CachedNetworkImage(
+                        width: 600,
+                        imageUrl: snapshot.data.toString(),
+                        placeholder: (context, url) => Container(),
+                        errorWidget: (context, url, error) => Container()),
+                  ));
+                }
+            }
+          }));
+    }
+    return photosWidgets;
   }
 }

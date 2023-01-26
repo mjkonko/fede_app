@@ -1,9 +1,8 @@
+import 'package:federacja_app/utils/about/committee/committee_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:pocketbase/pocketbase.dart';
 
 import '../../entity/about/committee_member.dart';
-import '../../globals.dart';
 import '../../utils/global_utils.dart';
 
 class AboutCommittee extends StatefulWidget {
@@ -17,27 +16,6 @@ class AboutCommittee extends StatefulWidget {
 
 class AboutCommitteeState extends State<AboutCommittee>
     with TickerProviderStateMixin {
-  Future<List<CommitteeMember>> fetchCommittee() async {
-    var client = await Globals().getPBClient();
-    var records = await client
-        .collection('committee')
-        .getFullList(batch: 200, sort: '+order');
-
-    if (records.isNotEmpty) {
-      return parseCommittee(records);
-    } else {
-      throw Exception('Failed to load committee data');
-    }
-  }
-
-  List<CommitteeMember> parseCommittee(List<RecordModel> records) {
-    List<CommitteeMember> list = records
-        .map<CommitteeMember>((json) => CommitteeMember.fromRecordModel(json))
-        .toList();
-
-    return list;
-  }
-
   @override
   void initState() {
     super.initState();
@@ -47,7 +25,7 @@ class AboutCommitteeState extends State<AboutCommittee>
   Widget build(BuildContext context) {
     return Scaffold(
         body: FutureBuilder<List<CommitteeMember>>(
-      future: fetchCommittee(),
+      future: CommitteeUtils().fetch(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           if (kDebugMode) {
